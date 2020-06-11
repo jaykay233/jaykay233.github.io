@@ -93,11 +93,15 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>这是一篇sigir2020推荐系统的文章。</p>
+<h3 id="论文背景："><a href="#论文背景：" class="headerlink" title="论文背景："></a>论文背景：</h3><p>通过学习item的hashcode表示来进行冷启动。基于协同过滤和内容的推荐系统是很主流的方法。</p>
+<h4 id="协同过滤的缺点："><a href="#协同过滤的缺点：" class="headerlink" title="协同过滤的缺点："></a>协同过滤的缺点：</h4><p>对于未见过的item，标准的协同过滤不能学习有效表示。所以基于内容的推荐系统可以补充标准协同过滤的方法。</p>
+<h4 id="基于内容的推荐系统的缺点"><a href="#基于内容的推荐系统的缺点" class="headerlink" title="基于内容的推荐系统的缺点"></a>基于内容的推荐系统的缺点</h4><p>基于内容(content-aware)hashcode表示个生成和标准item的生成不同,是不必要的并且会限制其泛化性能。</p>
+<h3 id="NeuHash-CF"><a href="#NeuHash-CF" class="headerlink" title="NeuHash-CF"></a>NeuHash-CF</h3><p><img src="'/images/neuhash-cf.png'" alt="NeuHash-CF"><br>NeuHash-CF有两个encoder来生成item和user的hashcode, 它们连接在变分自编码模型中. 所有的item code都统一生成,不管是否曾经见过。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/10/Content-aware-Neural-Hashing-for-Cold-start-Recommendation/" data-id="ckba8m0wj0000r5gu88r52er3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/10/Content-aware-Neural-Hashing-for-Cold-start-Recommendation/" data-id="ckba8mukc0000rzgu5xte28ih" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="tag">推荐系统</a></li></ul>
