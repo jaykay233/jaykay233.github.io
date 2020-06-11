@@ -189,7 +189,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/06/11/phased-lstm/" class="post-title-link" itemprop="url">Phased LSTM</a>
+            <a href="/2020/06/11/phased-lstm/" class="post-title-link" itemprop="url">Time-related LSTM</a>
         </h2>
 
         <div class="post-meta">
@@ -223,21 +223,43 @@
 <p>$ o_t = \sigma_{o}(x_tW_{xo} + h_{t-1}W_{ho} + w_{co} \odot c_t + b_o ) $</p>
 <p>$ h_t = o_t \odot \sigma_{h}(c_t) $</p>
 <h3 id="phased-lstm"><a class="markdownIt-Anchor" href="#phased-lstm"></a> Phased LSTM</h3>
-<p>phased lstm增加了time gate。开启和关闭这个门由三个参数决定。<br />
+<p>Phased LSTM增加了time gate。开启和关闭这个门由三个参数决定。<br />
 $ c_t $和 $ h_t $ 仅仅在门开启的时候允许通过。$ \tau $ 控制了震荡的时间。$ \tau_{on} $ 控制了开相对于整个时间周期的比例。<br />
 $ s $  控制了相位的偏移。这些参数都是可以学习的。<br />
 $ \phi_{t} = \frac{(t-s) mod \tau }{ \tau } $</p>
-<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo fence="true">{</mo><mtable rowspacing="0.15999999999999992em" columnalign="left right" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>x</mi><mo>=</mo><mstyle displaystyle="true" scriptlevel="0"><mfrac><mrow><mn>3</mn><mi>π</mi></mrow><mn>2</mn></mfrac></mstyle><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>t</mi><mo stretchy="false">)</mo><mi>cos</mi><mo>⁡</mo><mo stretchy="false">(</mo><mstyle displaystyle="true" scriptlevel="0"><mfrac><mrow><mn>3</mn><mi>π</mi></mrow><mn>2</mn></mfrac></mstyle><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>t</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo separator="true">,</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>y</mi><mo>=</mo><mi>s</mi><mo separator="true">,</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mn>0</mn><mo>≤</mo><mi>s</mi><mo>≤</mo><mi>L</mi><mo separator="true">,</mo><mi mathvariant="normal">∣</mi><mi>t</mi><mi mathvariant="normal">∣</mi><mo>≤</mo><mn>1.</mn></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>z</mi><mo>=</mo><mstyle displaystyle="true" scriptlevel="0"><mfrac><mrow><mn>3</mn><mi>π</mi></mrow><mn>2</mn></mfrac></mstyle><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>t</mi><mo stretchy="false">)</mo><mi>sin</mi><mo>⁡</mo><mo stretchy="false">(</mo><mstyle displaystyle="true" scriptlevel="0"><mfrac><mrow><mn>3</mn><mi>π</mi></mrow><mn>2</mn></mfrac></mstyle><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mn>2</mn><mi>t</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo separator="true">,</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow></mrow></mstyle></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\left\{
-             \begin{array}{lr}
-             x=\dfrac{3\pi}{2}(1+2t)\cos(\dfrac{3\pi}{2}(1+2t)), &amp;  \\
-             y=s, &amp; 0\leq s\leq L,|t|\leq1.\\
-             z=\dfrac{3\pi}{2}(1+2t)\sin(\dfrac{3\pi}{2}(1+2t)), &amp;  
-             \end{array}
-\right.</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:5.214879999999999em;vertical-align:-2.3574399999999995em;"></span><span class="minner"><span class="mopen"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.65002em;"><span style="top:-1.8999899999999998em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎩</span></span></span><span style="top:-1.8999899999999998em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎪</span></span></span><span style="top:-2.1999899999999997em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎪</span></span></span><span style="top:-3.15001em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎨</span></span></span><span style="top:-4.30001em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎪</span></span></span><span style="top:-4.60001em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎪</span></span></span><span style="top:-4.90002em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎧</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.15002em;"><span></span></span></span></span></span></span><span class="mord"><span class="mtable"><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.8574399999999995em;"><span style="top:-4.8574399999999995em;"><span class="pstrut" style="height:3.32144em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3</span><span class="mord mathdefault" style="margin-right:0.03588em;">π</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">2</span><span class="mord mathdefault">t</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop">cos</span><span class="mopen">(</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3</span><span class="mord mathdefault" style="margin-right:0.03588em;">π</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">2</span><span class="mord mathdefault">t</span><span class="mclose">)</span><span class="mclose">)</span><span class="mpunct">,</span></span></span><span style="top:-3.3314399999999997em;"><span class="pstrut" style="height:3.32144em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord mathdefault">s</span><span class="mpunct">,</span></span></span><span style="top:-1.6500000000000004em;"><span class="pstrut" style="height:3.32144em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3</span><span class="mord mathdefault" style="margin-right:0.03588em;">π</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">2</span><span class="mord mathdefault">t</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop">sin</span><span class="mopen">(</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3</span><span class="mord mathdefault" style="margin-right:0.03588em;">π</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">2</span><span class="mord mathdefault">t</span><span class="mclose">)</span><span class="mclose">)</span><span class="mpunct">,</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.3574399999999995em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-r"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.8574399999999995em;"><span style="top:-4.8574399999999995em;"><span class="pstrut" style="height:3.32144em;"></span><span class="mord"></span></span><span style="top:-3.3314399999999997em;"><span class="pstrut" style="height:3.32144em;"></span><span class="mord"><span class="mord">0</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord mathdefault">s</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord mathdefault">L</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">∣</span><span class="mord mathdefault">t</span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord">1</span><span class="mord">.</span></span></span><span style="top:-1.6500000000000004em;"><span class="pstrut" style="height:3.32144em;"></span><span class="mord"></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.3574399999999995em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
-<p>phased lstm还有一个好处, 它能更好地保持初始信息。<br />
-传统的lstm:<br />
-$ c_n = f_n \odot c_{n-1} = (1-\epsilon) \odot (f_{n-1} \odot c_{n-2} ) = … = (1-\epsilon)^n \odot c_0 $<br />
-相反地, 在gate关闭的时候, phased lstm可以很好地保存信息。</p>
+<img src="/images/phased_lstm/phased_lstm_1.png" width="30%" height="30%">
+所以phased_lstm的公式还需要time gate的更新：
+<img src="/images/phased_lstm/phased_lstm_2.png" width="50%" height="50%">
+Phased LSTM还有一个好处, 它能更好地保持初始信息。
+传统的lstm:
+<p>$ c_n = f_n \odot c_{n-1} = (1-\epsilon) \odot (f_{n-1} \odot c_{n-2} ) = … = (1-\epsilon)^n \odot c_0 $</p>
+<p>相反地, 在gate关闭的时候, Phased LSTM可以很好地保存信息。</p>
+<h3 id="一些实验结果"><a class="markdownIt-Anchor" href="#一些实验结果"></a> 一些实验结果</h3>
+<img src="/images/phased_lstm/phased_lstm_3.png" width="100%" height="100%">
+可以看到在一些数据集上其实效果远胜传统的lstm,具体可查看原论文。
+<h3 id="phased-lstm缺点"><a class="markdownIt-Anchor" href="#phased-lstm缺点"></a> Phased LSTM缺点</h3>
+<p>当然, Phased LSTM也有一些缺点。</p>
+<ol>
+<li>它仅仅考虑时间点的建模，而没有考虑时间间隔建模。在推荐系统中，Phased LSTM仅仅对考虑了用户的活动状态而未考虑用户的静止状态(因为Phased LSTM设置了静止状态)。</li>
+<li>并不能区分短时兴趣和长期兴趣的影响。</li>
+</ol>
+<h3 id="time-lstm"><a class="markdownIt-Anchor" href="#time-lstm"></a> Time LSTM</h3>
+<p>Time LSTM的提出就是为了克服Phased LSTM的问题。给定:</p>
+<img src="/images/phased_lstm/phased_lstm_4.png" width="50%" height="50%">
+实际建模时会把单点的时间转换为时间间隔建模。
+<h4 id="time-lstm变体"><a class="markdownIt-Anchor" href="#time-lstm变体"></a> Time LSTM变体</h4>
+<p>Time LSTM变体1<br />
+<img src="/images/phased_lstm/phased_lstm_5.png" width="50%" height="50%"><br />
+<img src="/images/phased_lstm/phased_lstm_6.png" width="50%" height="50%"><br />
+这是Phased LSTM最简单的改变,仅仅是把时间点换成了时间间隔,非常清晰易懂。</p>
+<p>Time LSTM变体2<br />
+<img src="/images/phased_lstm/phased_lstm_7.png" width="50%" height="50%"><br />
+<img src="/images/phased_lstm/phased_lstm_8.png" width="50%" height="50%"><br />
+使用了2个Time gate。Time gate1主要用来利用现在的时间间隔来进行现在物品推荐,Time gate2主要用来存储时间间隔为以后的推荐准备。</p>
+<p>Time LSTM变体3<br />
+<img src="/images/phased_lstm/phased_lstm_9.png" width="50%" height="50%"><br />
+<img src="/images/phased_lstm/phased_lstm_10.png" width="50%" height="50%"><br />
+Time LSTM变体3用了耦合的输入门和忘记门。</p>
 
       
     </div>
@@ -303,7 +325,7 @@ $ c_n = f_n \odot c_{n-1} = (1-\epsilon) \odot (f_{n-1} \odot c_{n-2} ) = … = 
 <h4 id="基于内容的推荐系统的缺点"><a class="markdownIt-Anchor" href="#基于内容的推荐系统的缺点"></a> 基于内容的推荐系统的缺点</h4>
 <p>基于内容(content-aware)hashcode表示个生成和标准item的生成不同,是不必要的并且会限制其泛化性能。</p>
 <h3 id="neuhash-cf"><a class="markdownIt-Anchor" href="#neuhash-cf"></a> NeuHash-CF</h3>
-<p><img src="/images/neuhash-cf.png" alt="" /><br />
+<p><img src="/images/neuhash-cf/neuhash-cf.png" alt="" /><br />
 NeuHash-CF有两个encoder来生成item和user的hashcode, 它们连接在变分自编码模型中. 所有的item code都统一生成,不管是否曾经见过。</p>
 <h3 id="variational-autoencoder"><a class="markdownIt-Anchor" href="#variational-autoencoder"></a> Variational AutoEncoder</h3>
 <p>$ p(u) = \prod_{i \in I_u} p(R_{u,i}) $</p>
@@ -326,8 +348,8 @@ Noise infusion for robustness</p>
 <h3 id="combined-loss-function"><a class="markdownIt-Anchor" href="#combined-loss-function"></a> Combined loss function</h3>
 <p>$ L = L_{rating} + \alpha L_{content} $</p>
 <h3 id="实验结果"><a class="markdownIt-Anchor" href="#实验结果"></a> 实验结果</h3>
-<p><img src="/images/evaluation1.png" alt="" /><br />
-<img src="/images/evaluation2.png" alt="" /><br />
+<p><img src="/images/neuhash-cf/evaluation1.png" alt="" /><br />
+<img src="/images/neuhash-cf/evaluation2.png" alt="" /><br />
 看实验效果感觉还可以。就是建模比较复杂，期待源码。</p>
 
       

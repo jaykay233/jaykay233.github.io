@@ -27,15 +27,15 @@
 <meta property="og:site_name" content="徐志远">
 <meta property="og:description" content="这是一篇sigir2020推荐系统的文章。  论文背景： 通过学习item的hashcode表示来进行冷启动。基于协同过滤和内容的推荐系统是很主流的方法。  协同过滤的缺点： 对于未见过的item，标准的协同过滤不能学习有效表示。所以基于内容的推荐系统可以补充标准协同过滤的方法。  基于内容的推荐系统的缺点 基于内容(content-aware)hashcode表示个生成和标准item的生成不同,">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://jaykay233.github.io/images/neuhash-cf.png">
-<meta property="og:image" content="http://jaykay233.github.io/images/evaluation1.png">
-<meta property="og:image" content="http://jaykay233.github.io/images/evaluation2.png">
+<meta property="og:image" content="http://jaykay233.github.io/images/neuhash-cf/neuhash-cf.png">
+<meta property="og:image" content="http://jaykay233.github.io/images/neuhash-cf/evaluation1.png">
+<meta property="og:image" content="http://jaykay233.github.io/images/neuhash-cf/evaluation2.png">
 <meta property="article:published_time" content="2020-06-11T03:02:59.000Z">
 <meta property="article:modified_time" content="2020-06-11T03:02:59.000Z">
 <meta property="article:author" content="Jay Kay">
 <meta property="article:tag" content="推荐系统">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://jaykay233.github.io/images/neuhash-cf.png">
+<meta name="twitter:image" content="http://jaykay233.github.io/images/neuhash-cf/neuhash-cf.png">
 
 <link rel="canonical" href="http://jaykay233.github.io/2020/06/10/Content-aware-Neural-Hashing-for-Cold-start-Recommendation/">
 
@@ -235,7 +235,7 @@
 <h4 id="基于内容的推荐系统的缺点"><a class="markdownIt-Anchor" href="#基于内容的推荐系统的缺点"></a> 基于内容的推荐系统的缺点</h4>
 <p>基于内容(content-aware)hashcode表示个生成和标准item的生成不同,是不必要的并且会限制其泛化性能。</p>
 <h3 id="neuhash-cf"><a class="markdownIt-Anchor" href="#neuhash-cf"></a> NeuHash-CF</h3>
-<p><img src="/images/neuhash-cf.png" alt="" /><br />
+<p><img src="/images/neuhash-cf/neuhash-cf.png" alt="" /><br />
 NeuHash-CF有两个encoder来生成item和user的hashcode, 它们连接在变分自编码模型中. 所有的item code都统一生成,不管是否曾经见过。</p>
 <h3 id="variational-autoencoder"><a class="markdownIt-Anchor" href="#variational-autoencoder"></a> Variational AutoEncoder</h3>
 <p>$ p(u) = \prod_{i \in I_u} p(R_{u,i}) $</p>
@@ -258,8 +258,8 @@ Noise infusion for robustness</p>
 <h3 id="combined-loss-function"><a class="markdownIt-Anchor" href="#combined-loss-function"></a> Combined loss function</h3>
 <p>$ L = L_{rating} + \alpha L_{content} $</p>
 <h3 id="实验结果"><a class="markdownIt-Anchor" href="#实验结果"></a> 实验结果</h3>
-<p><img src="/images/evaluation1.png" alt="" /><br />
-<img src="/images/evaluation2.png" alt="" /><br />
+<p><img src="/images/neuhash-cf/evaluation1.png" alt="" /><br />
+<img src="/images/neuhash-cf/evaluation2.png" alt="" /><br />
 看实验效果感觉还可以。就是建模比较复杂，期待源码。</p>
 
     </div>
@@ -297,8 +297,8 @@ Noise infusion for robustness</p>
     <div class="post-nav">
       <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2020/06/11/phased-lstm/" rel="next" title="Phased LSTM">
-      Phased LSTM <i class="fa fa-chevron-right"></i>
+    <a href="/2020/06/11/phased-lstm/" rel="next" title="Time-related LSTM">
+      Time-related LSTM <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
