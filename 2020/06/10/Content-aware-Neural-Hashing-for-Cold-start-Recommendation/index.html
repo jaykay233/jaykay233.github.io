@@ -16,7 +16,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yoursite.com/images/neuhash-cf.png">
 <meta property="article:published_time" content="2020-06-11T03:02:59.000Z">
-<meta property="article:modified_time" content="2020-06-11T03:54:52.380Z">
+<meta property="article:modified_time" content="2020-06-11T04:03:40.995Z">
 <meta property="article:author" content="Jay Kay">
 <meta property="article:tag" content="推荐系统">
 <meta name="twitter:card" content="summary">
@@ -100,11 +100,12 @@
 <h4 id="协同过滤的缺点："><a href="#协同过滤的缺点：" class="headerlink" title="协同过滤的缺点："></a>协同过滤的缺点：</h4><p>对于未见过的item，标准的协同过滤不能学习有效表示。所以基于内容的推荐系统可以补充标准协同过滤的方法。</p>
 <h4 id="基于内容的推荐系统的缺点"><a href="#基于内容的推荐系统的缺点" class="headerlink" title="基于内容的推荐系统的缺点"></a>基于内容的推荐系统的缺点</h4><p>基于内容(content-aware)hashcode表示个生成和标准item的生成不同,是不必要的并且会限制其泛化性能。</p>
 <h3 id="NeuHash-CF"><a href="#NeuHash-CF" class="headerlink" title="NeuHash-CF"></a>NeuHash-CF</h3><p><img src="/images/neuhash-cf.png" alt=""><br>NeuHash-CF有两个encoder来生成item和user的hashcode, 它们连接在变分自编码模型中. 所有的item code都统一生成,不管是否曾经见过。</p>
+<h3 id="Variational-AutoEncoder-Architecture"><a href="#Variational-AutoEncoder-Architecture" class="headerlink" title="Variational AutoEncoder Architecture"></a>Variational AutoEncoder Architecture</h3><p>$p(u) = \pi_{i\in \mathop{I_u} }p(R_{u,i}) $</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/10/Content-aware-Neural-Hashing-for-Cold-start-Recommendation/" data-id="ckba97nzy0000y5gu88vle5vs" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/10/Content-aware-Neural-Hashing-for-Cold-start-Recommendation/" data-id="ckba9c3vs0000zigu59n5g6bf" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="tag">推荐系统</a></li></ul>
