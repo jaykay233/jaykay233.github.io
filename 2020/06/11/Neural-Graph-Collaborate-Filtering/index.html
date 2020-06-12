@@ -20,17 +20,25 @@
     var CONFIG = {"hostname":"jaykay233.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Zhiyuan Xu&#39;s self blog!">
+  <meta name="description" content="接下来一段时间可能会主要关注图学习在推荐系统中的运用。先来一篇何老师的NGCF。  论文背景 传统的协同过滤主要学习两点。  学习物品和用户的表示。 学习物品和用户的交互。 但是它们都缺乏显式的协同信号。解决这两个问题的办法就是探究高阶的连接交互。虽然近期Hop-Rec也提出类似的概念，但是仅仅丰富了训练数据，最后交互依然用的MF。所以它们是本质不同的。   模型结构 模型结构比较容易。   us">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Neural Graph Collaborate Filtering">
 <meta property="og:url" content="http://jaykay233.github.io/2020/06/11/Neural-Graph-Collaborate-Filtering/index.html">
 <meta property="og:site_name" content="徐志远">
-<meta property="og:description" content="Zhiyuan Xu&#39;s self blog!">
+<meta property="og:description" content="接下来一段时间可能会主要关注图学习在推荐系统中的运用。先来一篇何老师的NGCF。  论文背景 传统的协同过滤主要学习两点。  学习物品和用户的表示。 学习物品和用户的交互。 但是它们都缺乏显式的协同信号。解决这两个问题的办法就是探究高阶的连接交互。虽然近期Hop-Rec也提出类似的概念，但是仅仅丰富了训练数据，最后交互依然用的MF。所以它们是本质不同的。   模型结构 模型结构比较容易。   us">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://jaykay233.github.io/2020/06/11/Neural-Graph-Collaborate-Filtering/1.png">
+<meta property="og:image" content="http://jaykay233.github.io/2020/06/11/Neural-Graph-Collaborate-Filtering/2.png">
+<meta property="og:image" content="http://jaykay233.github.io/2020/06/11/Neural-Graph-Collaborate-Filtering/3.png">
+<meta property="og:image" content="http://jaykay233.github.io/2020/06/11/Neural-Graph-Collaborate-Filtering/4.png">
+<meta property="og:image" content="http://jaykay233.github.io/2020/06/11/Neural-Graph-Collaborate-Filtering/5.png">
+<meta property="og:image" content="http://jaykay233.github.io/2020/06/11/Neural-Graph-Collaborate-Filtering/6.png">
 <meta property="article:published_time" content="2020-06-11T23:57:41.000Z">
 <meta property="article:modified_time" content="2020-06-11T23:57:41.000Z">
 <meta property="article:author" content="Jay Kay">
+<meta property="article:tag" content="推荐系统">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://jaykay233.github.io/2020/06/11/Neural-Graph-Collaborate-Filtering/1.png">
 
 <link rel="canonical" href="http://jaykay233.github.io/2020/06/11/Neural-Graph-Collaborate-Filtering/">
 
@@ -203,6 +211,15 @@
 
               <time title="创建时间：2020-06-11 16:57:41" itemprop="dateCreated datePublished" datetime="2020-06-11T16:57:41-07:00">2020-06-11</time>
             </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">推荐系统</span></a>
+                </span>
+            </span>
 
           
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
@@ -222,7 +239,43 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <p>接下来一段时间可能会主要关注图学习在推荐系统中的运用。先来一篇何老师的NGCF。</p>
+<h3 id="论文背景"><a class="markdownIt-Anchor" href="#论文背景"></a> 论文背景</h3>
+<p>传统的协同过滤主要学习两点。</p>
+<ol>
+<li>学习物品和用户的表示。</li>
+<li>学习物品和用户的交互。<br />
+但是它们都缺乏显式的协同信号。解决这两个问题的办法就是探究高阶的连接交互。虽然近期Hop-Rec也提出类似的概念，但是仅仅丰富了训练数据，最后交互依然用的MF。所以它们是本质不同的。</li>
+</ol>
+<h3 id="模型结构"><a class="markdownIt-Anchor" href="#模型结构"></a> 模型结构</h3>
+<p>模型结构比较容易。</p>
+<img src="/2020/06/11/Neural-Graph-Collaborate-Filtering/1.png" class="">
+<h4 id="user-embeddings-and-item-embeddings"><a class="markdownIt-Anchor" href="#user-embeddings-and-item-embeddings"></a> user embeddings and item embeddings</h4>
+<img src="/2020/06/11/Neural-Graph-Collaborate-Filtering/2.png" class="">
+<h4 id="模型结构图"><a class="markdownIt-Anchor" href="#模型结构图"></a> 模型结构图</h4>
+<img src="/2020/06/11/Neural-Graph-Collaborate-Filtering/3.png" class="">
+<img src="/2020/06/11/Neural-Graph-Collaborate-Filtering/4.png" class="">
+<h4 id="first-order-propagation"><a class="markdownIt-Anchor" href="#first-order-propagation"></a> First order propagation</h4>
+<p>$ m_{u \leftarrow i} = f(e_i,e_u,p_{ui}) $</p>
+<p>其中文中给的$ f $:</p>
+<p>$ m_{u \leftarrow i} = \frac{1}{\sqrt(|N_u| )\sqrt(|N_i| )}(W_1e_i+W_2(e_i \odot e_u)) $</p>
+<h4 id="message-aggregation"><a class="markdownIt-Anchor" href="#message-aggregation"></a> Message Aggregation</h4>
+<p>$ e_u^{(1)} = LeakyRelu(m_{u \leftarrow u} + \Sigma_{i \in N_u} m_{u \leftarrow i}) $</p>
+<h4 id="higher-order-propagation"><a class="markdownIt-Anchor" href="#higher-order-propagation"></a> Higher order propagation</h4>
+<p>和First order propagation类似</p>
+<h4 id="model-prediction"><a class="markdownIt-Anchor" href="#model-prediction"></a> Model prediction</h4>
+<p>$ y_{NGCF}(u,i) = e_u ^T e_i $</p>
+<h4 id="optimization"><a class="markdownIt-Anchor" href="#optimization"></a> Optimization</h4>
+<p>$ Loss = \Sigma_{(u,i,j) \in O } -ln \sigma(\hat{y_{u,i}} - \hat{y_{u,j}} ) + \lambda || \theta||^2_2 $</p>
+<h4 id="model-size"><a class="markdownIt-Anchor" href="#model-size"></a> Model size</h4>
+<p>用了很少的额外空间就达到了高阶的连接。</p>
+<h4 id="message-and-node-dropout"><a class="markdownIt-Anchor" href="#message-and-node-dropout"></a> Message and Node dropout</h4>
+<p>node dropout能够提高泛化能力。</p>
+<h3 id="实验效果"><a class="markdownIt-Anchor" href="#实验效果"></a> 实验效果</h3>
+<img src="/2020/06/11/Neural-Graph-Collaborate-Filtering/5.png" class="">
+<img src="/2020/06/11/Neural-Graph-Collaborate-Filtering/6.png" class="">
+<p>总的来看,实验结果还是挺不错的。但是依据历史发展规律来看，还有很多可以改进。不然也不会出lightgcn了哈哈。</p>
+
     </div>
 
     
@@ -247,6 +300,9 @@
 
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="tag"># 推荐系统</a>
+          </div>
 
         
 
@@ -316,6 +372,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#论文背景"><span class="nav-number">1.</span> <span class="nav-text"> 论文背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模型结构"><span class="nav-number">2.</span> <span class="nav-text"> 模型结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#user-embeddings-and-item-embeddings"><span class="nav-number">2.1.</span> <span class="nav-text"> user embeddings and item embeddings</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模型结构图"><span class="nav-number">2.2.</span> <span class="nav-text"> 模型结构图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#first-order-propagation"><span class="nav-number">2.3.</span> <span class="nav-text"> First order propagation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#message-aggregation"><span class="nav-number">2.4.</span> <span class="nav-text"> Message Aggregation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#higher-order-propagation"><span class="nav-number">2.5.</span> <span class="nav-text"> Higher order propagation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#model-prediction"><span class="nav-number">2.6.</span> <span class="nav-text"> Model prediction</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#optimization"><span class="nav-number">2.7.</span> <span class="nav-text"> Optimization</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#model-size"><span class="nav-number">2.8.</span> <span class="nav-text"> Model size</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#message-and-node-dropout"><span class="nav-number">2.9.</span> <span class="nav-text"> Message and Node dropout</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实验效果"><span class="nav-number">3.</span> <span class="nav-text"> 实验效果</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -332,6 +389,10 @@
           <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">日志</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span>
       </div>
       <div class="site-state-item site-state-tags">
         <span class="site-state-item-count">2</span>
@@ -482,6 +543,59 @@ document.querySelectorAll('.pdfobject-container').forEach(element => {
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
   <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
