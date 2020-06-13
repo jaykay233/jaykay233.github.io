@@ -175,6 +175,138 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/12/Reinforced-Negative-Sampling-over-Knowledge-Graph-for-Recommendation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jay Kay">
+      <meta itemprop="description" content="Zhiyuan Xu's self blog!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="徐志远">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/06/12/Reinforced-Negative-Sampling-over-Knowledge-Graph-for-Recommendation/" class="post-title-link" itemprop="url">Reinforced Negative Sampling over Knowledge Graph for Recommendation</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-12 21:03:09" itemprop="dateCreated datePublished" datetime="2020-06-12T21:03:09-07:00">2020-06-12</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="论文背景"><a class="markdownIt-Anchor" href="#论文背景"></a> 论文背景</h3>
+<p>作者针对过往的负采样技术进行总结,提出了新的框架KGPolicy。一般有两种负采样，静态负采样和自适应负采样。</p>
+<h4 id="静态采样"><a class="markdownIt-Anchor" href="#静态采样"></a> 静态采样</h4>
+<p>静态采样一般选取均匀分布或者按照热度（流行度）负采样。缺点是采样的负样本独立于模型，对模型造成不了什么影响。</p>
+<h4 id="自适应负采样"><a class="markdownIt-Anchor" href="#自适应负采样"></a> 自适应负采样</h4>
+<p>自适应负采样会更加关注难样本。因为这些样本会给模型带来更大的价值。但是这些假设都基于历史。被选取的样本可能在未来出现，所以会损害模型性能。</p>
+<h4 id="近期方法"><a class="markdownIt-Anchor" href="#近期方法"></a> 近期方法</h4>
+<p>近期方法一般都选取综合的评价，比如展现未点击，点击未转化来加强负采样的有效程度。但依然需要更有效的措施来进行负采样。</p>
+<h3 id="模型结构"><a class="markdownIt-Anchor" href="#模型结构"></a> 模型结构</h3>
+<p>一般建模的目标都是</p>
+<p>$ y_{ui}=f_R(u,i)=r_u^Tr_i $，</p>
+<p>根据过去的一些研究，这篇文章使用了BPR损失函数。</p>
+<img src="/2020/06/12/Reinforced-Negative-Sampling-over-Knowledge-Graph-for-Recommendation/1.png" class="">
+<p>然后这里还涉及到负样本的信息性，衡量标准是梯度的幅值。$ \nabla_{u,i,j} = 1-\sigma(f_R(u,i)-f_R(u,j)) $。所以好的负样本要使得这个数值尽量大。</p>
+<h4 id="负样本选取规则"><a class="markdownIt-Anchor" href="#负样本选取规则"></a> 负样本选取规则</h4>
+<p>首先定义原子路径：<br />
+$ i \rightarrow e^{`} \rightarrow j $<br />
+其中 $ i $ 是和 $ u $ 发生过交互关系的，$ j $ 是路径和还没和 $ u $ 发生过交互关系的。<br />
+这样做有两点好处：</p>
+<ol>
+<li>因为 $ i $ 和 $ j $ 都依赖于同样的实体，那么其实它们更加可能相近，所以能提供的负样本信息性更大。</li>
+<li>可以反映出用户的真实兴趣。说明有足够理由相信用户确实不太对$ j $感兴趣。同样可以继续做路径扩展增加负样本的置信度。</li>
+</ol>
+<h4 id="强化学习"><a class="markdownIt-Anchor" href="#强化学习"></a> 强化学习</h4>
+<p>强化学习涉及到几个关键问题：</p>
+<ol>
+<li>动作定义：<br />
+$ a_t = (e_t \rightarrow e_t^{`} \rightarrow e_{t+1} ) $</li>
+<li>状态动态转移：<br />
+$ P(s_{t+1} = (u,e_{t+1}) | s_t = (u,e_t),a_t = (e_t \rightarrow e_t^{`} \rightarrow e_{t+1}) )=1 $</li>
+<li>奖励函数：<br />
+预测奖励：$ f_R(u,e_t) <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">，</mi><mi mathvariant="normal">考</mi><mi mathvariant="normal">虑</mi><mi mathvariant="normal">预</mi><mi mathvariant="normal">测</mi><mi mathvariant="normal">奖</mi><mi mathvariant="normal">励</mi><mi mathvariant="normal">是</mi><mi mathvariant="normal">为</mi><mi mathvariant="normal">了</mi><mi mathvariant="normal">获</mi><mi mathvariant="normal">得</mi><mi mathvariant="normal">更</mi><mi mathvariant="normal">大</mi><mi mathvariant="normal">信</mi><mi mathvariant="normal">息</mi><mi mathvariant="normal">度</mi><mi mathvariant="normal">的</mi><mi mathvariant="normal">样</mi><mi mathvariant="normal">本</mi><mi mathvariant="normal">。</mi><mi mathvariant="normal">相</mi><mi mathvariant="normal">似</mi><mi mathvariant="normal">奖</mi><mi mathvariant="normal">励</mi><mi mathvariant="normal">：</mi></mrow><annotation encoding="application/x-tex">，考虑预测奖励是为了获得更大信息度的样本。
+相似奖励：</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0em;vertical-align:0em;"></span><span class="mord cjk_fallback">，</span><span class="mord cjk_fallback">考</span><span class="mord cjk_fallback">虑</span><span class="mord cjk_fallback">预</span><span class="mord cjk_fallback">测</span><span class="mord cjk_fallback">奖</span><span class="mord cjk_fallback">励</span><span class="mord cjk_fallback">是</span><span class="mord cjk_fallback">为</span><span class="mord cjk_fallback">了</span><span class="mord cjk_fallback">获</span><span class="mord cjk_fallback">得</span><span class="mord cjk_fallback">更</span><span class="mord cjk_fallback">大</span><span class="mord cjk_fallback">信</span><span class="mord cjk_fallback">息</span><span class="mord cjk_fallback">度</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">样</span><span class="mord cjk_fallback">本</span><span class="mord cjk_fallback">。</span><span class="mord cjk_fallback">相</span><span class="mord cjk_fallback">似</span><span class="mord cjk_fallback">奖</span><span class="mord cjk_fallback">励</span><span class="mord cjk_fallback">：</span></span></span></span> g_R(i,e_t) $，考虑相似奖励是为了获得反映用户真实兴趣爱好的样本，表明用户确实不喜欢。<br />
+最后总的奖励 = 相似奖励 + 预测奖励</li>
+<li>目标函数：</li>
+</ol>
+<img src="/2020/06/12/Reinforced-Negative-Sampling-over-Knowledge-Graph-for-Recommendation/2.png" class="">
+<h4 id="知识图策略网"><a class="markdownIt-Anchor" href="#知识图策略网"></a> 知识图策略网</h4>
+<h5 id="graphsage获取节点特征"><a class="markdownIt-Anchor" href="#graphsage获取节点特征"></a> GraphSage获取节点特征</h5>
+<h5 id="邻居注意力模块"><a class="markdownIt-Anchor" href="#邻居注意力模块"></a> 邻居注意力模块</h5>
+<p>$ P(a_t|s_t) = P((e_t,e_t^{`})|s_t) * P((e_t^{`},e_{t+1}) | s_t, (e_t,e_t^{`})) $<br />
+这个模块由两部分注意力模块构成，分别是（1）知识图谱的邻居注意力和（2）物品的邻居注意力<br />
+（1）<img src="/2020/06/12/Reinforced-Negative-Sampling-over-Knowledge-Graph-for-Recommendation/3.png" class=""></p>
+<p>（2）<img src="/2020/06/12/Reinforced-Negative-Sampling-over-Knowledge-Graph-for-Recommendation/4.png" class=""></p>
+<h5 id="邻居剪枝"><a class="markdownIt-Anchor" href="#邻居剪枝"></a> 邻居剪枝</h5>
+<p>为了减少不必要的探索并且保证样本的效果，提出了一个新的策略，具体是</p>
+<ol>
+<li>先从节点的邻居降采样或者过采样得到一个集合的子集</li>
+<li>然后从全空间负采样得到另外一些节点保证多样性</li>
+<li>根据内积打分函数选取与节点最相似的几个节点作为返回结果<br />
+这样既降低了时间复杂度也保证了效果</li>
+</ol>
+<h3 id="优化"><a class="markdownIt-Anchor" href="#优化"></a> 优化</h3>
+<h4 id="推荐器的优化"><a class="markdownIt-Anchor" href="#推荐器的优化"></a> 推荐器的优化</h4>
+<p>固定采样器参数，优化推荐器</p>
+<h4 id="采样器的优化"><a class="markdownIt-Anchor" href="#采样器的优化"></a> 采样器的优化</h4>
+<p>老套路，上reinforce算法做策略梯度</p>
+<h3 id="假阴性问题"><a class="markdownIt-Anchor" href="#假阴性问题"></a> 假阴性问题</h3>
+<p>论文中就说知识图谱的鲁棒性更加高一点，虽然这个问题确实无法避免。</p>
+<h3 id="kgpolicy实验"><a class="markdownIt-Anchor" href="#kgpolicy实验"></a> KGPolicy实验</h3>
+<p>实验为了说明几个问题</p>
+<ol>
+<li>和现在的主流方法们比结果怎么样</li>
+</ol>
+<img src="/2020/06/12/Reinforced-Negative-Sampling-over-Knowledge-Graph-for-Recommendation/5.png" class="">
+<ol start="2">
+<li>KGPolicy的参数影响</li>
+</ol>
+<img src="/2020/06/12/Reinforced-Negative-Sampling-over-Knowledge-Graph-for-Recommendation/6.png" class="">
+<ol start="3">
+<li>负样本的深层次分析</li>
+</ol>
+<img src="/2020/06/12/Reinforced-Negative-Sampling-over-Knowledge-Graph-for-Recommendation/7.png" class="">
+<h3 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h3>
+<p>这篇文章其实还是有点东西的。读一读类似的文章对自己还是会有帮助的。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/11/Neural-Graph-Collaborate-Filtering/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -618,7 +750,7 @@ Noise infusion for robustness</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
