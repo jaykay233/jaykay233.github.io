@@ -217,9 +217,31 @@
 <p>现实世界中很多数据特征是缺失的。所以本文希望做半监督学习来一般填充缺失值，一边做点击率的预测任务。</p>
 <h3 id="模型结构"><a class="markdownIt-Anchor" href="#模型结构"></a> 模型结构</h3>
 <h4 id="图学习模块"><a class="markdownIt-Anchor" href="#图学习模块"></a> 图学习模块</h4>
-<h5 id="embedding-fusion-layer"><a class="markdownIt-Anchor" href="#embedding-fusion-layer"></a> Embedding Fusion Layer:</h5>
+<h5 id="embedding-fusion-layer"><a class="markdownIt-Anchor" href="#embedding-fusion-layer"></a> Embedding Fusion Layer</h5>
 <p>这里的符号比较复杂，要先搞清楚一些定义。（对我来说有点混乱）</p>
-<p>$ P \in R_{d \times M} $</p>
+<p>$ P \in R^{d \times M} $ 用户id的embedding矩阵</p>
+<p>$ Q \in R^{d \times N} $ 物品id的embedding矩阵</p>
+<p>在第 $ l $ 轮迭代的时候，近似的用户和物品属性矩阵是 $ X^l \in R^{d_x \times M} $ , $ Y^l \in R^{d_y \times N} $ 。<br />
+然后第 $ l $ 层的向量是由前一层更新过来的。使用时和属性向量和id embedding向量和在一起用。<br />
+$ u_a^{l,0}=[p_a, x_a^l \times W_u] $<br />
+$ v_i^{l,0}=[q_i, y_i^l \times W_v] $<br />
+第一轮的属性向量就由加权平均填充。</p>
+<h4 id="embedding-propagation-layer"><a class="markdownIt-Anchor" href="#embedding-propagation-layer"></a> Embedding propagation Layer</h4>
+<img src="/2020/06/13/Joint-Item-Recommendation-and-Attribute-Inference/1.png" class="">
+<img src="/2020/06/13/Joint-Item-Recommendation-and-Attribute-Inference/2.png" class="">
+<h4 id="attribute-update-module"><a class="markdownIt-Anchor" href="#attribute-update-module"></a> Attribute update module</h4>
+<h5 id="prediction-part"><a class="markdownIt-Anchor" href="#prediction-part"></a> Prediction Part</h5>
+<h5 id="attribute-update-part"><a class="markdownIt-Anchor" href="#attribute-update-part"></a> Attribute Update Part</h5>
+<img src="/2020/06/13/Joint-Item-Recommendation-and-Attribute-Inference/4.png" class="">
+<h5 id="loss"><a class="markdownIt-Anchor" href="#loss"></a> Loss</h5>
+<p>inference loss + recommendation loss</p>
+<img src="/2020/06/13/Joint-Item-Recommendation-and-Attribute-Inference/3.png" class="">
+<h3 id="实验结果"><a class="markdownIt-Anchor" href="#实验结果"></a> 实验结果</h3>
+<img src="/2020/06/13/Joint-Item-Recommendation-and-Attribute-Inference/5.png" class="">
+<img src="/2020/06/13/Joint-Item-Recommendation-and-Attribute-Inference/6.png" class="">
+<img src="/2020/06/13/Joint-Item-Recommendation-and-Attribute-Inference/7.png" class="">
+<h3 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h3>
+<p>其实我在看这篇文章的时候一直在找inference能提升效果的原因分析，但是感觉作者介绍的不是很清楚。总的来讲思路有点像EM，涉及到的问题也是工业界比较棘手的问题。</p>
 
       
     </div>
