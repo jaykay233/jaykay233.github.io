@@ -189,7 +189,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/06/16/hive-DDL/" class="post-title-link" itemprop="url">hive DDL/DML</a>
+            <a href="/2020/06/16/hive-DDL/" class="post-title-link" itemprop="url">hive DDL/DM/functions/streaming</a>
         </h2>
 
         <div class="post-meta">
@@ -256,6 +256,68 @@ order by/sort by: reduce</p>
 <h4 id="use-power-of-two"><a class="markdownIt-Anchor" href="#use-power-of-two"></a> use power of two</h4>
 <h4 id="skewed-data-problem"><a class="markdownIt-Anchor" href="#skewed-data-problem"></a> skewed data problem</h4>
 <p>skewed by user_id on (‘user_id1’,‘unknown’)</p>
+<h3 id="regex"><a class="markdownIt-Anchor" href="#regex"></a> REGEX</h3>
+<h4 id="regex-serde"><a class="markdownIt-Anchor" href="#regex-serde"></a> regex serde</h4>
+<p>create table xx (xx,xx) ROW FORMAT SERDE ‘org.apache.hadoop.hive.serde2.RegexSerDe’ with serdeproperties (“input.regex” = ‘xxxx’) location ‘xxxx’</p>
+<h4 id="regexp_extract"><a class="markdownIt-Anchor" href="#regexp_extract"></a> regexp_extract</h4>
+<h4 id="regex-optional"><a class="markdownIt-Anchor" href="#regex-optional"></a> regex optional</h4>
+<ol>
+<li>re.match: from the start of a string</li>
+<li>re.search: not necessary from the start of a string</li>
+<li>re.IGNORECASE</li>
+<li>capture group: parenthesis have a special meaning in a regular expression language, can be used to retrieve the content of much later on.</li>
+<li>groups: locate only capturing groups</li>
+<li>non-capturing groups:<br />
+example: re.search(“really (?: good|nice)”, …)</li>
+<li>some special regex expressions:<br />
+\d all digits<br />
+\D no digits<br />
+\w all alphanumeric characters<br />
+\W no alphanumeric characters<br />
+\s all whitespace characters<br />
+\S no whitespace characters<br />
+. any single character<br />
+^ beginning of string<br />
+$ end of string</li>
+</ol>
+<h4 id="view"><a class="markdownIt-Anchor" href="#view"></a> view</h4>
+<p>view is a read-only table generated on the fly than necessary.<br />
+create view xxx (<br />
+xxx,<br />
+xxx<br />
+)<br />
+as select xxx, xxx from xxx;</p>
+<h5 id="view-limitations"><a class="markdownIt-Anchor" href="#view-limitations"></a> view limitations:</h5>
+<ol>
+<li>read-only</li>
+<li>extra cpu cycles, but some optimization exists</li>
+<li>meta information fluctuation</li>
+</ol>
+<h3 id="function"><a class="markdownIt-Anchor" href="#function"></a> function</h3>
+<p>functions: udf = user defined functions<br />
+aggregate functions: udaf<br />
+table-generating functions: udtf</p>
+<h4 id="show-functions"><a class="markdownIt-Anchor" href="#show-functions"></a> show functions</h4>
+<h4 id="describe-functions"><a class="markdownIt-Anchor" href="#describe-functions"></a> describe functions</h4>
+<h4 id="udf-map-phase"><a class="markdownIt-Anchor" href="#udf-map-phase"></a> udf: map phase</h4>
+<h4 id="udaf-reduce-phase"><a class="markdownIt-Anchor" href="#udaf-reduce-phase"></a> udaf: reduce phase</h4>
+<h4 id="udtf-both-scenarios"><a class="markdownIt-Anchor" href="#udtf-both-scenarios"></a> udtf: both scenarios</h4>
+<h4 id="explode"><a class="markdownIt-Anchor" href="#explode"></a> explode:</h4>
+<p>select explode(direct reports) as employee from management</p>
+<h4 id="lateral-view-merge-output-from-udtf"><a class="markdownIt-Anchor" href="#lateral-view-merge-output-from-udtf"></a> lateral view: merge output from udtf</h4>
+<p>select manager_name, employee from management lateral view explode(direct reports) lateral_table as employee</p>
+<h3 id="streaming"><a class="markdownIt-Anchor" href="#streaming"></a> streaming</h3>
+<img src="/2020/06/16/hive-DDL/1.png" class="">
+<h3 id="hive-window-functions"><a class="markdownIt-Anchor" href="#hive-window-functions"></a> hive window functions</h3>
+<p>SELECT xx, ROW_NUMBER() OVER (PARTITION BY column_C) from table_name;<br />
+SELECT xx, RANK() OVER (PARTITION BY column_C) from table_name;<br />
+SELECT xx, DENSE_RANK() OVER (PARTITION BY column_C) from table_name;</p>
+<img src="/2020/06/16/hive-DDL/2.png" class="">
+<h4 id="same-windows"><a class="markdownIt-Anchor" href="#same-windows"></a> same windows</h4>
+<p>SELECT column_A, ROW_NUMBER() OVER (PARTITION BY column_C), RANK() OVER (PARTITION BY column_C), DENSE_RANK() OVER (PARTITION BY column_C) FROM table_name; = SELECT column_A, ROW_NUMBER() OVER w, RANK() OVER w, DENSE_RANK() OVER w FROM table_name WINDOW w AS (PARTITION BY column_C);</p>
+<h4 id="different-windows"><a class="markdownIt-Anchor" href="#different-windows"></a> different windows</h4>
+<p>SELECT column_A, ROW_NUMBER() OVER (PARTITION BY column_C), RANK() OVER (PARTITION BY column_D), DENSE_RANK() over (<br />
+PARITION BY column_E) FROM table_name;</p>
 
       
     </div>
