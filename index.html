@@ -175,7 +175,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/13/Joint-Item-Recommendation-and-Attribute-Inference/">
+    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/16/hive-DDL/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -189,7 +189,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/06/13/Joint-Item-Recommendation-and-Attribute-Inference/" class="post-title-link" itemprop="url">Joint Item Recommendation and Attribute Inference</a>
+            <a href="/2020/06/16/hive-DDL/" class="post-title-link" itemprop="url">hive DDL/DML</a>
         </h2>
 
         <div class="post-meta">
@@ -199,7 +199,107 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-06-13 15:01:05" itemprop="dateCreated datePublished" datetime="2020-06-13T15:01:05-07:00">2020-06-13</time>
+              <time title="创建时间：2020-06-16 14:48:52" itemprop="dateCreated datePublished" datetime="2020-06-16T14:48:52+08:00">2020-06-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="ddl"><a class="markdownIt-Anchor" href="#ddl"></a> DDL</h3>
+<h4 id="metastore"><a class="markdownIt-Anchor" href="#metastore"></a> MetaStore</h4>
+<p>Metastore provides information for data layout in hdfs.<br />
+HDFS is designated for sequential scans while metastore is designed for random reads and updates.<br />
+Hive metastore can be used independently from hive framework.</p>
+<h4 id="create"><a class="markdownIt-Anchor" href="#create"></a> create</h4>
+<p>create table tablename;</p>
+<h4 id="describe"><a class="markdownIt-Anchor" href="#describe"></a> describe</h4>
+<p>describe table tablename;</p>
+<h4 id="delimiter"><a class="markdownIt-Anchor" href="#delimiter"></a> delimiter</h4>
+<p>Hadoop Mapreduce use tab character as default delimiter.<br />
+Hive choose ctrl+A<br />
+array ctrl+B<br />
+key-value ctrl+C</p>
+<h4 id="external-table"><a class="markdownIt-Anchor" href="#external-table"></a> external table</h4>
+<p>Data in hdfs will leave unchanged. Metadata will be automatically removed after the Hive Session is closed.</p>
+<h3 id="dml"><a class="markdownIt-Anchor" href="#dml"></a> DML</h3>
+<h4 id="import"><a class="markdownIt-Anchor" href="#import"></a> import</h4>
+<p>load data inpath ‘/local/path/employees-data’ into table employees;</p>
+<h4 id="multiple-insert"><a class="markdownIt-Anchor" href="#multiple-insert"></a> multiple-insert</h4>
+<p>from employees insert (overwrite) directory ‘path’ select name, salary, address where …</p>
+<h4 id="ctas"><a class="markdownIt-Anchor" href="#ctas"></a> ctas</h4>
+<p>create table xxx as select xxx,xxx from employees where xx = ‘xx’</p>
+<h3 id="phase"><a class="markdownIt-Anchor" href="#phase"></a> Phase</h3>
+<p>select from: choose from existing columns, could be done with a map phase<br />
+where: a map phase<br />
+group by: shuffle/sort phase + having: reduce<br />
+join: map/reduce side<br />
+order by/sort by: reduce</p>
+<h3 id="hive-optimization"><a class="markdownIt-Anchor" href="#hive-optimization"></a> Hive optimization</h3>
+<h4 id="level-partitioning"><a class="markdownIt-Anchor" href="#level-partitioning"></a> level partitioning</h4>
+<p>create table partitioned by (xx,xx,xx)</p>
+<ol>
+<li>partitioned columns go at the end</li>
+<li>partitioned columns order is important</li>
+<li>use configuration parameters</li>
+<li>control empty partitions</li>
+</ol>
+<h4 id="set-hiveenforcebucketingtrue"><a class="markdownIt-Anchor" href="#set-hiveenforcebucketingtrue"></a> set hive.enforce.bucketing=True</h4>
+<h4 id="map-side-join"><a class="markdownIt-Anchor" href="#map-side-join"></a> map-side join</h4>
+<h4 id="use-power-of-two"><a class="markdownIt-Anchor" href="#use-power-of-two"></a> use power of two</h4>
+<h4 id="skewed-data-problem"><a class="markdownIt-Anchor" href="#skewed-data-problem"></a> skewed data problem</h4>
+<p>skewed by user_id on (‘user_id1’,‘unknown’)</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/14/Joint-Item-Recommendation-and-Attribute-Inference/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jay Kay">
+      <meta itemprop="description" content="Zhiyuan Xu's self blog!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="徐志远">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/06/14/Joint-Item-Recommendation-and-Attribute-Inference/" class="post-title-link" itemprop="url">Joint Item Recommendation and Attribute Inference</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-14 06:01:05" itemprop="dateCreated datePublished" datetime="2020-06-14T06:01:05+08:00">2020-06-14</time>
             </span>
 
           
@@ -261,7 +361,7 @@ $ v_i^{l,0}=[q_i, y_i^l \times W_v] $<br />
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/13/deliberation-network/">
+    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/14/deliberation-network/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -275,7 +375,7 @@ $ v_i^{l,0}=[q_i, y_i^l \times W_v] $<br />
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/06/13/deliberation-network/" class="post-title-link" itemprop="url">deliberation network</a>
+            <a href="/2020/06/14/deliberation-network/" class="post-title-link" itemprop="url">deliberation network</a>
         </h2>
 
         <div class="post-meta">
@@ -285,7 +385,7 @@ $ v_i^{l,0}=[q_i, y_i^l \times W_v] $<br />
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-06-13 11:05:27" itemprop="dateCreated datePublished" datetime="2020-06-13T11:05:27-07:00">2020-06-13</time>
+              <time title="创建时间：2020-06-14 02:05:27" itemprop="dateCreated datePublished" datetime="2020-06-14T02:05:27+08:00">2020-06-14</time>
             </span>
 
           
@@ -318,7 +418,7 @@ $ v_i^{l,0}=[q_i, y_i^l \times W_v] $<br />
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/13/copynet/">
+    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/14/copynet/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -332,7 +432,7 @@ $ v_i^{l,0}=[q_i, y_i^l \times W_v] $<br />
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/06/13/copynet/" class="post-title-link" itemprop="url">copynet</a>
+            <a href="/2020/06/14/copynet/" class="post-title-link" itemprop="url">copynet</a>
         </h2>
 
         <div class="post-meta">
@@ -342,7 +442,7 @@ $ v_i^{l,0}=[q_i, y_i^l \times W_v] $<br />
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-06-13 11:05:15" itemprop="dateCreated datePublished" datetime="2020-06-13T11:05:15-07:00">2020-06-13</time>
+              <time title="创建时间：2020-06-14 02:05:15" itemprop="dateCreated datePublished" datetime="2020-06-14T02:05:15+08:00">2020-06-14</time>
             </span>
 
           
@@ -375,7 +475,7 @@ $ v_i^{l,0}=[q_i, y_i^l \times W_v] $<br />
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/13/Controllable-Multi-Interest-Framework-for-Recommendation/">
+    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/14/Controllable-Multi-Interest-Framework-for-Recommendation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -389,7 +489,7 @@ $ v_i^{l,0}=[q_i, y_i^l \times W_v] $<br />
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/06/13/Controllable-Multi-Interest-Framework-for-Recommendation/" class="post-title-link" itemprop="url">Controllable Multi-Interest Framework for Recommendation</a>
+            <a href="/2020/06/14/Controllable-Multi-Interest-Framework-for-Recommendation/" class="post-title-link" itemprop="url">Controllable Multi-Interest Framework for Recommendation</a>
         </h2>
 
         <div class="post-meta">
@@ -399,7 +499,7 @@ $ v_i^{l,0}=[q_i, y_i^l \times W_v] $<br />
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-06-13 09:40:19" itemprop="dateCreated datePublished" datetime="2020-06-13T09:40:19-07:00">2020-06-13</time>
+              <time title="创建时间：2020-06-14 00:40:19" itemprop="dateCreated datePublished" datetime="2020-06-14T00:40:19+08:00">2020-06-14</time>
             </span>
 
           
@@ -453,7 +553,7 @@ NDCG</p>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/12/Reinforced-Negative-Sampling-over-Knowledge-Graph-for-Recommendation/">
+    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/13/Reinforced-Negative-Sampling-over-Knowledge-Graph-for-Recommendation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -467,7 +567,7 @@ NDCG</p>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/06/12/Reinforced-Negative-Sampling-over-Knowledge-Graph-for-Recommendation/" class="post-title-link" itemprop="url">Reinforced Negative Sampling over Knowledge Graph for Recommendation</a>
+            <a href="/2020/06/13/Reinforced-Negative-Sampling-over-Knowledge-Graph-for-Recommendation/" class="post-title-link" itemprop="url">Reinforced Negative Sampling over Knowledge Graph for Recommendation</a>
         </h2>
 
         <div class="post-meta">
@@ -477,7 +577,7 @@ NDCG</p>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-06-12 21:03:09" itemprop="dateCreated datePublished" datetime="2020-06-12T21:03:09-07:00">2020-06-12</time>
+              <time title="创建时间：2020-06-13 12:03:09" itemprop="dateCreated datePublished" datetime="2020-06-13T12:03:09+08:00">2020-06-13</time>
             </span>
 
           
@@ -585,7 +685,7 @@ $ P(s_{t+1} = (u,e_{t+1}) | s_t = (u,e_t),a_t = (e_t \rightarrow e_t^{`} \righta
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/11/Neural-Graph-Collaborate-Filtering/">
+    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/12/Neural-Graph-Collaborate-Filtering/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -599,7 +699,7 @@ $ P(s_{t+1} = (u,e_{t+1}) | s_t = (u,e_t),a_t = (e_t \rightarrow e_t^{`} \righta
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/06/11/Neural-Graph-Collaborate-Filtering/" class="post-title-link" itemprop="url">Neural Graph Collaborate Filtering</a>
+            <a href="/2020/06/12/Neural-Graph-Collaborate-Filtering/" class="post-title-link" itemprop="url">Neural Graph Collaborate Filtering</a>
         </h2>
 
         <div class="post-meta">
@@ -609,7 +709,7 @@ $ P(s_{t+1} = (u,e_{t+1}) | s_t = (u,e_t),a_t = (e_t \rightarrow e_t^{`} \righta
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-06-11 16:57:41" itemprop="dateCreated datePublished" datetime="2020-06-11T16:57:41-07:00">2020-06-11</time>
+              <time title="创建时间：2020-06-12 07:57:41" itemprop="dateCreated datePublished" datetime="2020-06-12T07:57:41+08:00">2020-06-12</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -690,7 +790,7 @@ $ P(s_{t+1} = (u,e_{t+1}) | s_t = (u,e_t),a_t = (e_t \rightarrow e_t^{`} \righta
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/11/Search-based-User-Interest-Modeling-with-Lifelong-Sequential/">
+    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/12/Search-based-User-Interest-Modeling-with-Lifelong-Sequential/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -704,7 +804,7 @@ $ P(s_{t+1} = (u,e_{t+1}) | s_t = (u,e_t),a_t = (e_t \rightarrow e_t^{`} \righta
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/06/11/Search-based-User-Interest-Modeling-with-Lifelong-Sequential/" class="post-title-link" itemprop="url">Search-based User Interest Modeling with Lifelong Sequential</a>
+            <a href="/2020/06/12/Search-based-User-Interest-Modeling-with-Lifelong-Sequential/" class="post-title-link" itemprop="url">Search-based User Interest Modeling with Lifelong Sequential</a>
         </h2>
 
         <div class="post-meta">
@@ -714,7 +814,7 @@ $ P(s_{t+1} = (u,e_{t+1}) | s_t = (u,e_t),a_t = (e_t \rightarrow e_t^{`} \righta
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-06-11 15:23:15" itemprop="dateCreated datePublished" datetime="2020-06-11T15:23:15-07:00">2020-06-11</time>
+              <time title="创建时间：2020-06-12 06:23:15" itemprop="dateCreated datePublished" datetime="2020-06-12T06:23:15+08:00">2020-06-12</time>
             </span>
 
           
@@ -747,7 +847,7 @@ $ P(s_{t+1} = (u,e_{t+1}) | s_t = (u,e_t),a_t = (e_t \rightarrow e_t^{`} \righta
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/11/phased-lstm/">
+    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/12/phased-lstm/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -761,7 +861,7 @@ $ P(s_{t+1} = (u,e_{t+1}) | s_t = (u,e_t),a_t = (e_t \rightarrow e_t^{`} \righta
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/06/11/phased-lstm/" class="post-title-link" itemprop="url">Time-related LSTM</a>
+            <a href="/2020/06/12/phased-lstm/" class="post-title-link" itemprop="url">Time-related LSTM</a>
         </h2>
 
         <div class="post-meta">
@@ -771,7 +871,7 @@ $ P(s_{t+1} = (u,e_{t+1}) | s_t = (u,e_t),a_t = (e_t \rightarrow e_t^{`} \righta
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-06-11 10:43:39" itemprop="dateCreated datePublished" datetime="2020-06-11T10:43:39-07:00">2020-06-11</time>
+              <time title="创建时间：2020-06-12 01:43:39" itemprop="dateCreated datePublished" datetime="2020-06-12T01:43:39+08:00">2020-06-12</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -866,7 +966,7 @@ Time LSTM变体3用了耦合的输入门和忘记门。
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/10/Content-aware-Neural-Hashing-for-Cold-start-Recommendation/">
+    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/11/Content-aware-Neural-Hashing-for-Cold-start-Recommendation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -880,7 +980,7 @@ Time LSTM变体3用了耦合的输入门和忘记门。
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/06/10/Content-aware-Neural-Hashing-for-Cold-start-Recommendation/" class="post-title-link" itemprop="url">Content-aware Neural Hashing for Cold-start Recommendation</a>
+            <a href="/2020/06/11/Content-aware-Neural-Hashing-for-Cold-start-Recommendation/" class="post-title-link" itemprop="url">Content-aware Neural Hashing for Cold-start Recommendation</a>
         </h2>
 
         <div class="post-meta">
@@ -890,7 +990,7 @@ Time LSTM变体3用了耦合的输入门和忘记门。
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-06-10 20:02:59" itemprop="dateCreated datePublished" datetime="2020-06-10T20:02:59-07:00">2020-06-10</time>
+              <time title="创建时间：2020-06-11 11:02:59" itemprop="dateCreated datePublished" datetime="2020-06-11T11:02:59+08:00">2020-06-11</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1028,7 +1128,7 @@ Noise infusion for robustness</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1037,7 +1137,7 @@ Noise infusion for robustness</p>
         <span class="site-state-item-name">分类</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
