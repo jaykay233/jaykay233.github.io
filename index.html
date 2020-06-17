@@ -175,6 +175,154 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/17/graphframe/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jay Kay">
+      <meta itemprop="description" content="Zhiyuan Xu's self blog!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="徐志远">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/06/17/graphframe/" class="post-title-link" itemprop="url">graphframe</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-17 13:18:29" itemprop="dateCreated datePublished" datetime="2020-06-17T13:18:29+08:00">2020-06-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="counting-common-friends-pseudocode-without-graphframe"><a class="markdownIt-Anchor" href="#counting-common-friends-pseudocode-without-graphframe"></a> counting common friends pseudocode without graphframe</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">from pyspark.sql import SparkSession</span><br><span class="line">sparkSession &#x3D; SparkSession.builder.enableHiveSupport().master(&#39;local&#39;).getOrCreate()</span><br><span class="line">from pyspark.sql.types import StructType,StructField,IntegerType,StringType</span><br><span class="line">from pyspark.sql import Row</span><br><span class="line"></span><br><span class="line">Edgelist &#x3D; [(1,2),(1,3),(1,4),(2,3),(2,4),(xx,xx)]</span><br><span class="line">graphData&#x3D; sparkSession.sparkContext.parallelize(Edgelist).map(lambda (src,dst): Row(src,dst))</span><br><span class="line">graphSchemaAB &#x3D; StructType([StructField(&#39;A&#39;,IntegerType(),nullable&#x3D;False),StructField(&#39;B&#39;,StringType(),nullable&#x3D;False)])</span><br><span class="line"></span><br><span class="line">abDF&#x3D;sparkSession.createDataFrame(graphData,graphSchemaAB)</span><br><span class="line">graphSchemaBC &#x3D;StructType([StructField(&#39;B&#39;,IntegerType(),nullable&#x3D;False),StructField(&#39;C&#39;,StringType(),nullable&#x3D;False)])</span><br><span class="line">bcDF &#x3D; sparkSession.createDataFrame(graphData,graphSchemaBC)</span><br><span class="line"></span><br><span class="line">abDF.show()</span><br><span class="line"></span><br><span class="line">joinDF &#x3D; abDF.join(bcDF,abDF.B &#x3D;&#x3D; bcDF.B)</span><br><span class="line">joinDF.show()</span><br><span class="line">abcDF.drop(&#39;B&#39;).groupBy(&#39;A&#39;,&#39;C&#39;).count().filter(&#39;A&#x3D;1&#39;).show()</span><br></pre></td></tr></table></figure>
+<h3 id="graphframe"><a class="markdownIt-Anchor" href="#graphframe"></a> graphframe</h3>
+<p>edges = sparkSession.createDataFrame([(‘xx’,‘xx’,‘friend’),(‘xx’,‘xx’,‘friend’)],[‘src’,‘dst’,‘relationship’])<br />
+g = GraphFrame(vertices,edges)</p>
+<h3 id="dsl"><a class="markdownIt-Anchor" href="#dsl"></a> DSL</h3>
+<ol>
+<li>Edge</li>
+<li>Union of Edges</li>
+<li>Names:<br />
+identify common elements<br />
+identify names of columns in the result DataFrame</li>
+<li>Anonymous edges and vertices</li>
+<li>Negation</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/17/dataframe-and-sql/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jay Kay">
+      <meta itemprop="description" content="Zhiyuan Xu's self blog!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="徐志远">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/06/17/dataframe-and-sql/" class="post-title-link" itemprop="url">dataframe and sql</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-17 07:07:00" itemprop="dateCreated datePublished" datetime="2020-06-17T07:07:00+08:00">2020-06-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="sparksql"><a class="markdownIt-Anchor" href="#sparksql"></a> spark.sql</h3>
+<h3 id="pipeline"><a class="markdownIt-Anchor" href="#pipeline"></a> pipeline</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from pyspark.sql import SparkSession</span><br><span class="line">spark_session &#x3D; SparkSession.builder.enableHiveSupport().appName(&#39;spark sql&#39;).master(&#39;local&#39;).getOrCreate()</span><br><span class="line">spark_session.sql(&quot;&quot;&quot;</span><br><span class="line">	show databases</span><br><span class="line">&quot;&quot;&quot;).toPandas()</span><br></pre></td></tr></table></figure>
+<h3 id="query-and-execution"><a class="markdownIt-Anchor" href="#query-and-execution"></a> query and execution</h3>
+<p>It depends on query. Spark optimizer makes a decision about what it will be.</p>
+<h3 id="tempview"><a class="markdownIt-Anchor" href="#tempview"></a> tempView</h3>
+<h3 id="rdd-vs-df-vs-sql"><a class="markdownIt-Anchor" href="#rdd-vs-df-vs-sql"></a> RDD vs. DF vs. SQL</h3>
+<p>DF is faster than RDD<br />
+Error will be found at code compilation when using DF</p>
+<h3 id="functions"><a class="markdownIt-Anchor" href="#functions"></a> functions</h3>
+<h4 id="mapping-functions"><a class="markdownIt-Anchor" href="#mapping-functions"></a> mapping functions</h4>
+<h4 id="generating-functions"><a class="markdownIt-Anchor" href="#generating-functions"></a> generating functions</h4>
+<h4 id="aggregating-functions"><a class="markdownIt-Anchor" href="#aggregating-functions"></a> aggregating functions</h4>
+<h4 id="user-defined-funcitons"><a class="markdownIt-Anchor" href="#user-defined-funcitons"></a> user defined funcitons</h4>
+<h4 id="time-processing"><a class="markdownIt-Anchor" href="#time-processing"></a> time processing</h4>
+<p>xxx.withColumn(‘unixtime’,f.unix_timestamp(‘time’).limit(5).toPandas())</p>
+<h4 id="window-functions"><a class="markdownIt-Anchor" href="#window-functions"></a> window functions</h4>
+<p>window.partitionBy(“ip”).orderBy(“unixtime”)<br />
+access_log_ts.select(“ip”,“unixtime”,f.row_number().over(user_window).alias(“count”),f.lag(“unixtime”).over(user_window).alias(“lag”),f.lead(“unixtime”).over(user_window).alias(“lead”)).limit(5).toPandas()</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/16/hive-DDL/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -905,227 +1053,11 @@ $ P(s_{t+1} = (u,e_{t+1}) | s_t = (u,e_t),a_t = (e_t \rightarrow e_t^{`} \righta
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/11/phased-lstm/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jay Kay">
-      <meta itemprop="description" content="Zhiyuan Xu's self blog!">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="徐志远">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/11/phased-lstm/" class="post-title-link" itemprop="url">Time-related LSTM</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-11 10:43:39" itemprop="dateCreated datePublished" datetime="2020-06-11T10:43:39+08:00">2020-06-11</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">神经网络</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>其实之前有面试被问到过类似怎么融合时间的问题。当时见的还比较少，直接说了根据时间抽样，现在看来正确答案貌似应该是这个。</p>
-<h3 id="论文意图和背景"><a class="markdownIt-Anchor" href="#论文意图和背景"></a> 论文意图和背景</h3>
-<p>长话短说，其实就是要在lstm中加入时间的概念</p>
-<h3 id="传统的lstm"><a class="markdownIt-Anchor" href="#传统的lstm"></a> 传统的LSTM</h3>
-<p>$ i_t = \sigma_{i}(x_tW_{xi} + h_{t-1}W_{hi} + w_{ci} \odot c_{t-1} + b_i ) $</p>
-<p>$ f_t = \sigma_{f}(x_tW_{xf} + h_{t-1}W_{hf} + w_{cf} \odot c_{t-1} + b_f) $</p>
-<p>$ c_t = f_t \odot c_{t-1} + i_t \odot \sigma_{c}(x_tW_{xc} + h_{t-1}W_{hc} + b_c) $</p>
-<p>$ o_t = \sigma_{o}(x_tW_{xo} + h_{t-1}W_{ho} + w_{co} \odot c_t + b_o ) $</p>
-<p>$ h_t = o_t \odot \sigma_{h}(c_t) $</p>
-<h3 id="phased-lstm"><a class="markdownIt-Anchor" href="#phased-lstm"></a> Phased LSTM</h3>
-<p>Phased LSTM增加了time gate。开启和关闭这个门由三个参数决定。<br />
-$ c_t $和 $ h_t $ 仅仅在门开启的时候允许通过。$ \tau $ 控制了震荡的时间。$ \tau_{on} $ 控制了开相对于整个时间周期的比例。<br />
-$ s $  控制了相位的偏移。这些参数都是可以学习的。<br />
-$ \phi_{t} = \frac{(t-s) mod \tau }{ \tau } $</p>
-<img src="/images/phased_lstm/phased_lstm_1.png" width="30%" height="30%">
-所以phased_lstm的公式还需要time gate的更新：
-<img src="/images/phased_lstm/phased_lstm_2.png" width="50%" height="50%">
-Phased LSTM还有一个好处, 它能更好地保持初始信息。
-传统的lstm:
-<p>$ c_n = f_n \odot c_{n-1} = (1-\epsilon) \odot (f_{n-1} \odot c_{n-2} ) = … = (1-\epsilon)^n \odot c_0 $</p>
-<p>相反地, 在gate关闭的时候, Phased LSTM可以很好地保存信息。</p>
-<h3 id="phased-lstm实验结果"><a class="markdownIt-Anchor" href="#phased-lstm实验结果"></a> Phased LSTM实验结果</h3>
-<img src="/images/phased_lstm/phased_lstm_3.png" width="100%" height="100%">
-可以看到在一些数据集上其实效果远胜传统的lstm,具体可查看原论文。
-<h3 id="phased-lstm缺点"><a class="markdownIt-Anchor" href="#phased-lstm缺点"></a> Phased LSTM缺点</h3>
-<p>当然, Phased LSTM也有一些缺点。</p>
-<ol>
-<li>它仅仅考虑时间点的建模，而没有考虑时间间隔建模。在推荐系统中，Phased LSTM仅仅对考虑了用户的活动状态而未考虑用户的静止状态(因为Phased LSTM设置了静止状态)。</li>
-<li>并不能区分短时兴趣和长期兴趣的影响。</li>
-</ol>
-<h3 id="time-lstm"><a class="markdownIt-Anchor" href="#time-lstm"></a> Time LSTM</h3>
-<p>Time LSTM的提出就是为了克服Phased LSTM的问题。给定:</p>
-<img src="/images/phased_lstm/phased_lstm_4.png" width="50%" height="50%">
-实际建模时会把单点的时间转换为时间间隔建模。
-<h4 id="time-lstm变体"><a class="markdownIt-Anchor" href="#time-lstm变体"></a> Time LSTM变体</h4>
-<h5 id="time-lstm变体1"><a class="markdownIt-Anchor" href="#time-lstm变体1"></a> Time LSTM变体1</h5>
-<img src="/images/phased_lstm/phased_lstm_5.png" width="50%" height="50%">
-<img src="/images/phased_lstm/phased_lstm_6.png" width="50%" height="50%">
-这是Phased LSTM最简单的改变,仅仅是把时间点换成了时间间隔,非常清晰易懂。
-<h5 id="time-lstm变体2"><a class="markdownIt-Anchor" href="#time-lstm变体2"></a> Time LSTM变体2</h5>
-<img src="/images/phased_lstm/phased_lstm_7.png" width="50%" height="50%">
-<img src="/images/phased_lstm/phased_lstm_8.png" width="50%" height="50%">
-使用了2个Time gate。Time gate1主要用来利用现在的时间间隔来进行现在物品推荐,Time gate2主要用来存储时间间隔为以后的推荐准备。
-<h5 id="time-lstm变体3"><a class="markdownIt-Anchor" href="#time-lstm变体3"></a> Time LSTM变体3</h5>
-<img src="/images/phased_lstm/phased_lstm_9.png" width="50%" height="50%">
-<img src="/images/phased_lstm/phased_lstm_10.png" width="50%" height="50%">
-Time LSTM变体3用了耦合的输入门和忘记门。
-<h3 id="time-lstm实验结果"><a class="markdownIt-Anchor" href="#time-lstm实验结果"></a> Time LSTM实验结果</h3>
-<img src="/images/phased_lstm/phased_lstm_11.png" width="50%" height="50%">
-可以看到Time LSTM确实在效果上优于之前的Time-related LSTM方法
-<h3 id="phased-lstm-torch开源实现"><a class="markdownIt-Anchor" href="#phased-lstm-torch开源实现"></a> Phased LSTM torch开源实现</h3>
-<p><a href="https://gist.github.com/AAnoosheh/b3cce037ae24a86d89505907ec098d62" target="_blank" rel="noopener">github地址</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br></pre></td><td class="code"><pre><span class="line">import math</span><br><span class="line"></span><br><span class="line">import torch</span><br><span class="line">import torch.nn as nn</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class PhasedLSTMCell(nn.Module):</span><br><span class="line">    &quot;&quot;&quot;Phased LSTM recurrent network cell.</span><br><span class="line">    https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;1610.09513v1.pdf</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(</span><br><span class="line">        self,</span><br><span class="line">        hidden_size,</span><br><span class="line">        leak&#x3D;0.001,</span><br><span class="line">        ratio_on&#x3D;0.1,</span><br><span class="line">        period_init_min&#x3D;1.0,</span><br><span class="line">        period_init_max&#x3D;1000.0</span><br><span class="line">    ):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        Args:</span><br><span class="line">            hidden_size: int, The number of units in the Phased LSTM cell.</span><br><span class="line">            leak: float or scalar float Tensor with value in [0, 1]. Leak applied</span><br><span class="line">                during training.</span><br><span class="line">            ratio_on: float or scalar float Tensor with value in [0, 1]. Ratio of the</span><br><span class="line">                period during which the gates are open.</span><br><span class="line">            period_init_min: float or scalar float Tensor. With value &gt; 0.</span><br><span class="line">                Minimum value of the initialized period.</span><br><span class="line">                The period values are initialized by drawing from the distribution:</span><br><span class="line">                e^U(log(period_init_min), log(period_init_max))</span><br><span class="line">                Where U(.,.) is the uniform distribution.</span><br><span class="line">            period_init_max: float or scalar float Tensor.</span><br><span class="line">                With value &gt; period_init_min. Maximum value of the initialized period.</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        super().__init__()</span><br><span class="line"></span><br><span class="line">        self.hidden_size &#x3D; hidden_size</span><br><span class="line">        self.ratio_on &#x3D; ratio_on</span><br><span class="line">        self.leak &#x3D; leak</span><br><span class="line"></span><br><span class="line">        # initialize time-gating parameters</span><br><span class="line">        period &#x3D; torch.exp(</span><br><span class="line">            torch.Tensor(hidden_size).uniform_(</span><br><span class="line">                math.log(period_init_min), math.log(period_init_max)</span><br><span class="line">            )</span><br><span class="line">        )</span><br><span class="line">        self.tau &#x3D; nn.Parameter(period)</span><br><span class="line"></span><br><span class="line">        phase &#x3D; torch.Tensor(hidden_size).uniform_() * period</span><br><span class="line">        self.phase &#x3D; nn.Parameter(phase)</span><br><span class="line"></span><br><span class="line">    def _compute_phi(self, t):</span><br><span class="line">        t_ &#x3D; t.view(-1, 1).repeat(1, self.hidden_size)</span><br><span class="line">        phase_ &#x3D; self.phase.view(1, -1).repeat(t.shape[0], 1)</span><br><span class="line">        tau_ &#x3D; self.tau.view(1, -1).repeat(t.shape[0], 1)</span><br><span class="line"></span><br><span class="line">        phi &#x3D; torch.fmod((t_ - phase_), tau_).detach()</span><br><span class="line">        phi &#x3D; torch.abs(phi) &#x2F; tau_</span><br><span class="line">        return phi</span><br><span class="line"></span><br><span class="line">    def _mod(self, x, y):</span><br><span class="line">        &quot;&quot;&quot;Modulo function that propagates x gradients.&quot;&quot;&quot;</span><br><span class="line">        return x + (torch.fmod(x, y) - x).detach()</span><br><span class="line"></span><br><span class="line">    def set_state(self, c, h):</span><br><span class="line">        self.h0 &#x3D; h</span><br><span class="line">        self.c0 &#x3D; c</span><br><span class="line"></span><br><span class="line">    def forward(self, c_s, h_s, t):</span><br><span class="line">        # print(c_s.size(), h_s.size(), t.size())</span><br><span class="line">        phi &#x3D; self._compute_phi(t)</span><br><span class="line"></span><br><span class="line">        # Phase-related augmentations</span><br><span class="line">        k_up &#x3D; 2 * phi &#x2F; self.ratio_on</span><br><span class="line">        k_down &#x3D; 2 - k_up</span><br><span class="line">        k_closed &#x3D; self.leak * phi</span><br><span class="line"></span><br><span class="line">        k &#x3D; torch.where(phi &lt; self.ratio_on, k_down, k_closed)</span><br><span class="line">        k &#x3D; torch.where(phi &lt; 0.5 * self.ratio_on, k_up, k)</span><br><span class="line">        k &#x3D; k.view(c_s.shape[0], t.shape[0], -1)</span><br><span class="line"></span><br><span class="line">        c_s_new &#x3D; k * c_s + (1 - k) * self.c0</span><br><span class="line">        h_s_new &#x3D; k * h_s + (1 - k) * self.h0</span><br><span class="line"></span><br><span class="line">        return h_s_new, c_s_new</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class PhasedLSTM(nn.Module):</span><br><span class="line">    &quot;&quot;&quot;Wrapper for multi-layer sequence forwarding via</span><br><span class="line">       PhasedLSTMCell&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(</span><br><span class="line">        self,</span><br><span class="line">        input_size,</span><br><span class="line">        hidden_size,</span><br><span class="line">        bidirectional&#x3D;True</span><br><span class="line">    ):</span><br><span class="line">        super().__init__()</span><br><span class="line">        self.hidden_size &#x3D; hidden_size</span><br><span class="line"></span><br><span class="line">        self.lstm &#x3D; nn.LSTM(</span><br><span class="line">            input_size&#x3D;input_size,</span><br><span class="line">            hidden_size&#x3D;hidden_size,</span><br><span class="line">            bidirectional&#x3D;bidirectional,</span><br><span class="line">            batch_first&#x3D;True</span><br><span class="line">        )</span><br><span class="line">        self.bi &#x3D; 2 if bidirectional else 1</span><br><span class="line"></span><br><span class="line">        self.phased_cell &#x3D; PhasedLSTMCell(</span><br><span class="line">            hidden_size&#x3D;self.bi * hidden_size</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    def forward(self, u_sequence):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        Args:</span><br><span class="line">            sequence: The input sequence data of shape (batch, time, N)</span><br><span class="line">            times: The timestamps corresponding to the data of shape (batch, time)</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">        c0 &#x3D; u_sequence.new_zeros((self.bi, u_sequence.size(0), self.hidden_size))</span><br><span class="line">        h0 &#x3D; u_sequence.new_zeros((self.bi, u_sequence.size(0), self.hidden_size))</span><br><span class="line">        self.phased_cell.set_state(c0, h0)</span><br><span class="line"></span><br><span class="line">        outputs &#x3D; []</span><br><span class="line">        for i in range(u_sequence.size(1)):</span><br><span class="line">            u_t &#x3D; u_sequence[:, i, :-1].unsqueeze(1)</span><br><span class="line">            t_t &#x3D; u_sequence[:, i, -1]</span><br><span class="line"></span><br><span class="line">            out, (c_t, h_t) &#x3D; self.lstm(u_t, (c0, h0))</span><br><span class="line">            (c_s, h_s) &#x3D; self.phased_cell(c_t, h_t, t_t)</span><br><span class="line"></span><br><span class="line">            self.phased_cell.set_state(c_s, h_s)</span><br><span class="line">            c0, h0 &#x3D; c_s, h_s</span><br><span class="line"></span><br><span class="line">            outputs.append(out)</span><br><span class="line">        outputs &#x3D; torch.cat(outputs, dim&#x3D;1)</span><br><span class="line"></span><br><span class="line">        return outputs</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/10/Content-aware-Neural-Hashing-for-Cold-start-Recommendation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jay Kay">
-      <meta itemprop="description" content="Zhiyuan Xu's self blog!">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="徐志远">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/10/Content-aware-Neural-Hashing-for-Cold-start-Recommendation/" class="post-title-link" itemprop="url">Content-aware Neural Hashing for Cold-start Recommendation</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-10 20:02:59" itemprop="dateCreated datePublished" datetime="2020-06-10T20:02:59+08:00">2020-06-10</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">推荐系统</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>这是一篇sigir2020推荐系统的文章。</p>
-<h3 id="论文背景"><a class="markdownIt-Anchor" href="#论文背景"></a> 论文背景：</h3>
-<p>通过学习item的hashcode表示来进行冷启动。基于协同过滤和内容的推荐系统是很主流的方法。</p>
-<h4 id="协同过滤的缺点"><a class="markdownIt-Anchor" href="#协同过滤的缺点"></a> 协同过滤的缺点：</h4>
-<p>对于未见过的item，标准的协同过滤不能学习有效表示。所以基于内容的推荐系统可以补充标准协同过滤的方法。</p>
-<h4 id="基于内容的推荐系统的缺点"><a class="markdownIt-Anchor" href="#基于内容的推荐系统的缺点"></a> 基于内容的推荐系统的缺点</h4>
-<p>基于内容(content-aware)hashcode表示个生成和标准item的生成不同,是不必要的并且会限制其泛化性能。</p>
-<h3 id="neuhash-cf"><a class="markdownIt-Anchor" href="#neuhash-cf"></a> NeuHash-CF</h3>
-<p><img src="/images/neuhash-cf/neuhash-cf.png" alt="" /><br />
-NeuHash-CF有两个encoder来生成item和user的hashcode, 它们连接在变分自编码模型中. 所有的item code都统一生成,不管是否曾经见过。</p>
-<h3 id="variational-autoencoder"><a class="markdownIt-Anchor" href="#variational-autoencoder"></a> Variational AutoEncoder</h3>
-<p>$ p(u) = \prod_{i \in I_u} p(R_{u,i}) $</p>
-<p>$ p(i) = p(c_i) + \prod_{u \in U_i } {p(R_{u,i})} $</p>
-<p>$ p(c_i) = \prod_{w\in W_{c_i} } p(w) $</p>
-<p>$ logp(R_{u,i}) = log \Sigma_{z_i,z_u \in \{ -1,1 \}^m }p(R_{u,i}|z_i,z_u)p(z_i)p(z_u) $</p>
-<p>$ logp(c_i) = log \Sigma_{z_i \in \{ -1,1\}^m } p(c_i |z_i)p(z_i) $</p>
-<p>上面的公式把content-based推荐和cf推荐进行联合建模。后续的hashcode采样和em优化详细可以看文章。</p>
-<h3 id="encoder-function"><a class="markdownIt-Anchor" href="#encoder-function"></a> Encoder Function</h3>
-<p>item encoding:<br />
-$ l_1 = ReLU(W_1(c_i \odot w_{imp} ) + b_1) $</p>
-<p>$ l_2 = ReLU(W_2l_1 + b_2) $</p>
-<p>item采样概率: $ q_{\phi}(c_i) = \sigma_{(W_3l_3+b_3)} $</p>
-<p>user和item类似的情况。</p>
-<!-- $ z_i^{(j)} = 2\lceil{q_{\phi}(i)^{(j)}-\mu^{(j)}}\rceil-1 $ -->
-<h3 id="decoder-function"><a class="markdownIt-Anchor" href="#decoder-function"></a> Decoder Function</h3>
-<p>User-item rating decoding<br />
-Item content decoding<br />
-Noise infusion for robustness</p>
-<h3 id="combined-loss-function"><a class="markdownIt-Anchor" href="#combined-loss-function"></a> Combined loss function</h3>
-<p>$ L = L_{rating} + \alpha L_{content} $</p>
-<h3 id="实验结果"><a class="markdownIt-Anchor" href="#实验结果"></a> 实验结果</h3>
-<p><img src="/images/neuhash-cf/evaluation1.png" alt="" /><br />
-<img src="/images/neuhash-cf/evaluation2.png" alt="" /><br />
-看实验效果感觉还可以。就是建模比较复杂，期待源码。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
 
 
 
@@ -1190,7 +1122,7 @@ Noise infusion for robustness</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1199,7 +1131,7 @@ Noise infusion for robustness</p>
         <span class="site-state-item-name">分类</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>

@@ -20,45 +20,30 @@
     var CONFIG = {"hostname":"jaykay233.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="其实之前有面试被问到过类似怎么融合时间的问题。当时见的还比较少，直接说了根据时间抽样，现在看来正确答案貌似应该是这个。  论文意图和背景 长话短说，其实就是要在lstm中加入时间的概念  传统的LSTM $ i_t &#x3D; \sigma_{i}(x_tW_{xi} + h_{t-1}W_{hi} + w_{ci} \odot c_{t-1} + b_i ) $ $ f_t &#x3D; \sigma_{f}(x">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Time-related LSTM">
-<meta property="og:url" content="http://jaykay233.github.io/2020/06/11/phased-lstm/index.html">
+  <meta name="description" content="Zhiyuan Xu&#39;s self blog!">
+<meta property="og:type" content="website">
+<meta property="og:title" content="徐志远">
+<meta property="og:url" content="http://jaykay233.github.io/page/2/index.html">
 <meta property="og:site_name" content="徐志远">
-<meta property="og:description" content="其实之前有面试被问到过类似怎么融合时间的问题。当时见的还比较少，直接说了根据时间抽样，现在看来正确答案貌似应该是这个。  论文意图和背景 长话短说，其实就是要在lstm中加入时间的概念  传统的LSTM $ i_t &#x3D; \sigma_{i}(x_tW_{xi} + h_{t-1}W_{hi} + w_{ci} \odot c_{t-1} + b_i ) $ $ f_t &#x3D; \sigma_{f}(x">
+<meta property="og:description" content="Zhiyuan Xu&#39;s self blog!">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://jaykay233.github.io/images/phased_lstm/phased_lstm_1.png">
-<meta property="og:image" content="http://jaykay233.github.io/images/phased_lstm/phased_lstm_2.png">
-<meta property="og:image" content="http://jaykay233.github.io/images/phased_lstm/phased_lstm_3.png">
-<meta property="og:image" content="http://jaykay233.github.io/images/phased_lstm/phased_lstm_4.png">
-<meta property="og:image" content="http://jaykay233.github.io/images/phased_lstm/phased_lstm_5.png">
-<meta property="og:image" content="http://jaykay233.github.io/images/phased_lstm/phased_lstm_6.png">
-<meta property="og:image" content="http://jaykay233.github.io/images/phased_lstm/phased_lstm_7.png">
-<meta property="og:image" content="http://jaykay233.github.io/images/phased_lstm/phased_lstm_8.png">
-<meta property="og:image" content="http://jaykay233.github.io/images/phased_lstm/phased_lstm_9.png">
-<meta property="og:image" content="http://jaykay233.github.io/images/phased_lstm/phased_lstm_10.png">
-<meta property="og:image" content="http://jaykay233.github.io/images/phased_lstm/phased_lstm_11.png">
-<meta property="article:published_time" content="2020-06-11T02:43:39.000Z">
-<meta property="article:modified_time" content="2020-06-11T02:43:39.000Z">
 <meta property="article:author" content="Jay Kay">
-<meta property="article:tag" content="神经网络">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://jaykay233.github.io/images/phased_lstm/phased_lstm_1.png">
 
-<link rel="canonical" href="http://jaykay233.github.io/2020/06/11/phased-lstm/">
+<link rel="canonical" href="http://jaykay233.github.io/page/2/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : false,
-    isPost : true,
+    isHome : true,
+    isPost : false,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>Time-related LSTM | 徐志远</title>
+  <title>徐志远</title>
   
 
 
@@ -184,10 +169,9 @@
         <div class="content-wrap">
           
 
-          <div class="content post posts-expand">
+          <div class="content index posts-expand">
             
-
-    
+      
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -203,9 +187,10 @@
       <meta itemprop="name" content="徐志远">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          Time-related LSTM
-        </h1>
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/06/11/phased-lstm/" class="post-title-link" itemprop="url">Time-related LSTM</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -227,13 +212,6 @@
             </span>
 
           
-            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span id="busuanzi_value_page_pv"></span>
-            </span>
 
         </div>
       </header>
@@ -244,7 +222,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>其实之前有面试被问到过类似怎么融合时间的问题。当时见的还比较少，直接说了根据时间抽样，现在看来正确答案貌似应该是这个。</p>
+          <p>其实之前有面试被问到过类似怎么融合时间的问题。当时见的还比较少，直接说了根据时间抽样，现在看来正确答案貌似应该是这个。</p>
 <h3 id="论文意图和背景"><a class="markdownIt-Anchor" href="#论文意图和背景"></a> 论文意图和背景</h3>
 <p>长话短说，其实就是要在lstm中加入时间的概念</p>
 <h3 id="传统的lstm"><a class="markdownIt-Anchor" href="#传统的lstm"></a> 传统的LSTM</h3>
@@ -298,54 +276,125 @@ Time LSTM变体3用了耦合的输入门和忘记门。
 <p><a href="https://gist.github.com/AAnoosheh/b3cce037ae24a86d89505907ec098d62" target="_blank" rel="noopener">github地址</a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br></pre></td><td class="code"><pre><span class="line">import math</span><br><span class="line"></span><br><span class="line">import torch</span><br><span class="line">import torch.nn as nn</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class PhasedLSTMCell(nn.Module):</span><br><span class="line">    &quot;&quot;&quot;Phased LSTM recurrent network cell.</span><br><span class="line">    https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;1610.09513v1.pdf</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(</span><br><span class="line">        self,</span><br><span class="line">        hidden_size,</span><br><span class="line">        leak&#x3D;0.001,</span><br><span class="line">        ratio_on&#x3D;0.1,</span><br><span class="line">        period_init_min&#x3D;1.0,</span><br><span class="line">        period_init_max&#x3D;1000.0</span><br><span class="line">    ):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        Args:</span><br><span class="line">            hidden_size: int, The number of units in the Phased LSTM cell.</span><br><span class="line">            leak: float or scalar float Tensor with value in [0, 1]. Leak applied</span><br><span class="line">                during training.</span><br><span class="line">            ratio_on: float or scalar float Tensor with value in [0, 1]. Ratio of the</span><br><span class="line">                period during which the gates are open.</span><br><span class="line">            period_init_min: float or scalar float Tensor. With value &gt; 0.</span><br><span class="line">                Minimum value of the initialized period.</span><br><span class="line">                The period values are initialized by drawing from the distribution:</span><br><span class="line">                e^U(log(period_init_min), log(period_init_max))</span><br><span class="line">                Where U(.,.) is the uniform distribution.</span><br><span class="line">            period_init_max: float or scalar float Tensor.</span><br><span class="line">                With value &gt; period_init_min. Maximum value of the initialized period.</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        super().__init__()</span><br><span class="line"></span><br><span class="line">        self.hidden_size &#x3D; hidden_size</span><br><span class="line">        self.ratio_on &#x3D; ratio_on</span><br><span class="line">        self.leak &#x3D; leak</span><br><span class="line"></span><br><span class="line">        # initialize time-gating parameters</span><br><span class="line">        period &#x3D; torch.exp(</span><br><span class="line">            torch.Tensor(hidden_size).uniform_(</span><br><span class="line">                math.log(period_init_min), math.log(period_init_max)</span><br><span class="line">            )</span><br><span class="line">        )</span><br><span class="line">        self.tau &#x3D; nn.Parameter(period)</span><br><span class="line"></span><br><span class="line">        phase &#x3D; torch.Tensor(hidden_size).uniform_() * period</span><br><span class="line">        self.phase &#x3D; nn.Parameter(phase)</span><br><span class="line"></span><br><span class="line">    def _compute_phi(self, t):</span><br><span class="line">        t_ &#x3D; t.view(-1, 1).repeat(1, self.hidden_size)</span><br><span class="line">        phase_ &#x3D; self.phase.view(1, -1).repeat(t.shape[0], 1)</span><br><span class="line">        tau_ &#x3D; self.tau.view(1, -1).repeat(t.shape[0], 1)</span><br><span class="line"></span><br><span class="line">        phi &#x3D; torch.fmod((t_ - phase_), tau_).detach()</span><br><span class="line">        phi &#x3D; torch.abs(phi) &#x2F; tau_</span><br><span class="line">        return phi</span><br><span class="line"></span><br><span class="line">    def _mod(self, x, y):</span><br><span class="line">        &quot;&quot;&quot;Modulo function that propagates x gradients.&quot;&quot;&quot;</span><br><span class="line">        return x + (torch.fmod(x, y) - x).detach()</span><br><span class="line"></span><br><span class="line">    def set_state(self, c, h):</span><br><span class="line">        self.h0 &#x3D; h</span><br><span class="line">        self.c0 &#x3D; c</span><br><span class="line"></span><br><span class="line">    def forward(self, c_s, h_s, t):</span><br><span class="line">        # print(c_s.size(), h_s.size(), t.size())</span><br><span class="line">        phi &#x3D; self._compute_phi(t)</span><br><span class="line"></span><br><span class="line">        # Phase-related augmentations</span><br><span class="line">        k_up &#x3D; 2 * phi &#x2F; self.ratio_on</span><br><span class="line">        k_down &#x3D; 2 - k_up</span><br><span class="line">        k_closed &#x3D; self.leak * phi</span><br><span class="line"></span><br><span class="line">        k &#x3D; torch.where(phi &lt; self.ratio_on, k_down, k_closed)</span><br><span class="line">        k &#x3D; torch.where(phi &lt; 0.5 * self.ratio_on, k_up, k)</span><br><span class="line">        k &#x3D; k.view(c_s.shape[0], t.shape[0], -1)</span><br><span class="line"></span><br><span class="line">        c_s_new &#x3D; k * c_s + (1 - k) * self.c0</span><br><span class="line">        h_s_new &#x3D; k * h_s + (1 - k) * self.h0</span><br><span class="line"></span><br><span class="line">        return h_s_new, c_s_new</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class PhasedLSTM(nn.Module):</span><br><span class="line">    &quot;&quot;&quot;Wrapper for multi-layer sequence forwarding via</span><br><span class="line">       PhasedLSTMCell&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(</span><br><span class="line">        self,</span><br><span class="line">        input_size,</span><br><span class="line">        hidden_size,</span><br><span class="line">        bidirectional&#x3D;True</span><br><span class="line">    ):</span><br><span class="line">        super().__init__()</span><br><span class="line">        self.hidden_size &#x3D; hidden_size</span><br><span class="line"></span><br><span class="line">        self.lstm &#x3D; nn.LSTM(</span><br><span class="line">            input_size&#x3D;input_size,</span><br><span class="line">            hidden_size&#x3D;hidden_size,</span><br><span class="line">            bidirectional&#x3D;bidirectional,</span><br><span class="line">            batch_first&#x3D;True</span><br><span class="line">        )</span><br><span class="line">        self.bi &#x3D; 2 if bidirectional else 1</span><br><span class="line"></span><br><span class="line">        self.phased_cell &#x3D; PhasedLSTMCell(</span><br><span class="line">            hidden_size&#x3D;self.bi * hidden_size</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    def forward(self, u_sequence):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        Args:</span><br><span class="line">            sequence: The input sequence data of shape (batch, time, N)</span><br><span class="line">            times: The timestamps corresponding to the data of shape (batch, time)</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">        c0 &#x3D; u_sequence.new_zeros((self.bi, u_sequence.size(0), self.hidden_size))</span><br><span class="line">        h0 &#x3D; u_sequence.new_zeros((self.bi, u_sequence.size(0), self.hidden_size))</span><br><span class="line">        self.phased_cell.set_state(c0, h0)</span><br><span class="line"></span><br><span class="line">        outputs &#x3D; []</span><br><span class="line">        for i in range(u_sequence.size(1)):</span><br><span class="line">            u_t &#x3D; u_sequence[:, i, :-1].unsqueeze(1)</span><br><span class="line">            t_t &#x3D; u_sequence[:, i, -1]</span><br><span class="line"></span><br><span class="line">            out, (c_t, h_t) &#x3D; self.lstm(u_t, (c0, h0))</span><br><span class="line">            (c_s, h_s) &#x3D; self.phased_cell(c_t, h_t, t_t)</span><br><span class="line"></span><br><span class="line">            self.phased_cell.set_state(c_s, h_s)</span><br><span class="line">            c0, h0 &#x3D; c_s, h_s</span><br><span class="line"></span><br><span class="line">            outputs.append(out)</span><br><span class="line">        outputs &#x3D; torch.cat(outputs, dim&#x3D;1)</span><br><span class="line"></span><br><span class="line">        return outputs</span><br></pre></td></tr></table></figure>
 
+      
     </div>
 
     
     
     
-        
-
-<div>
-<ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>本文作者： </strong>Jay Kay
-  </li>
-  <li class="post-copyright-link">
-    <strong>本文链接：</strong>
-    <a href="http://jaykay233.github.io/2020/06/11/phased-lstm/" title="Time-related LSTM">http://jaykay233.github.io/2020/06/11/phased-lstm/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
-  </li>
-</ul>
-</div>
-
-
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag"># 神经网络</a>
-          </div>
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2020/06/10/Content-aware-Neural-Hashing-for-Cold-start-Recommendation/" rel="prev" title="Content-aware Neural Hashing for Cold-start Recommendation">
-      <i class="fa fa-chevron-left"></i> Content-aware Neural Hashing for Cold-start Recommendation
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/06/11/Search-based-User-Interest-Modeling-with-Lifelong-Sequential/" rel="next" title="Search-based User Interest Modeling with Lifelong Sequential">
-      Search-based User Interest Modeling with Lifelong Sequential <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
+        <div class="post-eof"></div>
       </footer>
-    
   </article>
   
   
   
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://jaykay233.github.io/2020/06/10/Content-aware-Neural-Hashing-for-Cold-start-Recommendation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jay Kay">
+      <meta itemprop="description" content="Zhiyuan Xu's self blog!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="徐志远">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/06/10/Content-aware-Neural-Hashing-for-Cold-start-Recommendation/" class="post-title-link" itemprop="url">Content-aware Neural Hashing for Cold-start Recommendation</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-10 20:02:59" itemprop="dateCreated datePublished" datetime="2020-06-10T20:02:59+08:00">2020-06-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">推荐系统</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>这是一篇sigir2020推荐系统的文章。</p>
+<h3 id="论文背景"><a class="markdownIt-Anchor" href="#论文背景"></a> 论文背景：</h3>
+<p>通过学习item的hashcode表示来进行冷启动。基于协同过滤和内容的推荐系统是很主流的方法。</p>
+<h4 id="协同过滤的缺点"><a class="markdownIt-Anchor" href="#协同过滤的缺点"></a> 协同过滤的缺点：</h4>
+<p>对于未见过的item，标准的协同过滤不能学习有效表示。所以基于内容的推荐系统可以补充标准协同过滤的方法。</p>
+<h4 id="基于内容的推荐系统的缺点"><a class="markdownIt-Anchor" href="#基于内容的推荐系统的缺点"></a> 基于内容的推荐系统的缺点</h4>
+<p>基于内容(content-aware)hashcode表示个生成和标准item的生成不同,是不必要的并且会限制其泛化性能。</p>
+<h3 id="neuhash-cf"><a class="markdownIt-Anchor" href="#neuhash-cf"></a> NeuHash-CF</h3>
+<p><img src="/images/neuhash-cf/neuhash-cf.png" alt="" /><br />
+NeuHash-CF有两个encoder来生成item和user的hashcode, 它们连接在变分自编码模型中. 所有的item code都统一生成,不管是否曾经见过。</p>
+<h3 id="variational-autoencoder"><a class="markdownIt-Anchor" href="#variational-autoencoder"></a> Variational AutoEncoder</h3>
+<p>$ p(u) = \prod_{i \in I_u} p(R_{u,i}) $</p>
+<p>$ p(i) = p(c_i) + \prod_{u \in U_i } {p(R_{u,i})} $</p>
+<p>$ p(c_i) = \prod_{w\in W_{c_i} } p(w) $</p>
+<p>$ logp(R_{u,i}) = log \Sigma_{z_i,z_u \in \{ -1,1 \}^m }p(R_{u,i}|z_i,z_u)p(z_i)p(z_u) $</p>
+<p>$ logp(c_i) = log \Sigma_{z_i \in \{ -1,1\}^m } p(c_i |z_i)p(z_i) $</p>
+<p>上面的公式把content-based推荐和cf推荐进行联合建模。后续的hashcode采样和em优化详细可以看文章。</p>
+<h3 id="encoder-function"><a class="markdownIt-Anchor" href="#encoder-function"></a> Encoder Function</h3>
+<p>item encoding:<br />
+$ l_1 = ReLU(W_1(c_i \odot w_{imp} ) + b_1) $</p>
+<p>$ l_2 = ReLU(W_2l_1 + b_2) $</p>
+<p>item采样概率: $ q_{\phi}(c_i) = \sigma_{(W_3l_3+b_3)} $</p>
+<p>user和item类似的情况。</p>
+<!-- $ z_i^{(j)} = 2\lceil{q_{\phi}(i)^{(j)}-\mu^{(j)}}\rceil-1 $ -->
+<h3 id="decoder-function"><a class="markdownIt-Anchor" href="#decoder-function"></a> Decoder Function</h3>
+<p>User-item rating decoding<br />
+Item content decoding<br />
+Noise infusion for robustness</p>
+<h3 id="combined-loss-function"><a class="markdownIt-Anchor" href="#combined-loss-function"></a> Combined loss function</h3>
+<p>$ L = L_{rating} + \alpha L_{content} $</p>
+<h3 id="实验结果"><a class="markdownIt-Anchor" href="#实验结果"></a> 实验结果</h3>
+<p><img src="/images/neuhash-cf/evaluation1.png" alt="" /><br />
+<img src="/images/neuhash-cf/evaluation2.png" alt="" /><br />
+看实验效果感觉还可以。就是建模比较复杂，期待源码。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
 
 
 
@@ -397,7 +446,6 @@ Time LSTM变体3用了耦合的输入门和忘记门。
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#论文意图和背景"><span class="nav-number">1.</span> <span class="nav-text"> 论文意图和背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#传统的lstm"><span class="nav-number">2.</span> <span class="nav-text"> 传统的LSTM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#phased-lstm"><span class="nav-number">3.</span> <span class="nav-text"> Phased LSTM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#phased-lstm实验结果"><span class="nav-number">4.</span> <span class="nav-text"> Phased LSTM实验结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#phased-lstm缺点"><span class="nav-number">5.</span> <span class="nav-text"> Phased LSTM缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#time-lstm"><span class="nav-number">6.</span> <span class="nav-text"> Time LSTM</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#time-lstm变体"><span class="nav-number">6.1.</span> <span class="nav-text"> Time LSTM变体</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#time-lstm变体1"><span class="nav-number">6.1.1.</span> <span class="nav-text"> Time LSTM变体1</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#time-lstm变体2"><span class="nav-number">6.1.2.</span> <span class="nav-text"> Time LSTM变体2</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#time-lstm变体3"><span class="nav-number">6.1.3.</span> <span class="nav-text"> Time LSTM变体3</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#time-lstm实验结果"><span class="nav-number">7.</span> <span class="nav-text"> Time LSTM实验结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#phased-lstm-torch开源实现"><span class="nav-number">8.</span> <span class="nav-text"> Phased LSTM torch开源实现</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -629,7 +677,7 @@ document.querySelectorAll('.pdfobject-container').forEach(element => {
       quicklink({
         timeout : 3000,
         priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'http://jaykay233.github.io/2020/06/11/phased-lstm/',]
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://jaykay233.github.io/page/2/',]
       });
       });
   </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
