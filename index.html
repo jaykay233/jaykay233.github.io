@@ -213,7 +213,42 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          
+          <h3 id="论文背景"><a class="markdownIt-Anchor" href="#论文背景"></a> 论文背景</h3>
+<p>这篇是讲slot filling和intent detection的联合训练。传统的方法slot filling和intent detection是分开做的，会出现error propagation的问题。<br />
+所以现代一点的方法主要有下面几种：<br />
+joint attention-based rnn (2016)<br />
+rnn-lstm (2016)<br />
+slot-gated model (2018)<br />
+这篇文章同样认同两个任务之间的相关性并且提出SF-ID网络。</p>
+<h3 id="模型结构"><a class="markdownIt-Anchor" href="#模型结构"></a> 模型结构</h3>
+<h4 id="integration-of-context"><a class="markdownIt-Anchor" href="#integration-of-context"></a> Integration of context</h4>
+<p>slot filling:</p>
+<img src="/2020/06/17/A-Novel-Bi-directional-Interrelated-Model-for-Joint-Intent-Detection-and-Slot-Filling/1.png" class="">
+<p>然后这篇加权的方法和16年那篇一样，是用encoder和decoder一起生成context向量并且最后喂给encoder端的hidden_state进行加权表示，具体可以看16年那篇文章。<br />
+intent detection:<br />
+similar to slot filling</p>
+<h4 id="sf-id-network"><a class="markdownIt-Anchor" href="#sf-id-network"></a> SF-ID Network</h4>
+<p>SF-ID Network有SF-First和ID-First两种形式。下面就说其中一种SF-first，另外一种只是把subnet的先后顺序互换而已。</p>
+<h5 id="sf-subnet"><a class="markdownIt-Anchor" href="#sf-subnet"></a> SF subnet</h5>
+<img src="/2020/06/17/A-Novel-Bi-directional-Interrelated-Model-for-Joint-Intent-Detection-and-Slot-Filling/2.png" class="">
+<img src="/2020/06/17/A-Novel-Bi-directional-Interrelated-Model-for-Joint-Intent-Detection-and-Slot-Filling/3.png" class="">
+<h5 id="id-subnet"><a class="markdownIt-Anchor" href="#id-subnet"></a> ID subnet</h5>
+<img src="/2020/06/17/A-Novel-Bi-directional-Interrelated-Model-for-Joint-Intent-Detection-and-Slot-Filling/4.png" class="">
+<img src="/2020/06/17/A-Novel-Bi-directional-Interrelated-Model-for-Joint-Intent-Detection-and-Slot-Filling/5.png" class="">
+<img src="/2020/06/17/A-Novel-Bi-directional-Interrelated-Model-for-Joint-Intent-Detection-and-Slot-Filling/6.png" class="">
+<img src="/2020/06/17/A-Novel-Bi-directional-Interrelated-Model-for-Joint-Intent-Detection-and-Slot-Filling/7.png" class="">
+<h5 id="iteration-mechanism"><a class="markdownIt-Anchor" href="#iteration-mechanism"></a> Iteration Mechanism</h5>
+<p>向量表示的交互和耦合把context对应的向量换成reinforce对应的向量，最后输出softmax分类。</p>
+<h5 id="crf-layer"><a class="markdownIt-Anchor" href="#crf-layer"></a> CRF layer</h5>
+<p>添加转移概率增加label预测的约束和鲁棒性，就比较常规。</p>
+<h3 id="experiment"><a class="markdownIt-Anchor" href="#experiment"></a> Experiment</h3>
+<img src="/2020/06/17/A-Novel-Bi-directional-Interrelated-Model-for-Joint-Intent-Detection-and-Slot-Filling/8.png" class="">
+<p>其中有2个比较有意思的分析:</p>
+<h4 id="analysis-of-model-mode"><a class="markdownIt-Anchor" href="#analysis-of-model-mode"></a> Analysis of Model mode:</h4>
+<p>ID-First mode的实验结果在slot filling上更好, SF-First mode的实验结果在intent detection上的效果更好。说白了，哪个先训练就定了整个模型的任务倾向性基调。</p>
+<h4 id="iteration-mechanism-2"><a class="markdownIt-Anchor" href="#iteration-mechanism-2"></a> Iteration Mechanism:</h4>
+<p>一定的iteration迭代能够提高训练的效果，但是迭代的次数越多反而就不好了。</p>
+
       
     </div>
 
