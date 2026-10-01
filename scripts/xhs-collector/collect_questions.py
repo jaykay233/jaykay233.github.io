@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Locally collect public XHS search-result titles into the static question index.
+"""Locally distill short interview-question prompts from public XHS notes.
 
 Authentication is held in macOS Keychain via Python keyring. This intentionally
-reads only search-result titles and source identifiers; it does not open notes,
-collect comments/profiles/media, or attempt to bypass platform challenges.
+reads search results and short note descriptions to extract question-like lines; it never
+saves full note text, comments, profiles, or media, and never bypasses challenges.
 """
 from __future__ import annotations
 import argparse, datetime as dt, json, os, re, sys, time, unicodedata
@@ -42,9 +42,33 @@ def classify(title: str, fallback: str) -> str:
 
 def title_from_item(item: dict) -> str:
     card = item.get("note_card") or {}
-    # Use only title-like fields from search results; never publish note body text.
+    # This is attribution metadata only; candidate question text is extracted separately.
     title = card.get("display_title") or card.get("title") or item.get("display_title") or item.get("title") or ""
     return re.sub(r"\s+", " ", str(title)).strip()[:180]
+
+def question_candidates(text: str, limit: int = 4) -> list[str]:
+    """Extract short question-like lines; never keep or publish the full note body."""
+    candidates, seen = [], set()
+    for line in re.split(r"[\r\n]+", text or ""):
+        line = re.sub(r"<[^>]+>", " ", line)
+        line = re.sub(r"^\s*(?:[-*•]+|\d{1,3}[.)、])\s*", "", line)
+        for part in re.split(r"(?<=[。！？?!])\s*", line):
+            part = re.sub(r"\s+", " ", part).strip(" ·-—:：")
+            if not 4 <= len(part) <= 140:
+                continue
+            looks_like_question = ("?" in part or "？" in part or
+                re.search(r"(什么|为什么|为何|如何|怎么|怎样|是否|能否|可否|有哪些|有什么|区别|原理|流程|作用|介绍一下|谈谈|比较一下|解释一下|请说明|请简述)", part))
+            if not looks_like_question:
+                continue
+            if part[-1] not in "?？。！!":
+                part += "？"
+            key = normalize(part)
+            if key not in seen:
+                seen.add(key); candidates.append(part)
+            if len(candidates) >= limit:
+                return candidates
+    return candidates
+
 
 def source_url(item: dict) -> str:
     note_id = str(item.get("id") or item.get("note_id") or "").strip()
@@ -89,21 +113,45 @@ def collect(auth) -> list[dict]:
     from apis.xhs_pc_apis import XHS_Apis
     api = XHS_Apis(auth)
     results: dict[str, dict] = {}
+    seen_notes = set()
     for category, queries in SEARCHES.items():
         for query in queries:
             ok, message, items = api.search_some_note(query, 5, sort_type_choice=0, note_type=0)
             if not ok:
                 raise RuntimeError(f"搜索失败（{query}）：{message}。若出现验证或风控，请停止采集并按平台要求处理，不要尝试绕过。")
+            # Detail fetches are capped to three results per query and only used
+            # locally to distill question-like lines; note text is never saved.
+            inspected = 0
             for item in items:
                 if item.get("model_type") not in (None, "note"): continue
-                title, url = title_from_item(item), source_url(item)
-                if len(title) < 5 or not url: continue
-                key = normalize(title)
-                if not key: continue
-                results.setdefault(key, {"id": str(item.get("id") or item.get("note_id")), "title": title,
-                    "category": classify(title, category), "tags": [], "source_url": url,
-                    "first_seen": dt.date.today().isoformat(), "query": query})
-            time.sleep(2.0)  # low frequency; stop rather than work around blocks
+                note_id = str(item.get("id") or item.get("note_id") or "")
+                if not note_id or note_id in seen_notes: continue
+                url = source_url(item)
+                source_title = title_from_item(item)
+                if not url or len(source_title) < 3: continue
+                seen_notes.add(note_id)
+                ok, message, detail = api.get_note_info(url)
+                if not ok:
+                    raise RuntimeError(f"读取公开笔记失败（{source_title}）：{message}。如遇验证/限流请停止，不要绕过。")
+                try:
+                    note = detail["data"]["items"][0]
+                    card = note.get("note_card") or {}
+                    description = str(card.get("desc") or card.get("description") or "")
+                except (KeyError, IndexError, TypeError):
+                    description = ""
+                for question in question_candidates(description):
+                    key = normalize(question)
+                    if not key: continue
+                    results.setdefault(key, {
+                        "id": note_id, "question": question,
+                        "category": classify(question + " " + source_title, category),
+                        "source_title": source_title, "source_url": url,
+                        "first_seen": dt.date.today().isoformat(),
+                    })
+                inspected += 1
+                time.sleep(2.0)
+                if inspected >= 3: break
+            time.sleep(2.0)
     return list(results.values())
 
 def main() -> int:
@@ -112,16 +160,16 @@ def main() -> int:
     args = parser.parse_args()
     try:
         fresh, old = collect(get_auth(args.login)), load_existing()
-        old_by_key = {normalize(row.get("title", "")): row for row in old.get("questions", [])}
+        old_by_key = {normalize(row.get("question", "")): row for row in old.get("questions", [])}
         merged, today = {}, dt.date.today().isoformat()
         for row in fresh:
-            prior = old_by_key.get(normalize(row["title"]))
+            prior = old_by_key.get(normalize(row["question"]))
             if prior: row["first_seen"] = prior.get("first_seen", today)
-            merged[normalize(row["title"])] = row
+            merged[normalize(row["question"])] = row
         for key, row in old_by_key.items(): merged.setdefault(key, row)
         payload = {"schema_version": 1, "updated_at": today,
-            "source": "xiaohongshu public search result titles; locally collected",
-            "questions": sorted(merged.values(), key=lambda x: (x.get("category", ""), x.get("title", "").lower()))}
+            "source": "short question prompts distilled locally from public notes; source links retained",
+            "questions": sorted(merged.values(), key=lambda x: (x.get("category", ""), x.get("question", "").lower()))}
         DATA_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(f"采集完成：本次发现 {len(fresh)} 条，索引总数 {len(payload['questions'])} 条。")
         return 0
