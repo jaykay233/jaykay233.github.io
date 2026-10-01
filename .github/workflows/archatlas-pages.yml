@@ -36,8 +36,14 @@ jobs:
       - name: Test API and static export
         working-directory: .github/archatlas-source
         run: python -m unittest discover -s tests -v
+      - name: Test local interview index collector
+        run: python -m unittest discover -s tests/xhs-collector -v
       - name: Build ArchAtlas for the website root
-        run: python .github/archatlas-source/scripts/build_pages.py --output public
+        run: |
+          python .github/archatlas-source/scripts/build_pages.py --output public
+          # Preserve the independent interview index when the root snapshot is replaced.
+          mkdir -p public/interview-questions
+          rsync -a interview-questions/ public/interview-questions/
       - name: Replace the website root with ArchAtlas
         run: |
           rsync -a --delete --exclude='/.git/' --exclude='/.github/' --exclude='/public/' public/ ./
