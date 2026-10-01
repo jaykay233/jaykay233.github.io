@@ -711,7 +711,7 @@
     "downloads_snapshot": 0,
     "likes_snapshot": 10,
     "rankings": {
-      "trendingScore": 743
+      "trendingScore": 744
     },
     "added_in_snapshot": true,
     "architecture_type": "待拆解",
@@ -1082,7 +1082,7 @@
     "downloads_snapshot": 1282,
     "likes_snapshot": 31,
     "rankings": {
-      "trendingScore": 721
+      "trendingScore": 722
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · llada2_moe",
@@ -1526,7 +1526,7 @@
     "downloads_snapshot": 46,
     "likes_snapshot": 11,
     "rankings": {
-      "trendingScore": 704
+      "trendingScore": 705
     },
     "added_in_snapshot": true,
     "architecture_type": "待拆解",
@@ -1659,7 +1659,7 @@
     "downloads_snapshot": 25068,
     "likes_snapshot": 498,
     "rankings": {
-      "trendingScore": 691,
+      "trendingScore": 692,
       "likes": 291
     },
     "added_in_snapshot": true,
@@ -3990,7 +3990,7 @@
     "downloads_snapshot": 2130,
     "likes_snapshot": 20,
     "rankings": {
-      "trendingScore": 654
+      "trendingScore": 655
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
@@ -6983,7 +6983,7 @@
     "downloads_snapshot": 4282,
     "likes_snapshot": 542,
     "rankings": {
-      "trendingScore": 637,
+      "trendingScore": 638,
       "likes": 266
     },
     "added_in_snapshot": true,
@@ -7183,7 +7183,7 @@
     "downloads_snapshot": 879,
     "likes_snapshot": 70,
     "rankings": {
-      "trendingScore": 634
+      "trendingScore": 635
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · nemotron_h_puzzle",
@@ -12733,7 +12733,7 @@
     "downloads_snapshot": 22336,
     "likes_snapshot": 759,
     "rankings": {
-      "trendingScore": 610,
+      "trendingScore": 611,
       "likes": 170
     },
     "added_in_snapshot": true,
@@ -14290,8 +14290,9 @@
     "hub_created": "2026-04-16",
     "hub_updated": "2026-08-27",
     "downloads_snapshot": 54138,
-    "likes_snapshot": 47,
+    "likes_snapshot": 48,
     "rankings": {
+      "trendingScore": 610,
       "downloads": 830
     },
     "added_in_snapshot": true,
