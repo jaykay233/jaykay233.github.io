@@ -1,0 +1,184 @@
+{
+  "hf-qwen-qwen3-next-80b-a3b-instruct": {
+    "status": "model-card-interpreted",
+    "review_scope": "代表模型卡逐条解读；未对照该权重版本的实现代码",
+    "source": "https://huggingface.co/Qwen/Qwen3-Next-80B-A3B-Instruct/raw/main/README.md",
+    "claims": [
+      {
+        "module_id": "hybrid-attention",
+        "claim": "模型卡给出 12 组重复布局：每组先 3 层 Gated DeltaNet，再 1 层 Gated Attention；两类层后均接 MoE。",
+        "evidence": "- Hybrid Layout: 12 \\* (3 \\* (Gated DeltaNet -> MoE) -> 1 \\* (Gated Attention -> MoE))",
+        "confidence": "model-card-explicit"
+      },
+      {
+        "module_id": "gated-deltanet",
+        "claim": "模型卡明确将 Gated DeltaNet 列为 Hybrid Attention 的组成部分。",
+        "evidence": "- **Hybrid Attention**: Replaces standard attention with the combination of **Gated DeltaNet** and **Gated Attention**, enabling efficient context modeling for ultra-long context length.",
+        "confidence": "model-card-explicit"
+      },
+      {
+        "module_id": "gated-attention",
+        "claim": "模型卡明确将 Gated Attention 列为 Hybrid Attention 的组成部分。",
+        "evidence": "- **Hybrid Attention**: Replaces standard attention with the combination of **Gated DeltaNet** and **Gated Attention**, enabling efficient context modeling for ultra-long context length.",
+        "confidence": "model-card-explicit"
+      },
+      {
+        "module_id": "moe-ffn",
+        "claim": "模型卡声明采用高稀疏度 MoE，并报告每 token 激活专家数与共享专家数；这不单独证明路由器实现细节。",
+        "evidence": "- **High-Sparsity Mixture-of-Experts (MoE)**: Achieves an extreme low activation ratio in MoE layers, drastically reducing FLOPs per token while preserving model capacity.",
+        "confidence": "model-card-explicit"
+      },
+      {
+        "module_id": "mtp",
+        "claim": "模型卡将 MTP 列为模型能力/训练设计；具体预测头数与推理接入方式不在此条证据中确认。",
+        "evidence": "- **Multi-Token Prediction (MTP)**: Boosts pretraining model performance and accelerates inference.",
+        "confidence": "model-card-explicit"
+      }
+    ],
+    "limitations": ["模型卡证据尚未与代码逐层交叉验证", "不要把此结论外推到同系列所有 checkpoint"]
+  },
+  "hf-inclusionai-ling-3-0-tiny": {
+    "status": "model-card-interpreted",
+    "review_scope": "代表模型卡逐条解读；未对照该权重版本的实现代码",
+    "source": "https://huggingface.co/inclusionAI/Ling-3.0-tiny/raw/main/README.md",
+    "claims": [
+      {
+        "module_id": "hybrid-attention",
+        "claim": "模型卡明确给出每 4 层中 3 层 KDA、1 层 MLA 的交替布局。",
+        "evidence": "+ **Efficient Hybrid-Linear Architecture:** Ling-3.0-tiny integrates a 3:1 alternating stacking of KDA and MLA (3 Kimi Delta Attention layers followed by 1 Multi-Head Latent Attention layer per 4-layer block) with a sparse MoE FFN comprising 128 routed experts. Each token activates only 8 routed experts and 1 shared expert, allowing the model to balance long",
+        "confidence": "model-card-explicit"
+      },
+      {
+        "module_id": "kda",
+        "claim": "KDA 是其线性注意力布局中的 3/4 层。",
+        "evidence": "+ A 3:1 KDA–MLA architecture (3 KDA layers and 1 MLA layer per 4-layer block) provides more efficient long-context processing;",
+        "confidence": "model-card-explicit"
+      },
+      {
+        "module_id": "mla",
+        "claim": "MLA 是其线性注意力布局中的 1/4 层。",
+        "evidence": "+ A 3:1 KDA–MLA architecture (3 KDA layers and 1 MLA layer per 4-layer block) provides more efficient long-context processing;",
+        "confidence": "model-card-explicit"
+      },
+      {
+        "module_id": "moe-ffn",
+        "claim": "模型卡声明 128 个 routed experts；每 token 激活 8 个 routed experts 与 1 个 shared expert。",
+        "evidence": "+ A sparse MoE FFN with 128 experts activates 8 routed experts and 1 shared expert per token, enabling broad model capabilities with only 1.3B activated parameters per token.",
+        "confidence": "model-card-explicit"
+      }
+    ],
+    "limitations": ["MLA 在卡片中被纳入 hybrid-linear 描述；具体投影/压缩参数未在该摘录中复核", "未验证层数是否在所有发布变体保持一致"]
+  },
+  "hf-tencent-hy4-preview": {
+    "status": "model-card-interpreted",
+    "review_scope": "代表模型卡逐条解读；未对照该权重版本的实现代码",
+    "source": "https://huggingface.co/tencent/Hy4-preview/raw/main/README.md",
+    "claims": [
+      {
+        "module_id": "deepseek-sparse-attention",
+        "claim": "模型卡称注意力采用带门控的 DeepSeek Sparse Attention，并以 IndexCache 跨层复用稀疏索引。",
+        "evidence": "On the architecture side, inspired by DeepSeek and GLM, the attention module employs Gated [DeepSeek Sparse Attention](https://arxiv.org/abs/2512.02556) (Gated DSA) with [IndexCache](https://arxiv.org/abs/2603.12201) for cross-layer sparse index reuse.",
+        "confidence": "model-card-explicit"
+      },
+      {
+        "module_id": "ihc",
+        "claim": "模型卡明确称残差路径采用 iHC；连接细节与层覆盖范围尚未由实现代码核验。",
+        "evidence": "The residual pathway uses [iHC (identity Hyper-Connections)](https://zhuanlan.zhihu.com/p/20108523896709083",
+        "confidence": "model-card-explicit"
+      },
+      {
+        "module_id": "moe-ffn",
+        "claim": "模型卡声明主体采用 MoE，并在结构介绍中区分首层 dense FFN 与其余 MoE 层。",
+        "evidence": "**Hy4 preview** is a new-generation Mixture-of-Experts (MoE) flagship model developed by the Tencent Hy Team. The model comprises 770B total parameters, of which 49B are activated per token. The backbone consists of 78 layers, where the first layer uses a standard dense FFN and the remaining 77 layers replace it with MoE",
+        "confidence": "model-card-explicit"
+      }
+    ],
+    "limitations": ["iHC 引用来自卡片摘录且 URL 在摘录中未完整保留；应打开来源复核原文", "MTP 目前只在推理命令示例中出现，不据此认定训练结构细节"]
+  },
+  "hf-moonshotai-kimi-linear-48b-a3b-instruct": {
+    "status": "model-card-interpreted",
+    "review_scope": "代表模型卡逐条解读；未对照该权重版本的实现代码",
+    "source": "https://huggingface.co/moonshotai/Kimi-Linear-48B-A3B-Instruct/raw/main/README.md",
+    "claims": [
+      {
+        "module_id": "kda",
+        "claim": "模型卡将 Kimi Delta Attention (KDA) 描述为核心线性注意力机制，并称其是 Gated DeltaNet 的改进形式。",
+        "evidence": "At its core is Kimi Delta Attention (KDA)—a refined version of [Gated DeltaNet](https://arxiv.org/abs/2412.06464) that introduces a more efficient gating mechanism to optimize the use of finite-state RNN memory.",
+        "confidence": "model-card-explicit"
+      },
+      {
+        "module_id": "hybrid-attention",
+        "claim": "模型卡称 Kimi Linear 属于 hybrid linear attention；摘录未给出各类层的比例或排列，因此不补写具体布局。",
+        "evidence": "Kimi Linear is a hybrid linear attention architecture that outperforms traditional full attention methods across various contexts, including short, long, and reinforcement learning (RL) scaling regimes.",
+        "confidence": "model-card-explicit"
+      }
+    ],
+    "limitations": ["没有从当前摘录确认 KDA 与其他注意力层的逐层布局", "未核验同系列 Base 与 Instruct 权重的实现差异"]
+  },
+  "hf-openbmb-minicpm-sala": {
+    "status": "model-card-interpreted",
+    "review_scope": "代表模型卡逐条解读；未对照该权重版本的实现代码",
+    "source": "https://huggingface.co/openbmb/MiniCPM-SALA/raw/main/README.md",
+    "claims": [
+      {
+        "module_id": "hybrid-attention",
+        "claim": "模型卡给出 25% InfLLM-V2（稀疏注意力）+ 75% Lightning Attention（线性注意力）的层占比。",
+        "evidence": "MiniCPM-SALA is an efficient hybrid model in which 25% of the layers adopt [InfLLM-V2](https://arxiv.org/abs/2509.24663) and the remaining 75% utilize Lightning Attention.",
+        "confidence": "model-card-explicit"
+      }
+    ],
+    "limitations": ["该模块分类只标记混合布局；InfLLM-V2 与 Lightning Attention 细节需分别查论文/代码", "百分比来自模型卡声明，尚未从配置层表独立验证"]
+  },
+  "hf-ibm-granite-granite-4-0-h-small": {
+    "status": "model-card-interpreted",
+    "review_scope": "代表模型卡逐条解读；未对照该权重版本的实现代码",
+    "source": "https://huggingface.co/ibm-granite/granite-4.0-h-small/raw/main/README.md",
+    "claims": [
+      {
+        "module_id": "hybrid-attention",
+        "claim": "表格声明 40 层中有 4 层 attention、36 层 Mamba-2；是混合序列层布局。",
+        "evidence": "<td style=\"text-align:center; background-color: #FFFFFF; color: black;\">4 attention / 36 Mamba2</td>",
+        "confidence": "model-card-explicit"
+      },
+      {
+        "module_id": "mamba2",
+        "claim": "模型卡明确列出 Mamba2，并给出 36 个 Mamba-2 层。",
+        "evidence": "<td style=\"text-align:center; background-color: #FFFFFF; color: black;\">4 attention / 36 Mamba2</td>",
+        "confidence": "model-card-explicit"
+      },
+      {
+        "module_id": "gqa",
+        "claim": "模型卡将 GQA 列为该架构的核心组件。",
+        "evidence": "Granite-4.0-H-Small baseline is built on a decoder-only MoE transformer architecture. Core components of this architecture are: GQA, Mamba2, MoEs with shared experts, SwiGLU activation, RMSNorm, and shared input/output embeddings.",
+        "confidence": "model-card-explicit"
+      },
+      {
+        "module_id": "moe-ffn",
+        "claim": "模型卡将含 shared experts 的 MoE 列为核心组件。",
+        "evidence": "Granite-4.0-H-Small baseline is built on a decoder-only MoE transformer architecture. Core components of this architecture are: GQA, Mamba2, MoEs with shared experts, SwiGLU activation, RMSNorm, and shared input/output embeddings.",
+        "confidence": "model-card-explicit"
+      }
+    ],
+    "limitations": ["attention 层的具体注意力类型未在摘录中确认", "层数取自模型卡表格，发布版本配置仍需交叉验证"]
+  },
+  "hf-zai-org-glm-5-2": {
+    "status": "model-card-interpreted",
+    "review_scope": "代表模型卡逐条解读；未对照该权重版本的实现代码",
+    "source": "https://huggingface.co/zai-org/GLM-5.2/raw/main/README.md",
+    "claims": [
+      {
+        "module_id": "deepseek-sparse-attention",
+        "claim": "模型卡称改进包含 IndexShare：同一 indexer 每四个 sparse-attention 层复用一次。此处只记录模型卡声明，不判断其与 DSA 的实现等价性。",
+        "evidence": "- **Improved Architecture**: We propose [IndexShare](https://arxiv.org/abs/2603.12201), which reuses the same indexer across every four sparse attention layers, reducing per-token FLOPs by 2.9× at a 1M context length.",
+        "confidence": "model-card-contextual"
+      },
+      {
+        "module_id": "mtp",
+        "claim": "模型卡明确提到 GLM-5.2 的 MTP layer 用于 speculative decoding。",
+        "evidence": "We also improve GLM-5.2’s MTP layer for speculative decoding, increasing the acceptance length by up to 20%",
+        "confidence": "model-card-explicit"
+      }
+    ],
+    "limitations": ["IndexShare 属于跨层索引复用机制，和 DSA 本体不是同一层级；暂映射到 DSA 仅为可检索入口", "技术报告和代码尚未核验"]
+  }
+}

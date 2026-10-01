@@ -1,0 +1,9 @@
+{
+  "selected_representatives": 100,
+  "status": {
+    "ok": 94,
+    "http-401": 6
+  },
+  "selection": "one most popular candidate per config model_type (or owner when unavailable)",
+  "interpretation": "excerpts are raw model-card evidence snippets and require human interpretation; not automatic module claims"
+}

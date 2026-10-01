@@ -1,0 +1,1526 @@
+[
+  {
+    "id": "llama-3.1-8b-instruct",
+    "name": "Llama 3.1 8B Instruct",
+    "organization": "Meta",
+    "family": "Llama 3.1",
+    "parameters": "8B",
+    "release": "2024-07",
+    "architecture_type": "Dense Decoder-only Transformer",
+    "license": "Llama 3.1 Community License",
+    "summary": "标准 decoder-only 主干，使用 GQA 降低 KV cache 开销；适合作为稠密模型的结构参照。",
+    "modules": [
+      "decoder-only",
+      "rmsnorm",
+      "gqa",
+      "rope",
+      "swiglu",
+      "residual",
+      "dense-ffn"
+    ],
+    "architecture": {
+      "input": "Token Embedding",
+      "block_count": 32,
+      "block_label": "Llama Decoder Block",
+      "block_modules": [
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Self-Attention",
+          "kind": "attention",
+          "variant": "GQA",
+          "note": "RoPE · 32 Q heads / 8 KV heads"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "标准残差连接"
+        },
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Feed-Forward",
+          "kind": "ffn",
+          "variant": "SwiGLU · Dense",
+          "note": "逐 token 的稠密 FFN"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "标准残差连接"
+        }
+      ],
+      "output": "RMSNorm → LM Head"
+    },
+    "sources": [
+      {
+        "label": "Hugging Face 模型卡",
+        "url": "https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct"
+      },
+      {
+        "label": "配置文件",
+        "url": "https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct/blob/main/config.json"
+      }
+    ],
+    "evidence": "基于公开模型卡与 config 字段整理；模块图为架构级概览，不表示具体 kernel 执行顺序。",
+    "confidence": "metadata"
+  },
+  {
+    "id": "qwen2.5-72b-instruct",
+    "name": "Qwen2.5 72B Instruct",
+    "organization": "Qwen Team",
+    "family": "Qwen2.5",
+    "parameters": "72B",
+    "release": "2024-09",
+    "architecture_type": "Dense Decoder-only Transformer",
+    "license": "Qwen License",
+    "summary": "大规模稠密 decoder-only 模型，采用 GQA、RoPE 与 SwiGLU，可与 MoE 版本形成对照。",
+    "modules": [
+      "decoder-only",
+      "rmsnorm",
+      "gqa",
+      "rope",
+      "swiglu",
+      "residual",
+      "dense-ffn"
+    ],
+    "architecture": {
+      "input": "Token Embedding",
+      "block_count": 80,
+      "block_label": "Qwen Decoder Block",
+      "block_modules": [
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Self-Attention",
+          "kind": "attention",
+          "variant": "GQA",
+          "note": "RoPE · grouped-query attention"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "标准残差连接"
+        },
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Feed-Forward",
+          "kind": "ffn",
+          "variant": "SwiGLU · Dense",
+          "note": "稠密前馈网络"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "标准残差连接"
+        }
+      ],
+      "output": "RMSNorm → LM Head"
+    },
+    "sources": [
+      {
+        "label": "Hugging Face 模型卡",
+        "url": "https://huggingface.co/Qwen/Qwen2.5-72B-Instruct"
+      },
+      {
+        "label": "配置文件",
+        "url": "https://huggingface.co/Qwen/Qwen2.5-72B-Instruct/blob/main/config.json"
+      }
+    ],
+    "evidence": "基于公开模型卡与 config 字段整理；模块图为架构级概览，不表示具体 kernel 执行顺序。",
+    "confidence": "metadata"
+  },
+  {
+    "id": "deepseek-v2",
+    "name": "DeepSeek-V2",
+    "organization": "DeepSeek",
+    "family": "DeepSeek-V2",
+    "parameters": "236B · 21B activated",
+    "release": "2024-05",
+    "architecture_type": "MoE Decoder-only Transformer",
+    "license": "深度求索许可协议",
+    "summary": "以 MLA 压缩 KV 表示，并通过 DeepSeekMoE 稀疏激活专家；展示注意力与 FFN 两类关键变体。",
+    "modules": [
+      "decoder-only",
+      "rmsnorm",
+      "mla",
+      "rope",
+      "deepseek-moe",
+      "residual",
+      "moe-ffn"
+    ],
+    "architecture": {
+      "input": "Token Embedding",
+      "block_count": 60,
+      "block_label": "DeepSeek-V2 Transformer Block",
+      "block_modules": [
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Multi-head Latent Attention",
+          "kind": "attention",
+          "variant": "MLA",
+          "note": "压缩 latent KV 表示"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "标准残差路径"
+        },
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Feed-Forward",
+          "kind": "ffn",
+          "variant": "DeepSeekMoE",
+          "note": "共享专家 + 路由专家"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "标准残差路径"
+        }
+      ],
+      "output": "RMSNorm → LM Head"
+    },
+    "sources": [
+      {
+        "label": "DeepSeek-V2 技术报告",
+        "url": "https://arxiv.org/abs/2405.04434"
+      },
+      {
+        "label": "Hugging Face 模型卡",
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V2"
+      }
+    ],
+    "evidence": "结构特征依据技术报告及公开实现整理；具体专家配置需按模型变体区分。",
+    "confidence": "paper-and-code"
+  },
+  {
+    "id": "mixtral-8x7b-instruct-v0.1",
+    "name": "Mixtral 8x7B Instruct v0.1",
+    "organization": "Mistral AI",
+    "family": "Mixtral",
+    "parameters": "46.7B · 12.9B active",
+    "release": "2023-12",
+    "architecture_type": "Sparse MoE Decoder-only Transformer",
+    "license": "Apache-2.0",
+    "summary": "每个 token 由路由器选择部分专家；图谱里可把 MoE 当作 FFN 模块的一种实现，而非独立模型类型标签。",
+    "modules": [
+      "decoder-only",
+      "rmsnorm",
+      "gqa",
+      "rope",
+      "mixtral-moe",
+      "residual",
+      "moe-ffn",
+      "sliding-window"
+    ],
+    "architecture": {
+      "input": "Token Embedding",
+      "block_count": 32,
+      "block_label": "Mixtral Decoder Block",
+      "block_modules": [
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Self-Attention",
+          "kind": "attention",
+          "variant": "GQA · Sliding Window",
+          "note": "局部窗口注意力"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "标准残差连接"
+        },
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Sparse MoE FFN",
+          "kind": "ffn",
+          "variant": "8 experts · top-2",
+          "note": "路由选择专家计算"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "标准残差连接"
+        }
+      ],
+      "output": "RMSNorm → LM Head"
+    },
+    "sources": [
+      {
+        "label": "Mixtral 技术报告",
+        "url": "https://arxiv.org/abs/2401.04088"
+      },
+      {
+        "label": "Hugging Face 模型卡",
+        "url": "https://huggingface.co/mistralai/Mixtral-8x7B-Instruct-v0.1"
+      }
+    ],
+    "evidence": "依据技术报告、模型卡和公开配置整理；不同 Mixtral 变体可能有不同上下文与窗口设置。",
+    "confidence": "paper-and-code"
+  },
+  {
+    "id": "gemma-3-4b-it",
+    "name": "Gemma 3 4B IT",
+    "organization": "Google",
+    "family": "Gemma 3",
+    "parameters": "4B",
+    "release": "2025-03",
+    "architecture_type": "Dense Decoder-only Transformer",
+    "license": "Gemma Terms of Use",
+    "summary": "采用交替的局部与全局注意力层；适合展示“同一个模块类型在层间有不同配置”的图谱表达。",
+    "modules": [
+      "decoder-only",
+      "rmsnorm",
+      "gqa",
+      "rope",
+      "geglu",
+      "residual",
+      "local-global-attention"
+    ],
+    "architecture": {
+      "input": "Token Embedding",
+      "block_count": 34,
+      "block_label": "Gemma 3 Decoder Block",
+      "block_modules": [
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Self-Attention",
+          "kind": "attention",
+          "variant": "Local / Global alternation",
+          "note": "局部窗口层与全局层交替"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "残差连接"
+        },
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Feed-Forward",
+          "kind": "ffn",
+          "variant": "GeGLU · Dense",
+          "note": "稠密门控前馈网络"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "残差连接"
+        }
+      ],
+      "output": "RMSNorm → LM Head"
+    },
+    "sources": [
+      {
+        "label": "Hugging Face 模型卡",
+        "url": "https://huggingface.co/google/gemma-3-4b-it"
+      },
+      {
+        "label": "配置文件",
+        "url": "https://huggingface.co/google/gemma-3-4b-it/blob/main/config.json"
+      }
+    ],
+    "evidence": "依据公开模型卡与配置整理；局部/全局注意力的层间排布在此 demo 中做了摘要表达。",
+    "confidence": "metadata"
+  },
+  {
+    "id": "deepseek-v4-pro",
+    "name": "DeepSeek-V4-Pro",
+    "organization": "DeepSeek",
+    "family": "DeepSeek-V4",
+    "parameters": "1.6T · 49B activated",
+    "release": "2026-06",
+    "hub_created": "2026-04-22",
+    "added_in_snapshot": true,
+    "architecture_type": "MoE Hybrid Decoder-only Transformer",
+    "license": "MIT",
+    "summary": "混合 CSA/HCA 长上下文注意力与稀疏专家，并在官方模型卡中明确说明使用 mHC。",
+    "modules": [
+      "decoder-only",
+      "rmsnorm",
+      "rope",
+      "deepseek-moe",
+      "moe-ffn",
+      "mhc",
+      "csa",
+      "hca",
+      "hybrid-attention",
+      "mtp"
+    ],
+    "architecture": {
+      "input": "Token Embedding",
+      "block_count": 61,
+      "block_label": "DeepSeek-V4 Transformer Block",
+      "block_modules": [
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Hybrid Attention",
+          "kind": "attention",
+          "variant": "CSA + HCA",
+          "note": "压缩稀疏注意力与重压缩注意力"
+        },
+        {
+          "name": "mHC",
+          "kind": "connection",
+          "variant": "mHC",
+          "note": "官方模型卡确认的超连接残差结构"
+        },
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Sparse MoE",
+          "kind": "ffn",
+          "variant": "DeepSeekMoE",
+          "note": "384 routed experts · Top-6"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "层间连接"
+        }
+      ],
+      "output": "RMSNorm → LM Head",
+      "pattern": "61 层；MoE 采用稀疏路由。模型卡公开 Pro/Flash 系列架构；此处按 Pro 配置记录。"
+    },
+    "sources": [
+      {
+        "label": "DeepSeek-V4 技术报告",
+        "url": "https://arxiv.org/abs/2606.19348"
+      },
+      {
+        "label": "Hugging Face 官方模型卡",
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro"
+      },
+      {
+        "label": "Hugging Face 配置文件",
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro/blob/main/config.json"
+      }
+    ],
+    "evidence": "依据官方模型卡的 CSA/HCA、mHC 描述及 config 的 61 层、384 专家、Top-6、1M context 字段。",
+    "confidence": "paper-and-code"
+  },
+  {
+    "id": "deepseek-v4-flash",
+    "name": "DeepSeek-V4-Flash",
+    "organization": "DeepSeek",
+    "family": "DeepSeek-V4",
+    "parameters": "284B · 13B activated",
+    "release": "2026-06",
+    "hub_created": "2026-04-22",
+    "added_in_snapshot": true,
+    "architecture_type": "MoE Hybrid Decoder-only Transformer",
+    "license": "MIT",
+    "summary": "DeepSeek-V4 的较小版本：保留 CSA/HCA 与 mHC 混合架构，使用更少的层与路由专家。",
+    "modules": [
+      "decoder-only",
+      "rmsnorm",
+      "rope",
+      "deepseek-moe",
+      "moe-ffn",
+      "mhc",
+      "csa",
+      "hca",
+      "hybrid-attention",
+      "mtp"
+    ],
+    "architecture": {
+      "input": "Token Embedding",
+      "block_count": 43,
+      "block_label": "DeepSeek-V4 Transformer Block",
+      "block_modules": [
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Hybrid Attention",
+          "kind": "attention",
+          "variant": "CSA + HCA",
+          "note": "压缩稀疏注意力与重压缩注意力"
+        },
+        {
+          "name": "mHC",
+          "kind": "connection",
+          "variant": "mHC",
+          "note": "V4 系列模型卡确认"
+        },
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Sparse MoE",
+          "kind": "ffn",
+          "variant": "DeepSeekMoE",
+          "note": "256 routed experts · Top-6"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "层间连接"
+        }
+      ],
+      "output": "RMSNorm → LM Head",
+      "pattern": "43 层；284B 总参数、13B 激活；上下文长度 1M。"
+    },
+    "sources": [
+      {
+        "label": "DeepSeek-V4 技术报告",
+        "url": "https://arxiv.org/abs/2606.19348"
+      },
+      {
+        "label": "Hugging Face 官方模型卡",
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash"
+      },
+      {
+        "label": "Hugging Face 配置文件",
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash/blob/main/config.json"
+      }
+    ],
+    "evidence": "V4 系列模型卡明确声明两种 V4 版本均使用 CSA/HCA 与 mHC；Flash 的层数、专家数、Top-k 和上下文来自其 config。",
+    "confidence": "paper-and-code"
+  },
+  {
+    "id": "xing4-29b-a4b",
+    "name": "Xing4.0-29B-A4B",
+    "organization": "中国电信",
+    "family": "Xing4.0",
+    "parameters": "29B · 4B activated",
+    "release": "2026-09",
+    "hub_created": "2026-09-16",
+    "added_in_snapshot": true,
+    "architecture_type": "MoE Decoder-only Transformer",
+    "license": "Apache-2.0",
+    "summary": "将 mHC、MLA 与 MTP 组合的 MoE 模型；模型卡和配置均公开，可作为 mHC 的第二个明确样本。",
+    "modules": [
+      "decoder-only",
+      "rmsnorm",
+      "rope",
+      "mla",
+      "moe-ffn",
+      "mhc",
+      "mtp"
+    ],
+    "architecture": {
+      "input": "Token Embedding",
+      "block_count": 40,
+      "block_label": "Xing4.0 Transformer Block",
+      "block_modules": [
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Multi-head Latent Attention",
+          "kind": "attention",
+          "variant": "MLA",
+          "note": "压缩 latent KV 表示"
+        },
+        {
+          "name": "mHC",
+          "kind": "connection",
+          "variant": "mHC",
+          "note": "官方模型卡明确列为架构组成"
+        },
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Sparse MoE",
+          "kind": "ffn",
+          "variant": "MoE",
+          "note": "64 routed + 1 shared · Top-4"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "层间连接"
+        }
+      ],
+      "output": "RMSNorm → LM Head",
+      "pattern": "40 层；额外包含 1 层 MTP 预测头。"
+    },
+    "sources": [
+      {
+        "label": "Xing4.0 官方实现",
+        "url": "https://github.com/XingChen-AGI/Xing4.0-29B-A4B"
+      },
+      {
+        "label": "Hugging Face 官方模型卡",
+        "url": "https://huggingface.co/XingChen-AGI/Xing4.0-29B-A4B"
+      },
+      {
+        "label": "Hugging Face 配置文件",
+        "url": "https://huggingface.co/XingChen-AGI/Xing4.0-29B-A4B/blob/main/config.json"
+      }
+    ],
+    "evidence": "根据官方模型卡的 mHC + MLA + MTP 描述，以及 config 的 40 层、64 routed experts、Top-4、1 个 MTP 层字段。",
+    "confidence": "paper-and-code"
+  },
+  {
+    "id": "qwen3-8-2-4t-a95b",
+    "name": "Qwen3.8-2.4T-A95B",
+    "organization": "Qwen Team",
+    "family": "Qwen3.8",
+    "parameters": "2.4T · 95B activated",
+    "release": "2026-08",
+    "hub_created": "2026-08-08",
+    "added_in_snapshot": true,
+    "architecture_type": "Hybrid Attention MoE Decoder-only Transformer",
+    "license": "Other / 以仓库许可证为准",
+    "summary": "以 Gated DeltaNet 线性注意力和 Gated Attention 混合组成 92 层主干，并搭配大规模 MoE。",
+    "modules": [
+      "decoder-only",
+      "rmsnorm",
+      "rope",
+      "moe-ffn",
+      "gated-deltanet",
+      "gated-attention",
+      "hybrid-attention",
+      "mtp"
+    ],
+    "architecture": {
+      "input": "Token Embedding",
+      "block_count": 92,
+      "block_label": "Qwen3.8 Hybrid Block",
+      "block_modules": [
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Linear Attention",
+          "kind": "attention",
+          "variant": "Gated DeltaNet",
+          "note": "线性注意力层"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "残差连接"
+        },
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Sparse MoE",
+          "kind": "ffn",
+          "variant": "MoE",
+          "note": "512 experts · Top-10"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "残差连接"
+        }
+      ],
+      "output": "RMSNorm → LM Head",
+      "pattern": "92 层；配置呈现每 4 层中 3 个 linear-attention 层与 1 个 full-attention 层；512 experts，Top-10。"
+    },
+    "sources": [
+      {
+        "label": "Hugging Face 官方模型卡",
+        "url": "https://huggingface.co/Qwen/Qwen3.8-2.4T-A95B"
+      },
+      {
+        "label": "Hugging Face 配置文件",
+        "url": "https://huggingface.co/Qwen/Qwen3.8-2.4T-A95B/blob/main/config.json"
+      }
+    ],
+    "evidence": "层数、注意力层类型序列与专家配置来自公开 config；模块名称和参数规模依据官方模型卡。",
+    "confidence": "model-card-and-config"
+  },
+  {
+    "id": "qwen3-coder-next",
+    "name": "Qwen3-Coder-Next",
+    "organization": "Qwen Team",
+    "family": "Qwen3-Coder",
+    "parameters": "80B · 3B activated",
+    "release": "2026-01",
+    "hub_created": "2026-01-30",
+    "added_in_snapshot": true,
+    "architecture_type": "Hybrid Attention MoE Decoder-only Transformer",
+    "license": "Apache-2.0",
+    "summary": "面向 Coding Agent 的混合 MoE：Gated DeltaNet 与 Gated Attention 按固定模式交替，长上下文为 256K。",
+    "modules": [
+      "decoder-only",
+      "rmsnorm",
+      "rope",
+      "moe-ffn",
+      "gated-deltanet",
+      "gated-attention",
+      "hybrid-attention",
+      "mtp"
+    ],
+    "architecture": {
+      "input": "Token Embedding",
+      "block_count": 48,
+      "block_label": "Qwen3-Next Hybrid Block",
+      "block_modules": [
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Linear Attention",
+          "kind": "attention",
+          "variant": "Gated DeltaNet",
+          "note": "3 个线性注意力层"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "残差连接"
+        },
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Sparse MoE",
+          "kind": "ffn",
+          "variant": "MoE",
+          "note": "512 experts · Top-10"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "残差连接"
+        }
+      ],
+      "output": "RMSNorm → LM Head",
+      "pattern": "12 × (3 × Gated DeltaNet → MoE → 1 × Gated Attention → MoE)；48 层，512 experts，Top-10 + 1 shared。"
+    },
+    "sources": [
+      {
+        "label": "Hugging Face 官方模型卡",
+        "url": "https://huggingface.co/Qwen/Qwen3-Coder-Next"
+      },
+      {
+        "label": "Hugging Face 配置文件",
+        "url": "https://huggingface.co/Qwen/Qwen3-Coder-Next/blob/main/config.json"
+      }
+    ],
+    "evidence": "官方模型卡公开 80B/3B、混合层布局、专家与上下文；配置文件核对层数及专家字段。",
+    "confidence": "model-card-and-config"
+  },
+  {
+    "id": "glm-5-3",
+    "name": "GLM-5.3",
+    "organization": "Z.ai",
+    "family": "GLM-5",
+    "parameters": "官方仓库未明确披露",
+    "release": "2026-08",
+    "hub_created": "2026-08-25",
+    "added_in_snapshot": true,
+    "architecture_type": "MoE Decoder-only Transformer with DSA",
+    "license": "GLM License",
+    "summary": "采用 GLM MoE + DeepSeek Sparse Attention（DSA）模型类型；本条只标记可核实的主干特征，不推断 mHC。",
+    "modules": [
+      "decoder-only",
+      "rmsnorm",
+      "rope",
+      "moe-ffn",
+      "deepseek-sparse-attention",
+      "hybrid-attention"
+    ],
+    "architecture": {
+      "input": "Token Embedding",
+      "block_count": null,
+      "block_label": "GLM MoE DSA Block",
+      "block_modules": [
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "DeepSeek Sparse Attention",
+          "kind": "attention",
+          "variant": "DSA",
+          "note": "稀疏注意力变体"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "残差连接"
+        },
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Sparse MoE",
+          "kind": "ffn",
+          "variant": "MoE",
+          "note": "256 routed experts · Top-8 + 1 shared"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "残差连接"
+        }
+      ],
+      "output": "RMSNorm → LM Head",
+      "pattern": "78 层；MoE 路由 256 个专家，Top-8 + 1 shared。"
+    },
+    "sources": [
+      {
+        "label": "Hugging Face 官方模型卡",
+        "url": "https://huggingface.co/zai-org/GLM-5.3"
+      },
+      {
+        "label": "Hugging Face 配置文件",
+        "url": "https://huggingface.co/zai-org/GLM-5.3/blob/main/config.json"
+      }
+    ],
+    "evidence": "config 的 model_type 为 glm_moe_dsa、Top-8 路由可由配置核对；公开资料提及 256 routed experts 与 78 层，但当前 Hub config 未完整暴露这些字段，因此层数和总参数未在图中断言。",
+    "confidence": "model-card-and-config"
+  },
+  {
+    "id": "mimo-v2-6-pro-rl",
+    "name": "MiMo-V2.6-Pro-RL",
+    "organization": "Xiaomi MiMo",
+    "family": "MiMo-V2.6",
+    "parameters": "1.02T · 42B activated",
+    "release": "2026-09",
+    "hub_created": "2026-09-21",
+    "added_in_snapshot": true,
+    "architecture_type": "Hybrid Attention MoE Decoder-only Transformer",
+    "license": "MIT",
+    "summary": "超长上下文 MoE 变体；将局部窗口注意力与全局注意力组合，并在 70 层中混合路由专家。",
+    "modules": [
+      "decoder-only",
+      "rmsnorm",
+      "rope",
+      "moe-ffn",
+      "sliding-window",
+      "full-attention",
+      "hybrid-attention",
+      "mtp"
+    ],
+    "architecture": {
+      "input": "Token Embedding",
+      "block_count": 70,
+      "block_label": "MiMo-V2.6 Hybrid Block",
+      "block_modules": [
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Hybrid Attention",
+          "kind": "attention",
+          "variant": "SWA + Global Attention",
+          "note": "局部窗口与全局注意力混合"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "残差连接"
+        },
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Sparse MoE",
+          "kind": "ffn",
+          "variant": "MoE",
+          "note": "384 routed experts · Top-8"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "残差连接"
+        }
+      ],
+      "output": "RMSNorm → LM Head",
+      "pattern": "70 层；官方卡描述 60 个 SWA 层 + 10 个全局注意力层、384 routed experts、Top-8、1M 上下文。"
+    },
+    "sources": [
+      {
+        "label": "Hugging Face 官方模型卡",
+        "url": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL"
+      },
+      {
+        "label": "Hugging Face 配置文件",
+        "url": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL/blob/main/config.json"
+      }
+    ],
+    "evidence": "参数量、层数、SWA/全局注意力比例、专家与上下文来自官方模型卡；以模型配置为交叉参照。",
+    "confidence": "model-card-and-config"
+  },
+  {
+    "id": "mimo-v2-6-flash-rl",
+    "name": "MiMo-V2.6-Flash-RL",
+    "organization": "Xiaomi MiMo",
+    "family": "MiMo-V2.6",
+    "parameters": "309B · 15B activated",
+    "release": "2026-09",
+    "hub_created": "2026-09-21",
+    "added_in_snapshot": true,
+    "architecture_type": "Hybrid Attention MoE Decoder-only Transformer",
+    "license": "MIT",
+    "summary": "MiMo-V2.6 的 Flash 版本，使用更紧凑的混合注意力和专家配置，面向更高效推理。",
+    "modules": [
+      "decoder-only",
+      "rmsnorm",
+      "rope",
+      "moe-ffn",
+      "sliding-window",
+      "full-attention",
+      "hybrid-attention",
+      "mtp"
+    ],
+    "architecture": {
+      "input": "Token Embedding",
+      "block_count": 48,
+      "block_label": "MiMo-V2.6 Hybrid Block",
+      "block_modules": [
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Hybrid Attention",
+          "kind": "attention",
+          "variant": "SWA + Global Attention",
+          "note": "局部窗口与全局注意力混合"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "残差连接"
+        },
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Sparse MoE",
+          "kind": "ffn",
+          "variant": "MoE",
+          "note": "256 routed experts · Top-8"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "残差连接"
+        }
+      ],
+      "output": "RMSNorm → LM Head",
+      "pattern": "48 层；官方卡描述 39 个 SWA 层 + 9 个全局注意力层、256 routed experts、Top-8、1M 上下文。"
+    },
+    "sources": [
+      {
+        "label": "Hugging Face 官方模型卡",
+        "url": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Flash-RL"
+      },
+      {
+        "label": "Hugging Face 配置文件",
+        "url": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Flash-RL/blob/main/config.json"
+      }
+    ],
+    "evidence": "层数、注意力层比例、专家与上下文来自官方模型卡与公开配置。",
+    "confidence": "model-card-and-config"
+  },
+  {
+    "id": "iquest-q1",
+    "name": "IQuest-Q1",
+    "organization": "IQuestLab",
+    "family": "IQuest-Q1",
+    "parameters": "320B · 15B activated",
+    "release": "2026-09",
+    "hub_created": "2026-09-28",
+    "added_in_snapshot": true,
+    "architecture_type": "Hybrid Attention MoE Decoder-only Transformer",
+    "license": "IQuest Community License",
+    "summary": "使用 3 个 Sliding-Window Attention 层后接 1 个 Full Attention 层的周期模式，并结合 256 专家 MoE。",
+    "modules": [
+      "decoder-only",
+      "rmsnorm",
+      "rope",
+      "moe-ffn",
+      "sliding-window",
+      "full-attention",
+      "hybrid-attention",
+      "mtp"
+    ],
+    "architecture": {
+      "input": "Token Embedding",
+      "block_count": 88,
+      "block_label": "IQuest-Q1 Hybrid Block",
+      "block_modules": [
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Hybrid Attention",
+          "kind": "attention",
+          "variant": "SWA / Full Attention",
+          "note": "3 个局部窗口层 + 1 个全注意力层"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "残差连接"
+        },
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Sparse MoE",
+          "kind": "ffn",
+          "variant": "MoE",
+          "note": "256 experts · Top-8"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "残差连接"
+        }
+      ],
+      "output": "RMSNorm → LM Head",
+      "pattern": "88 层；每 4 层采用 3 SWA + 1 Full Attention，MoE 256 experts、Top-8，最大上下文 524K。"
+    },
+    "sources": [
+      {
+        "label": "IQuest-Q1 官方实现",
+        "url": "https://github.com/IQuestLab/IQuest-Q1"
+      },
+      {
+        "label": "Hugging Face 官方模型卡",
+        "url": "https://huggingface.co/IQuestLab/IQuest-Q1"
+      },
+      {
+        "label": "Hugging Face 配置文件",
+        "url": "https://huggingface.co/IQuestLab/IQuest-Q1/blob/main/config.json"
+      }
+    ],
+    "evidence": "官方模型卡和配置共同支持层数、稀疏专家及局部/全局注意力结构。",
+    "confidence": "paper-and-code"
+  },
+  {
+    "id": "aliceai-80b-a3b",
+    "name": "AliceAI-Foundation-80B-A3B-Base",
+    "organization": "Yandex",
+    "family": "AliceAI Foundation",
+    "parameters": "80B · 3B activated",
+    "release": "2026-09",
+    "hub_created": "2026-09-12",
+    "added_in_snapshot": true,
+    "architecture_type": "Hybrid Attention MoE Decoder-only Transformer",
+    "license": "Apache-2.0",
+    "summary": "以 Kimi Delta Attention（KDA）与 Gated Attention 混合层构成 MoE 主干，模型卡公开了精确的周期布局。",
+    "modules": [
+      "decoder-only",
+      "rmsnorm",
+      "rope",
+      "moe-ffn",
+      "kda",
+      "gated-attention",
+      "hybrid-attention"
+    ],
+    "architecture": {
+      "input": "Token Embedding",
+      "block_count": 48,
+      "block_label": "AliceAI Hybrid Block",
+      "block_modules": [
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Linear Attention",
+          "kind": "attention",
+          "variant": "KDA",
+          "note": "3 个 KDA 层"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "残差连接"
+        },
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Sparse MoE",
+          "kind": "ffn",
+          "variant": "MoE",
+          "note": "512 experts · Top-10 + 1 shared"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "残差连接"
+        }
+      ],
+      "output": "RMSNorm → LM Head",
+      "pattern": "12 × (3 × KDA → MoE → 1 × Gated Attention → MoE)；48 层，512 experts。"
+    },
+    "sources": [
+      {
+        "label": "Hugging Face 官方模型卡",
+        "url": "https://huggingface.co/yandex/AliceAI-Foundation-80B-A3B-Base"
+      },
+      {
+        "label": "Hugging Face 配置文件",
+        "url": "https://huggingface.co/yandex/AliceAI-Foundation-80B-A3B-Base/blob/main/config.json"
+      }
+    ],
+    "evidence": "官方模型卡明确给出 KDA/Gated Attention 周期布局与专家配置；配置核对层数和 attention 类型。",
+    "confidence": "model-card-and-config"
+  },
+  {
+    "id": "nemotron-3-5-lightning",
+    "name": "Nemotron-3.5-Lightning-30B-A3B",
+    "organization": "NVIDIA",
+    "family": "Nemotron-3.5",
+    "parameters": "30B · 3B activated",
+    "release": "2026-08",
+    "hub_created": "2026-08-01",
+    "added_in_snapshot": true,
+    "architecture_type": "Mamba-Transformer Hybrid MoE",
+    "license": "Other / NVIDIA Open Model License",
+    "summary": "在 Mamba-2 与 Transformer Attention 层之间交织 MoE，并包含 MTP；展示不同于纯 Transformer 的混合主干。",
+    "modules": [
+      "decoder-only",
+      "rmsnorm",
+      "rope",
+      "moe-ffn",
+      "mamba2",
+      "gqa",
+      "hybrid-attention",
+      "mtp"
+    ],
+    "architecture": {
+      "input": "Token Embedding",
+      "block_count": 52,
+      "block_label": "Nemotron-H Hybrid Block",
+      "block_modules": [
+        {
+          "name": "Mamba-2",
+          "kind": "mixer",
+          "variant": "Mamba-2",
+          "note": "状态空间序列混合层"
+        },
+        {
+          "name": "Sparse MoE",
+          "kind": "ffn",
+          "variant": "MoE",
+          "note": "128 routed experts · Top-6"
+        },
+        {
+          "name": "Self-Attention",
+          "kind": "attention",
+          "variant": "Transformer Attention",
+          "note": "与 Mamba/MoE 层交织"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "混合主干连接"
+        }
+      ],
+      "output": "LM Head + MTP",
+      "pattern": "52 层；Mamba-2 + MoE + 少量 Attention 混合；128 routed experts、Top-6，额外有 MTP。"
+    },
+    "sources": [
+      {
+        "label": "Hugging Face 官方模型卡",
+        "url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16"
+      },
+      {
+        "label": "Hugging Face 配置文件",
+        "url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16/blob/main/config.json"
+      }
+    ],
+    "evidence": "NVIDIA 官方模型卡和 config 的 Nemotron-H 架构类型、专家层数与 MTP 信息。",
+    "confidence": "model-card-and-config"
+  },
+  {
+    "id": "longcat-2",
+    "name": "LongCat-2.0",
+    "organization": "Meituan",
+    "family": "LongCat-2.0",
+    "parameters": "1.6T · ~48B activated",
+    "release": "2026-07",
+    "hub_created": "2026-07-05",
+    "added_in_snapshot": true,
+    "architecture_type": "MoE Hybrid Attention Decoder-only Transformer",
+    "license": "MIT",
+    "summary": "大规模 MoE 模型，引入 LongCat Sparse Attention（LSA）与跨层索引等稀疏注意力设计，并支持 MTP。",
+    "modules": [
+      "decoder-only",
+      "rmsnorm",
+      "rope",
+      "moe-ffn",
+      "mla",
+      "longcat-sparse-attention",
+      "hybrid-attention",
+      "mtp"
+    ],
+    "architecture": {
+      "input": "Token Embedding",
+      "block_count": null,
+      "block_label": "LongCat-2.0 Transformer Block",
+      "block_modules": [
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "LongCat Sparse Attention",
+          "kind": "attention",
+          "variant": "LSA",
+          "note": "含跨层索引等稀疏注意力优化"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "残差连接"
+        },
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Sparse MoE",
+          "kind": "ffn",
+          "variant": "MoE",
+          "note": "768 routed experts"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "残差连接"
+        }
+      ],
+      "output": "RMSNorm → LM Head",
+      "pattern": "总参数约 1.6T、每 token 激活约 48B；配置公开 768 个 routed experts。来源未稳定披露统一层数，因此不填写层数。"
+    },
+    "sources": [
+      {
+        "label": "Hugging Face 官方模型卡",
+        "url": "https://huggingface.co/meituan-longcat/LongCat-2.0"
+      },
+      {
+        "label": "Hugging Face 仓库文件",
+        "url": "https://huggingface.co/meituan-longcat/LongCat-2.0/tree/main"
+      }
+    ],
+    "evidence": "LongCat 官方模型卡描述 LSA、MoE、1.6T 参数与 MTP；config 核对 routed experts。",
+    "confidence": "model-card-and-config"
+  },
+  {
+    "id": "minicpm5-2b",
+    "name": "MiniCPM5-2B",
+    "organization": "OpenBMB",
+    "family": "MiniCPM5",
+    "parameters": "约 2.5B",
+    "release": "2026-09",
+    "hub_created": "2026-09-06",
+    "added_in_snapshot": true,
+    "architecture_type": "Dense Decoder-only Transformer",
+    "license": "Apache-2.0",
+    "summary": "面向端侧与 Agent 场景的小型稠密模型；42 层、GQA（16 个 Q heads / 2 个 KV heads），原生支持 131K 上下文。",
+    "modules": [
+      "decoder-only",
+      "rmsnorm",
+      "gqa",
+      "rope",
+      "swiglu",
+      "residual",
+      "dense-ffn"
+    ],
+    "architecture": {
+      "input": "Token Embedding",
+      "block_count": 42,
+      "block_label": "MiniCPM5 Decoder Block",
+      "block_modules": [
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Self-Attention",
+          "kind": "attention",
+          "variant": "GQA",
+          "note": "16 Q heads / 2 KV heads"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "残差连接"
+        },
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Feed-Forward",
+          "kind": "ffn",
+          "variant": "Dense MLP",
+          "note": "稠密前馈网络"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "残差连接"
+        }
+      ],
+      "output": "RMSNorm → LM Head",
+      "pattern": "42 层；上下文长度 131,072。"
+    },
+    "sources": [
+      {
+        "label": "Hugging Face 官方模型卡",
+        "url": "https://huggingface.co/openbmb/MiniCPM5-2B"
+      },
+      {
+        "label": "Hugging Face 配置文件",
+        "url": "https://huggingface.co/openbmb/MiniCPM5-2B/blob/main/config.json"
+      }
+    ],
+    "evidence": "官方模型卡公开参数统计、42 层、GQA 头数和上下文；config 的架构类型为 LlamaForCausalLM。",
+    "confidence": "model-card-and-config"
+  },
+  {
+    "id": "granite-4-2-8b",
+    "name": "Granite-4.2-8B",
+    "organization": "IBM",
+    "family": "Granite 4.2",
+    "parameters": "8B",
+    "release": "2026-08",
+    "hub_created": "2026-08-07",
+    "added_in_snapshot": true,
+    "architecture_type": "Dense Decoder-only Transformer",
+    "license": "Apache-2.0",
+    "summary": "标准稠密 decoder-only 主干，采用 GQA、RoPE、SwiGLU 与 RMSNorm，适合作为近期 Dense 基线。",
+    "modules": [
+      "decoder-only",
+      "rmsnorm",
+      "gqa",
+      "rope",
+      "swiglu",
+      "residual",
+      "dense-ffn"
+    ],
+    "architecture": {
+      "input": "Token Embedding",
+      "block_count": 40,
+      "block_label": "Granite Decoder Block",
+      "block_modules": [
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Self-Attention",
+          "kind": "attention",
+          "variant": "GQA",
+          "note": "32 Q heads / 8 KV heads"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "残差连接"
+        },
+        {
+          "name": "RMSNorm",
+          "kind": "norm",
+          "variant": "RMSNorm",
+          "note": "Pre-Norm"
+        },
+        {
+          "name": "Feed-Forward",
+          "kind": "ffn",
+          "variant": "SwiGLU · Dense",
+          "note": "稠密 SwiGLU MLP"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "残差连接"
+        }
+      ],
+      "output": "RMSNorm → LM Head",
+      "pattern": "40 层；8B 参数，GQA 为 32 Q heads / 8 KV heads。"
+    },
+    "sources": [
+      {
+        "label": "Hugging Face 官方模型卡",
+        "url": "https://huggingface.co/ibm-granite/granite-4.2-8b"
+      },
+      {
+        "label": "Hugging Face 配置文件",
+        "url": "https://huggingface.co/ibm-granite/granite-4.2-8b/blob/main/config.json"
+      }
+    ],
+    "evidence": "IBM 官方模型卡与 config 确认 dense decoder-only、GQA、RoPE、SwiGLU、RMSNorm 与层数。",
+    "confidence": "model-card-and-config"
+  },
+  {
+    "id": "lfm2-5-8b-a1b",
+    "name": "LFM2.5-8B-A1B",
+    "organization": "Liquid AI",
+    "family": "LFM2.5",
+    "parameters": "8.3B · 1.5B active",
+    "release": "2026-05",
+    "hub_created": "2026-05-28",
+    "added_in_snapshot": true,
+    "architecture_type": "Hybrid Convolution MoE Language Model",
+    "license": "LFM Open License",
+    "summary": "端侧混合模型，以 double-gated convolution 与 GQA 混排，带轻量 MoE；24 层中 18 个卷积混合层、6 个 GQA 层。",
+    "modules": [
+      "decoder-only",
+      "rmsnorm",
+      "gqa",
+      "moe-ffn",
+      "gated-conv",
+      "hybrid-attention"
+    ],
+    "architecture": {
+      "input": "Token Embedding",
+      "block_count": 24,
+      "block_label": "LFM2.5 Hybrid Block",
+      "block_modules": [
+        {
+          "name": "Double-Gated Convolution",
+          "kind": "mixer",
+          "variant": "Gated Conv",
+          "note": "18 个卷积混合层"
+        },
+        {
+          "name": "Self-Attention",
+          "kind": "attention",
+          "variant": "GQA",
+          "note": "6 个注意力层"
+        },
+        {
+          "name": "Sparse MoE",
+          "kind": "ffn",
+          "variant": "MoE",
+          "note": "32 experts · Top-4"
+        },
+        {
+          "name": "Residual Add",
+          "kind": "connection",
+          "note": "混合主干连接"
+        }
+      ],
+      "output": "LM Head",
+      "pattern": "24 层混合结构（18 convolution + 6 GQA）；8.3B 总参数、1.5B 激活、32 experts Top-4。"
+    },
+    "sources": [
+      {
+        "label": "Hugging Face 官方模型卡",
+        "url": "https://huggingface.co/LiquidAI/LFM2.5-8B-A1B"
+      },
+      {
+        "label": "Hugging Face 配置文件",
+        "url": "https://huggingface.co/LiquidAI/LFM2.5-8B-A1B/blob/main/config.json"
+      }
+    ],
+    "evidence": "Liquid AI 官方模型卡公开层数、卷积/注意力比例、参数量、专家数与上下文。",
+    "confidence": "model-card-and-config"
+  }
+]

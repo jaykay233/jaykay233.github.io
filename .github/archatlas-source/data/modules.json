@@ -1,0 +1,226 @@
+[
+  {
+    "id": "decoder-only",
+    "name": "Decoder-only Transformer",
+    "category": "主干结构",
+    "description": "仅使用因果自注意力的 Transformer 解码器，是当前多数自回归语言模型的主干。",
+    "count": 5,
+    "status": "verified"
+  },
+  {
+    "id": "gqa",
+    "name": "GQA",
+    "category": "Attention",
+    "description": "Grouped-Query Attention：多个 Query 头共享较少的 Key/Value 头，减少 KV cache 与推理带宽开销。",
+    "count": 3,
+    "status": "verified"
+  },
+  {
+    "id": "mla",
+    "name": "MLA",
+    "category": "Attention",
+    "description": "Multi-head Latent Attention：通过低维 latent 表示压缩注意力 KV 状态。",
+    "count": 1,
+    "status": "verified"
+  },
+  {
+    "id": "rmsnorm",
+    "name": "RMSNorm",
+    "category": "Normalization",
+    "description": "按均方根进行缩放的归一化模块；常见于 decoder-only LLM。",
+    "count": 5,
+    "status": "verified"
+  },
+  {
+    "id": "rope",
+    "name": "RoPE",
+    "category": "位置编码",
+    "description": "Rotary Positional Embedding，通过旋转变换注入位置信息。",
+    "count": 5,
+    "status": "verified"
+  },
+  {
+    "id": "swiglu",
+    "name": "SwiGLU",
+    "category": "FFN",
+    "description": "门控前馈结构的一种激活/投影组合。",
+    "count": 2,
+    "status": "verified"
+  },
+  {
+    "id": "deepseek-moe",
+    "name": "DeepSeekMoE",
+    "category": "FFN / MoE",
+    "description": "包含共享专家与细粒度路由专家的稀疏专家结构。",
+    "count": 1,
+    "status": "verified"
+  },
+  {
+    "id": "mixtral-moe",
+    "name": "Mixtral Sparse MoE",
+    "category": "FFN / MoE",
+    "description": "路由器为每个 token 选择 top-k 专家参与前馈计算。",
+    "count": 1,
+    "status": "verified"
+  },
+  {
+    "id": "mhc",
+    "name": "mHC",
+    "category": "连接结构",
+    "description": "Manifold-Constrained Hyper-Connections：对残差/跨层连接施加流形约束的连接结构；DeepSeek-V4 与 Xing4.0 官方模型卡均明确提及。",
+    "count": 0,
+    "status": "verified"
+  },
+  {
+    "id": "ihc",
+    "name": "iHC",
+    "category": "连接结构",
+    "description": "Hyper-Connections 相关结构的分类项。具体定义和模型归属需要按论文/实现版本核验；截至本 Demo 快照没有已核验关联。",
+    "count": 0,
+    "status": "taxonomy-only"
+  },
+  {
+    "id": "dense-ffn",
+    "name": "Dense FFN",
+    "category": "FFN",
+    "description": "每个 token 都经过同一套前馈网络参数计算的稠密前馈模块。",
+    "count": 0,
+    "status": "verified"
+  },
+  {
+    "id": "moe-ffn",
+    "name": "MoE FFN",
+    "category": "FFN / MoE",
+    "description": "通过路由器将 token 分配给一个或多个专家进行稀疏前馈计算。",
+    "count": 0,
+    "status": "verified"
+  },
+  {
+    "id": "geglu",
+    "name": "GeGLU",
+    "category": "FFN",
+    "description": "基于 GELU 门控的前馈模块变体，常与投影层组合形成 gated FFN。",
+    "count": 0,
+    "status": "verified"
+  },
+  {
+    "id": "residual",
+    "name": "Residual Connection",
+    "category": "连接结构",
+    "description": "将模块输入通过 skip path 与变换结果相加的残差连接。",
+    "count": 0,
+    "status": "verified"
+  },
+  {
+    "id": "sliding-window",
+    "name": "Sliding Window Attention",
+    "category": "Attention",
+    "description": "将注意力范围限制在局部 token 窗口内，以控制计算与 KV 状态开销。",
+    "count": 0,
+    "status": "verified"
+  },
+  {
+    "id": "local-global-attention",
+    "name": "Local / Global Attention",
+    "category": "Attention",
+    "description": "在层间交替使用局部窗口注意力与全局注意力的配置模式。",
+    "count": 0,
+    "status": "verified"
+  },
+  {
+    "id": "csa",
+    "name": "Compressed Sparse Attention",
+    "category": "Attention",
+    "description": "压缩稀疏注意力（CSA），DeepSeek-V4 混合注意力的一部分。",
+    "count": 0,
+    "status": "verified"
+  },
+  {
+    "id": "hca",
+    "name": "Heavily Compressed Attention",
+    "category": "Attention",
+    "description": "重压缩注意力（HCA），DeepSeek-V4 长上下文混合注意力的一部分。",
+    "count": 0,
+    "status": "verified"
+  },
+  {
+    "id": "hybrid-attention",
+    "name": "Hybrid Attention Layout",
+    "category": "Attention",
+    "description": "在同一模型层间组合不同注意力/序列混合模块的架构布局；具体周期按模型卡分别记录。",
+    "count": 0,
+    "status": "verified"
+  },
+  {
+    "id": "gated-deltanet",
+    "name": "Gated DeltaNet",
+    "category": "Attention / Linear Attention",
+    "description": "带门控的 DeltaNet 线性注意力层，常与全注意力层混合。",
+    "count": 0,
+    "status": "verified"
+  },
+  {
+    "id": "gated-attention",
+    "name": "Gated Attention",
+    "category": "Attention",
+    "description": "带门控的全注意力模块，常与线性注意力层交替。",
+    "count": 0,
+    "status": "verified"
+  },
+  {
+    "id": "kda",
+    "name": "Kimi Delta Attention (KDA)",
+    "category": "Attention / Linear Attention",
+    "description": "Kimi Delta Attention 线性注意力变体。",
+    "count": 0,
+    "status": "verified"
+  },
+  {
+    "id": "full-attention",
+    "name": "Full Attention",
+    "category": "Attention",
+    "description": "在序列上执行全局注意力；混合模型常与滑动窗口或线性注意力交替。",
+    "count": 0,
+    "status": "verified"
+  },
+  {
+    "id": "mamba2",
+    "name": "Mamba-2",
+    "category": "序列混合",
+    "description": "基于状态空间模型的序列混合模块，可与 Transformer Attention 和 MoE 层组成混合主干。",
+    "count": 0,
+    "status": "verified"
+  },
+  {
+    "id": "gated-conv",
+    "name": "Double-Gated Convolution",
+    "category": "序列混合",
+    "description": "Liquid AI LFM 系列使用的双门控卷积序列混合层。",
+    "count": 0,
+    "status": "verified"
+  },
+  {
+    "id": "longcat-sparse-attention",
+    "name": "LongCat Sparse Attention (LSA)",
+    "category": "Attention",
+    "description": "LongCat 稀疏注意力设计，包含跨层索引以摊销注意力索引开销。",
+    "count": 0,
+    "status": "verified"
+  },
+  {
+    "id": "deepseek-sparse-attention",
+    "name": "DeepSeek Sparse Attention (DSA)",
+    "category": "Attention",
+    "description": "稀疏注意力架构变体；GLM-5.3 的 model_type 标识 glm_moe_dsa。",
+    "count": 0,
+    "status": "verified"
+  },
+  {
+    "id": "mtp",
+    "name": "Multi-Token Prediction (MTP)",
+    "category": "训练 / 推理辅助头",
+    "description": "额外预测多个后续 token 的辅助预测头；不是每层重复的主干模块。",
+    "count": 0,
+    "status": "verified"
+  }
+]
