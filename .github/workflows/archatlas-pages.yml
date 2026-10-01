@@ -36,30 +36,23 @@ jobs:
       - name: Test API and static export
         working-directory: .github/archatlas-source
         run: python -m unittest discover -s tests -v
-      - name: Build ArchAtlas static app
-        run: python .github/archatlas-source/scripts/build_pages.py --output archatlas
-      - name: Commit refreshed snapshot
+      - name: Build ArchAtlas for the website root
+        run: python .github/archatlas-source/scripts/build_pages.py --output public
+      - name: Replace the website root with ArchAtlas
+        run: |
+          rsync -a --delete --exclude='/.git/' --exclude='/.github/' --exclude='/public/' public/ ./
+          printf '/public/\n' >> .git/info/exclude
+      - name: Commit refreshed snapshot and root website
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .github/archatlas-source/data archatlas
+          git add -A
           if git diff --cached --quiet; then
             echo "Snapshot has no changes; nothing to commit."
           else
-            git commit -m "chore: refresh ArchAtlas model snapshot"
+            git commit -m "chore: refresh and deploy ArchAtlas at site root"
             git push
           fi
-      - name: Assemble the existing website plus ArchAtlas
-        run: |
-          rm -rf public
-          mkdir -p public
-          shopt -s dotglob
-          for path in *; do
-            case "$path" in
-              .git|.github|public) continue ;;
-            esac
-            cp -a "$path" public/
-          done
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

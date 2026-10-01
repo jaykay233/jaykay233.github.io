@@ -60,9 +60,9 @@ python3 scripts/sync_hf_catalog.py
 
 ### GitHub Pages 静态部署
 
-ArchAtlas 前端原本依赖本地 Python API。`scripts/build_pages.py` 可将 API 快照预先导出为静态 JSON，从而部署到 GitHub Pages；构建输出适用于项目子路径（例如 `https://jaykay233.github.io/archatlas/`），不要求 Pages 运行后端服务。
+ArchAtlas 前端原本依赖本地 Python API。`scripts/build_pages.py` 可将 API 快照预先导出为静态 JSON，从而部署到 GitHub Pages；构建输出适用于 GitHub Pages 根目录（例如 `https://jaykay233.github.io/`）或项目子路径，不要求 Pages 运行后端服务。
 
-当前 `jaykay233.github.io` 仓库已有个人网站，因此部署应新增 `/archatlas/` 子目录，不覆盖原首页。仓库的 Actions 工作流会每日抓取并重建静态快照；如果使用 Pages 的 Actions 部署模式，部署 artifact 需要包含现有网站根目录和 ArchAtlas 子目录。
+当前 `jaykay233.github.io` 使用 Actions artifact 部署 ArchAtlas 到网站根目录，替换原有个人网站页面。仓库的 Actions 工作流会每日刷新模型数据、重建静态快照并重新部署。
 
 本地生成预览：
 

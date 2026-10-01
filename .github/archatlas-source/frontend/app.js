@@ -1,5 +1,5 @@
 const app = document.getElementById('app-view');
-const isPagesSite = /\/archatlas\/?$/.test(location.pathname);
+const isPagesSite = location.hostname.endsWith('github.io') || /\/archatlas\/?$/.test(location.pathname);
 const state = { view: 'models', models: [], modules: [], stats: {}, selectedId: '', filter: 'all', sort: 'popular', query: '', moduleQuery: '', selectedModule: 'mhc', relatedModelQuery: '' };
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];

@@ -140,6 +140,7 @@ class ApiTest(unittest.TestCase):
             self.assertIn('href="styles.css?', html)
             self.assertIn('src="app.js?', html)
             self.assertIn("api/${path.replace", app)
+            self.assertIn("hostname.endsWith('github.io')", app)
             self.assertEqual(stats["models"], len(models["items"]))
             self.assertEqual(stats["modules"], len([m for m in modules["items"] if m["count"] > 0]))
             self.assertGreater(len(models["items"]), 1000)
