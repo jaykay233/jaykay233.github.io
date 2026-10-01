@@ -623,7 +623,7 @@
     "downloads_snapshot": 703,
     "likes_snapshot": 9,
     "rankings": {
-      "trendingScore": 148
+      "trendingScore": 149
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · llama",
@@ -1377,9 +1377,9 @@
     "hub_created": "2026-09-02",
     "hub_updated": "2026-09-25",
     "downloads_snapshot": 1354,
-    "likes_snapshot": 13,
+    "likes_snapshot": 14,
     "rankings": {
-      "trendingScore": 705
+      "trendingScore": 429
     },
     "added_in_snapshot": true,
     "architecture_type": "待拆解",
@@ -1657,7 +1657,7 @@
     "downloads_snapshot": 25068,
     "likes_snapshot": 498,
     "rankings": {
-      "trendingScore": 423,
+      "trendingScore": 424,
       "likes": 291
     },
     "added_in_snapshot": true,
@@ -2211,7 +2211,7 @@
     "downloads_snapshot": 32914,
     "likes_snapshot": 45,
     "rankings": {
-      "trendingScore": 422
+      "trendingScore": 423
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · glm_moe_dsa",
@@ -3988,7 +3988,7 @@
     "downloads_snapshot": 2130,
     "likes_snapshot": 20,
     "rankings": {
-      "trendingScore": 652
+      "trendingScore": 653
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
@@ -4402,7 +4402,7 @@
     "downloads_snapshot": 16765,
     "likes_snapshot": 419,
     "rankings": {
-      "trendingScore": 411,
+      "trendingScore": 412,
       "likes": 345
     },
     "added_in_snapshot": true,
@@ -6981,7 +6981,7 @@
     "downloads_snapshot": 4282,
     "likes_snapshot": 542,
     "rankings": {
-      "trendingScore": 632,
+      "trendingScore": 633,
       "likes": 266
     },
     "added_in_snapshot": true,
@@ -7181,7 +7181,7 @@
     "downloads_snapshot": 879,
     "likes_snapshot": 70,
     "rankings": {
-      "trendingScore": 629
+      "trendingScore": 630
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · nemotron_h_puzzle",
@@ -7598,7 +7598,7 @@
     "downloads_snapshot": 731093,
     "likes_snapshot": 5140,
     "rankings": {
-      "trendingScore": 140,
+      "trendingScore": 141,
       "downloads": 115,
       "likes": 7
     },
@@ -8092,7 +8092,7 @@
     "downloads_snapshot": 124611,
     "likes_snapshot": 149,
     "rankings": {
-      "trendingScore": 397,
+      "trendingScore": 398,
       "downloads": 534
     },
     "added_in_snapshot": true,
@@ -8667,7 +8667,7 @@
     "downloads_snapshot": 9752,
     "likes_snapshot": 571,
     "rankings": {
-      "trendingScore": 396,
+      "trendingScore": 397,
       "likes": 253
     },
     "added_in_snapshot": true,
@@ -12634,7 +12634,7 @@
     "downloads_snapshot": 250252,
     "likes_snapshot": 429,
     "rankings": {
-      "trendingScore": 394,
+      "trendingScore": 395,
       "downloads": 334,
       "likes": 337
     },
@@ -12731,7 +12731,7 @@
     "downloads_snapshot": 22336,
     "likes_snapshot": 759,
     "rankings": {
-      "trendingScore": 603,
+      "trendingScore": 604,
       "likes": 170
     },
     "added_in_snapshot": true,
@@ -14290,7 +14290,7 @@
     "downloads_snapshot": 54138,
     "likes_snapshot": 47,
     "rankings": {
-      "trendingScore": 602,
+      "trendingScore": 603,
       "downloads": 830
     },
     "added_in_snapshot": true,
@@ -16284,7 +16284,7 @@
     "downloads_snapshot": 1139911,
     "likes_snapshot": 1248,
     "rankings": {
-      "trendingScore": 599,
+      "trendingScore": 600,
       "downloads": 73,
       "likes": 86
     },
@@ -23073,7 +23073,7 @@
     "downloads_snapshot": 183,
     "likes_snapshot": 9,
     "rankings": {
-      "trendingScore": 391
+      "trendingScore": 392
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
@@ -23722,7 +23722,7 @@
     "downloads_snapshot": 4814437,
     "likes_snapshot": 124,
     "rankings": {
-      "trendingScore": 589,
+      "trendingScore": 590,
       "downloads": 17
     },
     "added_in_snapshot": true,
@@ -26771,7 +26771,7 @@
     "downloads_snapshot": 1016,
     "likes_snapshot": 84,
     "rankings": {
-      "trendingScore": 580
+      "trendingScore": 581
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
@@ -26990,7 +26990,7 @@
     "downloads_snapshot": 631,
     "likes_snapshot": 34,
     "rankings": {
-      "trendingScore": 579
+      "trendingScore": 580
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
@@ -30744,7 +30744,7 @@
     "downloads_snapshot": 1809855,
     "likes_snapshot": 1856,
     "rankings": {
-      "trendingScore": 167,
+      "trendingScore": 168,
       "downloads": 44,
       "likes": 45
     },
@@ -35068,7 +35068,7 @@
     "downloads_snapshot": 102127,
     "likes_snapshot": 2058,
     "rankings": {
-      "trendingScore": 572,
+      "trendingScore": 573,
       "downloads": 592,
       "likes": 43
     },
@@ -37358,7 +37358,7 @@
     "downloads_snapshot": 4448,
     "likes_snapshot": 82,
     "rankings": {
-      "trendingScore": 570
+      "trendingScore": 571
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
@@ -39398,7 +39398,7 @@
     "downloads_snapshot": 484649,
     "likes_snapshot": 152,
     "rankings": {
-      "trendingScore": 384,
+      "trendingScore": 385,
       "downloads": 181
     },
     "added_in_snapshot": true,
@@ -45926,7 +45926,7 @@
     "downloads_snapshot": 24733,
     "likes_snapshot": 163,
     "rankings": {
-      "trendingScore": 557,
+      "trendingScore": 558,
       "likes": 959
     },
     "added_in_snapshot": true,
@@ -46008,7 +46008,7 @@
     "downloads_snapshot": 14699,
     "likes_snapshot": 53,
     "rankings": {
-      "trendingScore": 383
+      "trendingScore": 384
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · ouro",
@@ -49077,7 +49077,7 @@
     "downloads_snapshot": 20633,
     "likes_snapshot": 1093,
     "rankings": {
-      "trendingScore": 382,
+      "trendingScore": 383,
       "likes": 105
     },
     "added_in_snapshot": true,
@@ -51884,7 +51884,7 @@
     "downloads_snapshot": 54565,
     "likes_snapshot": 1006,
     "rankings": {
-      "trendingScore": 556,
+      "trendingScore": 557,
       "downloads": 824,
       "likes": 114
     },
@@ -53767,7 +53767,7 @@
     "downloads_snapshot": 168304,
     "likes_snapshot": 87,
     "rankings": {
-      "trendingScore": 555,
+      "trendingScore": 556,
       "downloads": 434
     },
     "added_in_snapshot": true,
@@ -54601,7 +54601,7 @@
     "downloads_snapshot": 36224,
     "likes_snapshot": 267,
     "rankings": {
-      "trendingScore": 554,
+      "trendingScore": 555,
       "likes": 552
     },
     "added_in_snapshot": true,
@@ -54711,7 +54711,7 @@
     "downloads_snapshot": 3676,
     "likes_snapshot": 106,
     "rankings": {
-      "trendingScore": 553
+      "trendingScore": 554
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · gpt_oss",
@@ -55916,7 +55916,7 @@
     "downloads_snapshot": 295105,
     "likes_snapshot": 1055,
     "rankings": {
-      "trendingScore": 552,
+      "trendingScore": 553,
       "downloads": 283,
       "likes": 107
     },
@@ -70954,7 +70954,7 @@
     "downloads_snapshot": 1567,
     "likes_snapshot": 221,
     "rankings": {
-      "trendingScore": 549,
+      "trendingScore": 550,
       "likes": 684
     },
     "added_in_snapshot": true,
@@ -72821,7 +72821,7 @@
     "downloads_snapshot": 72759,
     "likes_snapshot": 647,
     "rankings": {
-      "trendingScore": 542,
+      "trendingScore": 543,
       "downloads": 712,
       "likes": 220
     },
@@ -74841,7 +74841,7 @@
     "downloads_snapshot": 260890,
     "likes_snapshot": 642,
     "rankings": {
-      "trendingScore": 375,
+      "trendingScore": 376,
       "downloads": 321,
       "likes": 224
     },
@@ -76779,7 +76779,7 @@
     "downloads_snapshot": 617032,
     "likes_snapshot": 1039,
     "rankings": {
-      "trendingScore": 374,
+      "trendingScore": 375,
       "downloads": 142,
       "likes": 109
     },
@@ -92289,7 +92289,7 @@
     "downloads_snapshot": 26872,
     "likes_snapshot": 479,
     "rankings": {
-      "trendingScore": 371,
+      "trendingScore": 372,
       "likes": 300
     },
     "added_in_snapshot": true,
@@ -95731,7 +95731,7 @@
     "downloads_snapshot": 771757,
     "likes_snapshot": 199,
     "rankings": {
-      "trendingScore": 369,
+      "trendingScore": 370,
       "downloads": 108,
       "likes": 780
     },
@@ -95909,7 +95909,7 @@
     "downloads_snapshot": 689897,
     "likes_snapshot": 135,
     "rankings": {
-      "trendingScore": 164,
+      "trendingScore": 165,
       "downloads": 123
     },
     "added_in_snapshot": true,
@@ -96719,7 +96719,7 @@
     "downloads_snapshot": 4138026,
     "likes_snapshot": 754,
     "rankings": {
-      "trendingScore": 368,
+      "trendingScore": 369,
       "downloads": 21,
       "likes": 174
     },
@@ -96809,7 +96809,7 @@
     "downloads_snapshot": 3178073,
     "likes_snapshot": 559,
     "rankings": {
-      "trendingScore": 366,
+      "trendingScore": 367,
       "downloads": 30,
       "likes": 257
     },
@@ -96899,7 +96899,7 @@
     "downloads_snapshot": 2117982,
     "likes_snapshot": 486,
     "rankings": {
-      "trendingScore": 367,
+      "trendingScore": 368,
       "downloads": 38,
       "likes": 298
     },
@@ -100322,7 +100322,7 @@
     "downloads_snapshot": 2150,
     "likes_snapshot": 92,
     "rankings": {
-      "trendingScore": 534
+      "trendingScore": 535
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · glm4",
@@ -101565,7 +101565,7 @@
     "downloads_snapshot": 1504553,
     "likes_snapshot": 3178,
     "rankings": {
-      "trendingScore": 533,
+      "trendingScore": 534,
       "downloads": 55,
       "likes": 20
     },
@@ -106102,7 +106102,7 @@
     "downloads_snapshot": 59965,
     "likes_snapshot": 209,
     "rankings": {
-      "trendingScore": 358,
+      "trendingScore": 359,
       "downloads": 794,
       "likes": 726
     },
@@ -106237,7 +106237,7 @@
     "downloads_snapshot": 380940,
     "likes_snapshot": 845,
     "rankings": {
-      "trendingScore": 528,
+      "trendingScore": 529,
       "downloads": 231,
       "likes": 144
     },
@@ -110545,7 +110545,7 @@
     "downloads_snapshot": 457269,
     "likes_snapshot": 1630,
     "rankings": {
-      "trendingScore": 355,
+      "trendingScore": 356,
       "downloads": 198,
       "likes": 60
     },
@@ -110642,7 +110642,7 @@
     "downloads_snapshot": 339542,
     "likes_snapshot": 696,
     "rankings": {
-      "trendingScore": 354,
+      "trendingScore": 355,
       "downloads": 255,
       "likes": 192
     },
@@ -110739,7 +110739,7 @@
     "downloads_snapshot": 266427,
     "likes_snapshot": 900,
     "rankings": {
-      "trendingScore": 525,
+      "trendingScore": 526,
       "downloads": 317,
       "likes": 130
     },
