@@ -46,7 +46,7 @@ jobs:
           rsync -a interview-questions/ public/interview-questions/
       - name: Replace the website root with ArchAtlas
         run: |
-          rsync -a --delete --exclude='/.git/' --exclude='/.github/' --exclude='/public/' public/ ./
+          rsync -a --delete --exclude='/.git/' --exclude='/.github/' --exclude='/public/' --exclude='/scripts/' --exclude='/tests/' --exclude='/.gitignore' public/ ./
           printf '/public/\n' >> .git/info/exclude
       - name: Commit refreshed snapshot and root website
         run: |
