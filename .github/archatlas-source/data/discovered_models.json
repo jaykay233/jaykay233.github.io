@@ -711,7 +711,7 @@
     "downloads_snapshot": 0,
     "likes_snapshot": 10,
     "rankings": {
-      "trendingScore": 744
+      "trendingScore": 743
     },
     "added_in_snapshot": true,
     "architecture_type": "待拆解",
@@ -1082,7 +1082,7 @@
     "downloads_snapshot": 1282,
     "likes_snapshot": 31,
     "rankings": {
-      "trendingScore": 722
+      "trendingScore": 721
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · llada2_moe",
@@ -1526,7 +1526,7 @@
     "downloads_snapshot": 46,
     "likes_snapshot": 11,
     "rankings": {
-      "trendingScore": 705
+      "trendingScore": 704
     },
     "added_in_snapshot": true,
     "architecture_type": "待拆解",
@@ -1659,7 +1659,7 @@
     "downloads_snapshot": 25068,
     "likes_snapshot": 498,
     "rankings": {
-      "trendingScore": 692,
+      "trendingScore": 691,
       "likes": 291
     },
     "added_in_snapshot": true,
@@ -3990,7 +3990,7 @@
     "downloads_snapshot": 2130,
     "likes_snapshot": 20,
     "rankings": {
-      "trendingScore": 655
+      "trendingScore": 654
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
