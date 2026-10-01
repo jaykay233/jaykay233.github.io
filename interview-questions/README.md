@@ -11,10 +11,10 @@
 
 ## 首次配置（Mac）
 
-在网站仓库根目录执行：
+需要 Python 3.10+、Node.js 20+、可用的小红书账号，以及已配置好 SSH push 的 GitHub 环境。在网站仓库根目录执行：
 
 ```bash
-bash scripts/xhs-collector/setup_local.sh
+PYTHON_BIN=python3.12 bash scripts/xhs-collector/setup_local.sh
 SPIDER_XHS_PATH="$HOME/.local/share/archatlas/Spider_XHS" \
   ./.xhs-venv/bin/python scripts/xhs-collector/collect_questions.py --login
 ```
