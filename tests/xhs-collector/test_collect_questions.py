@@ -26,6 +26,8 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual(collector.question_candidates("你在学校写过 CUDA 或者做过 GPU 算子项目吗？"), [])
         self.assertEqual(collector.question_candidates("面试官真正会往下追的是：图怎么捕获，IR 为什么分层？"), [])
         self.assertEqual(collector.question_candidates("上来先聊项目，追问具体参数怎么算的？"), [])
+        self.assertEqual(collector.question_candidates("常见追问：怎么组合？"), [])
+        self.assertTrue(collector.is_low_signal_question("常见追问：怎么组合？"))
 
     def test_knowledge_points_require_concrete_concepts(self):
         self.assertIn("NCCL Collectives", collector.extract_knowledge_points("NCCL ReduceScatter 的 Ring 算法是什么？"))
@@ -53,7 +55,7 @@ class CollectorTests(unittest.TestCase):
         self.assertTrue(all(q.get("question") and (q.get("source_url") or q.get("source_title")) for q in data["questions"]))
         self.assertTrue(all(q.get("knowledge_points") for q in data["questions"]))
         self.assertFalse(any("你在学校写过 CUDA" in q["question"] for q in data["questions"]))
-        self.assertFalse(any("面试官真正会往下追" in q["question"] or "上来先聊项目" in q["question"] for q in data["questions"]))
+        self.assertFalse(any("面试官真正会往下追" in q["question"] or "上来先聊项目" in q["question"] or "常见追问" in q["question"] for q in data["questions"]))
 
 if __name__ == "__main__":
     unittest.main()

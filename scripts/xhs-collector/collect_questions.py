@@ -57,6 +57,7 @@ LOW_SIGNAL_PATTERNS = (
     r"为什么选择.*(公司|岗位|行业)|最棘手.*(问题|难题)|保持专注",
     r"做过什么优化吗|聊聊你的项目经历|介绍一下你的项目经历",
     r"上来先聊项目|面试官.*(追问|往下追)|八股集中|考的是|回答了.*(功能|接口|开发流程)",
+    r"常见追问\s*[:：]?\s*怎么组合",
 )
 
 CATEGORY_TERMS = {
@@ -101,6 +102,10 @@ def classify(title: str, fallback: str) -> str:
     winner = max(scores, key=scores.get)
     return winner if scores[winner] else fallback
 
+def is_low_signal_question(text: str) -> bool:
+    return any(re.search(pattern, str(text or ""), re.IGNORECASE) for pattern in LOW_SIGNAL_PATTERNS)
+
+
 def extract_knowledge_points(text: str) -> list[str]:
     """Attach concrete technical concepts; return empty for generic prompts."""
     value = str(text or "").lower()
@@ -132,7 +137,7 @@ def question_candidates(text: str, limit: int = 4) -> list[str]:
             )
             topic_prompt = re.search(r"(原理|流程|作用)", part) and not re.search(r"[:：]", part)
             looks_like_question = "?" in part or "？" in part or bool(explicit_question or topic_prompt)
-            if not looks_like_question or any(re.search(pattern, part, re.IGNORECASE) for pattern in LOW_SIGNAL_PATTERNS):
+            if not looks_like_question or is_low_signal_question(part):
                 continue
             part = clean_question(part)
             key = normalize(part)
@@ -238,10 +243,15 @@ def main() -> int:
     args = parser.parse_args()
     try:
         fresh, old = collect(get_auth(args.login)), load_existing()
+        filtered_old = []
         for row in old.get("questions", []):
             row["question"] = clean_question(row.get("question", ""))
+            if is_low_signal_question(row["question"]):
+                continue
             row["source_title"] = clean_plain_text(row.get("source_title", ""))
             row["knowledge_points"] = row.get("knowledge_points") or extract_knowledge_points(row["question"])
+            filtered_old.append(row)
+        old["questions"] = filtered_old
         old_by_key = {normalize(row.get("question", "")): row for row in old.get("questions", [])}
         merged, today = {}, dt.date.today().isoformat()
         for row in fresh:
