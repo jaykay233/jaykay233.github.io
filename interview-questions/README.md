@@ -1,6 +1,6 @@
 # AI Infra 面试题页面与本机采集器
 
-静态页面发布在 `https://jaykay233.github.io/interview-questions/`，网站根页面仍是 ArchAtlas。类别为算子、编译器、通信、框架。当前 `data/questions.json` 为空，是因为尚未在授权的小红书账号下执行本机首次扫码；不会用示例题冒充真实采集结果。
+静态页面发布在 `https://jaykay233.github.io/interview-questions/`，网站根页面仍是 ArchAtlas。类别为算子、编译器、通信、框架。题库包含经过整理的技术面试题和回答要点；人工提供的复盘题会标注为“技术面试复盘”，采集器获取的题目保留公开来源链接。
 
 ## 数据与隐私
 

@@ -4,6 +4,514 @@
   "source": "short question prompts distilled locally from public notes; source links retained",
   "questions": [
     {
+      "id": "manual-20261002-01",
+      "question": "在 CUDA Kernel 中，TMA 如何让全局内存搬运与计算重叠？重叠发生在什么粒度？",
+      "category": "operator",
+      "knowledge_points": [
+        "TMA",
+        "异步数据搬运",
+        "Shared Memory",
+        "Software Pipeline"
+      ],
+      "answer_points": [
+        "TMA 可异步地把 Global Memory 中的 tile 搬到 Shared Memory。",
+        "通过多 stage pipeline，让当前 tile 计算与后续 tile 搬运并行。",
+        "常见重叠粒度是 tile 或 pipeline stage；能否有效重叠取决于数据依赖、stage 数和资源占用。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-02",
+      "question": "异步数据搬运如何通过 mbarrier 与消费者线程同步？",
+      "category": "operator",
+      "knowledge_points": [
+        "mbarrier",
+        "异步拷贝",
+        "生产者消费者同步",
+        "Barrier Phase"
+      ],
+      "answer_points": [
+        "生产者为 barrier 设置预期事务字节数并发起异步搬运。",
+        "搬运完成后由硬件更新事务完成状态；消费者等待 barrier 达到完成条件后再读取数据。",
+        "循环复用 barrier 时要正确推进 phase/parity，避免把上一轮完成状态误认为本轮完成。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-03",
+      "question": "把一个计算拆成多个 CUDA Kernel，会如何影响寄存器压力和 Occupancy？",
+      "category": "operator",
+      "knowledge_points": [
+        "Kernel 拆分",
+        "Register Pressure",
+        "Occupancy",
+        "Kernel Launch"
+      ],
+      "answer_points": [
+        "拆分可能缩短单个 Kernel 的活跃区间、降低每线程寄存器需求，从而增加可驻留 CTA/warp。",
+        "代价是增加 Kernel Launch，并可能引入中间结果写回和再次读取。",
+        "应结合寄存器数、Occupancy、访存流量和端到端耗时判断，不能只看单个 Kernel 的理论 Occupancy。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-04",
+      "question": "对三重循环的 Naive GEMM，如何估算计算量和访存量，并减少输出矩阵 C 的重复访存？",
+      "category": "operator",
+      "knowledge_points": [
+        "GEMM",
+        "FLOPs",
+        "Memory Traffic",
+        "寄存器累加",
+        "分块"
+      ],
+      "answer_points": [
+        "对 C[M,N] += A[M,K] × B[K,N]，计算量约为 2MNK FLOPs。",
+        "若每个 k 步都从内存读写 C，C 会被反复访问。",
+        "将一个或多个 C 元素的部分和保存在寄存器中，完成 K 维累加后再写回，可减少 C 的重复读写；更大规模可用 tiling 提高 A、B 复用。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-05",
+      "question": "GPU Shared Memory 的 Bank 如何组织？什么访问模式会产生 Bank Conflict，常见解决方法有哪些？",
+      "category": "operator",
+      "knowledge_points": [
+        "Shared Memory",
+        "Bank Conflict",
+        "Padding",
+        "Swizzle",
+        "XOR Swizzle"
+      ],
+      "answer_points": [
+        "常见 NVIDIA 架构可按 32 个 bank、连续字地址交错映射来理解；具体宽度和模式要结合架构及访问类型确认。",
+        "同一 warp 的多个线程访问同一 bank 的不同地址时，访问会被拆成多个冲突事务；广播同一地址通常是例外。",
+        "可通过 padding 改变行步长，或用 swizzle/XOR swizzle 重排地址映射，减少热点 bank。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-06",
+      "question": "给定一个 warp 中 32 个线程各自访问的 Shared Memory 地址，如何计算 Bank Conflict 次数？",
+      "category": "operator",
+      "knowledge_points": [
+        "Warp",
+        "Bank Mapping",
+        "地址映射",
+        "Bank Conflict 统计"
+      ],
+      "answer_points": [
+        "先按访问元素宽度把字节地址换算为 bank word index，再根据 bank 数计算 bank = word_index mod bank_count。",
+        "按 bank 分组统计不同地址的访问；同一地址的广播访问不按普通冲突处理。",
+        "每个 bank 所需的串行服务轮数由该 bank 上不同地址的访问决定，再结合多次访问向量化规则统计总事务数。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-07",
+      "question": "Ampere、Hopper 和 Blackwell 在 GPU Kernel 编程模型与矩阵计算硬件上有哪些主要变化？",
+      "category": "operator",
+      "knowledge_points": [
+        "Ampere",
+        "Hopper",
+        "Blackwell",
+        "TMA",
+        "WGMMA",
+        "TCGEN05",
+        "异步 Pipeline"
+      ],
+      "answer_points": [
+        "讨论时可按异步数据搬运、矩阵乘指令、片上存储和线程协作机制逐代比较。",
+        "Hopper 引入 TMA、WGMMA、Warp Specialization、Cluster/Multicast 等重要能力。",
+        "Blackwell 增加 Tensor Memory、TCGEN05 及 2-SM 协作 MMA 等能力；应说明这些机制如何改变数据搬运和计算 pipeline，而不只背名词。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-08",
+      "question": "FlashAttention 1 到 4 的核心优化方向如何演进？各代主要解决了什么瓶颈？",
+      "category": "operator",
+      "knowledge_points": [
+        "FlashAttention",
+        "IO Awareness",
+        "Tiling",
+        "异步 Pipeline",
+        "GPU 架构"
+      ],
+      "answer_points": [
+        "可从减少 HBM 与片上存储之间的数据搬运、分块计算与在线 Softmax 讲起。",
+        "进一步比较不同代际对 GPU 指令、异步执行、并行调度及硬件特性的利用。",
+        "回答应区分算法层面的 IO 优化与针对新硬件的 Kernel 实现优化。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-09",
+      "question": "FlashAttention-4 为什么要优化 Softmax 和 Exp？延迟更新 Max 与近似 Exp 的思路是什么？",
+      "category": "operator",
+      "knowledge_points": [
+        "FlashAttention-4",
+        "Online Softmax",
+        "Exp Approximation",
+        "SFU",
+        "数值误差"
+      ],
+      "answer_points": [
+        "Softmax 中的 Max、Exp 和归一化会影响关键路径；其吞吐可能受特殊函数单元及依赖链限制。",
+        "在线 Softmax 可维护 running max 与归一化和；Max 更新时对已有累积量做相应重缩放。",
+        "可在满足误差约束时用近似或延迟部分更新降低关键路径依赖，需验证数值误差和端到端收益。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-10",
+      "question": "B300 相比 B200 的硬件变化会如何影响 Softmax/Exp 等特殊函数密集型 Kernel？如何验证 SFU 数量变化带来的收益？",
+      "category": "operator",
+      "knowledge_points": [
+        "B200",
+        "B300",
+        "SFU",
+        "Softmax",
+        "性能测量"
+      ],
+      "answer_points": [
+        "先核实两款产品对应的芯片配置与公开架构资料，避免把产品级配置差异误当成架构定律。",
+        "若特殊函数单元供给增加，Exp 等操作可能获得更高吞吐，但实际收益还受访存、依赖链、占用率和其他指令限制。",
+        "用相同输入和精度分别测微基准与端到端 Kernel，并结合 Nsight Compute 指标验证瓶颈是否确实位于特殊函数吞吐。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-11",
+      "question": "确定性 Router GEMM 如何优化？关闭 Split-K 后变慢、小 M 时固定 Tile 浪费时，如何选择调度策略？",
+      "category": "operator",
+      "knowledge_points": [
+        "Router GEMM",
+        "Split-K",
+        "小 M",
+        "Tile Selection",
+        "确定性计算"
+      ],
+      "answer_points": [
+        "关闭 Split-K 可能减少并行度，但可避免跨分块归约及其额外开销，并有助于确定性。",
+        "针对常见 M/N/K 与 dtype 选择 tile、CTA 数和调度策略，避免小 M 场景下固定 tile 造成大量空算。",
+        "为不适合主路径的 shape/dtype 提供明确 fallback，并通过多 shape 基准和正确性测试验证。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-12",
+      "question": "CUDA Reduction 如何设计线程块与 Warp 的分工，并处理跨 Warp 归约和同步？SM 调度与 Occupancy 又如何影响性能？",
+      "category": "operator",
+      "knowledge_points": [
+        "CUDA Reduction",
+        "Warp Shuffle",
+        "Shared Memory",
+        "SM Scheduling",
+        "Occupancy"
+      ],
+      "answer_points": [
+        "先确定每线程处理的数据及 Warp 内归约方式，再决定是否需要跨 Warp 的 Shared Memory 归约。",
+        "跨 Warp 通常需要写入部分结果、同步后由一个或多个 Warp 继续归约。",
+        "寄存器和 Shared Memory 用量会限制每个 SM 的驻留 CTA/warp；Occupancy 需要结合并行度和延迟隐藏需求衡量。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-13",
+      "question": "什么是 Megakernel？把多个计算阶段融合进一个 Kernel 能减少哪些开销，又会带来什么代价？",
+      "category": "operator",
+      "knowledge_points": [
+        "Megakernel",
+        "Kernel Fusion",
+        "调度",
+        "Pipeline",
+        "寄存器压力"
+      ],
+      "answer_points": [
+        "Megakernel 通常指在单个较大的 Kernel 中融合多个计算阶段并自行安排阶段调度。",
+        "可能减少 Kernel Launch、中间结果落入显存及重复调度开销。",
+        "也可能增加寄存器/共享内存占用、同步复杂度和代码尺寸，降低 Occupancy 或使负载不均；应以端到端数据验证。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-14",
+      "question": "Ulysses Sequence Parallelism 的基本原理是什么？它如何利用 All-to-All 完成序列维与 Attention Head 维的布局转换？",
+      "category": "communication",
+      "knowledge_points": [
+        "Ulysses SP",
+        "Sequence Parallelism",
+        "All-to-All",
+        "Head Partition"
+      ],
+      "answer_points": [
+        "输入按序列维分布在多个 Rank 上；通过 All-to-All 将序列分片转换为 Head 分片，使每个 Rank 能处理完整序列上的一部分 Head。",
+        "Attention 计算后可通过反向布局转换把输出恢复为序列分片。",
+        "通信开销取决于张量大小、并行组规模、网络拓扑及实现方式。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-15",
+      "question": "Ulysses SP 执行 All-to-All 前后，Attention 输入张量的 Shape 和数据分布如何变化？",
+      "category": "communication",
+      "knowledge_points": [
+        "All-to-All",
+        "Tensor Shape",
+        "Sequence Dimension",
+        "Head Dimension"
+      ],
+      "answer_points": [
+        "设全局张量为 [B,S,H,D]，SP 组大小为 P；变换前每 Rank 持有约 [B,S/P,H,D]。",
+        "交换后每 Rank 持有约 [B,S,H/P,D]（实际轴顺序取决于实现）。",
+        "元素总量在组内保持一致，变化的是序列维与 Head 维的分片布局；需要明确 Gather/Scatter 的轴与 Rank 分组。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-16",
+      "question": "8 张卡配置 TP=2、Ulysses SP=4 时，TP 组和 SP 组如何划分？All-to-All 应在哪个通信组内执行？",
+      "category": "communication",
+      "knowledge_points": [
+        "Tensor Parallelism",
+        "Ulysses SP",
+        "Process Group",
+        "通信组划分"
+      ],
+      "answer_points": [
+        "将 8 个 Rank 看作 TP×SP 的二维网格。举例按 rank=tp_rank×4+sp_rank 编号。",
+        "固定 sp_rank 得到 TP 组，例如 [0,4]、[1,5]、[2,6]、[3,7]；固定 tp_rank 得到 SP 组，例如 [0,1,2,3]、[4,5,6,7]。",
+        "Ulysses 的序列与 Head 布局 All-to-All 在对应 SP 组内执行；实际 Rank 编号顺序可以不同，但组大小与坐标映射必须一致。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-17",
+      "question": "TP 与 Ulysses SP 同时使用时，隐藏维和序列维分别如何切分？Attention 前后需要进行哪些布局转换？",
+      "category": "communication",
+      "knowledge_points": [
+        "TP + SP",
+        "Hidden Dimension",
+        "Sequence Dimension",
+        "布局转换",
+        "All-to-All"
+      ],
+      "answer_points": [
+        "TP 通常沿模型隐藏维或 Head 相关维度切分计算，Ulysses SP 沿序列维分片输入。",
+        "进入 Attention 前，SP 组可通过 All-to-All 把序列分片转为 Head 分片；Attention 输出后再转换回序列分片。",
+        "TP 与 SP 的具体顺序、张量轴和通信组要以模型实现为准，不能把两种并行简单视作同一维度切分。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-18",
+      "question": "什么是 TP/SP 非正交并行（TPSP）？它与把 TP 和 SP 放在独立并行维度上的方式有何区别？",
+      "category": "communication",
+      "knowledge_points": [
+        "TPSP",
+        "TP",
+        "SP",
+        "并行拓扑",
+        "Process Group"
+      ],
+      "answer_points": [
+        "正交划分通常把 TP、SP 作为不同网格维度，进程组可按固定坐标分别构造。",
+        "非正交设计允许并行分组或张量切分不再对应互相独立的网格轴，可能改变通信组成员和数据重排方式。",
+        "比较时应落到具体 rank 映射、张量布局、通信量和拓扑，避免只凭 TPSP 名称推断实现。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-19",
+      "question": "MoE 的 EP 通信开销较大且难以被计算掩盖时，可以从哪些方向降低端到端开销？",
+      "category": "communication",
+      "knowledge_points": [
+        "Expert Parallelism",
+        "All-to-All",
+        "通信计算重叠",
+        "FP8 Communication",
+        "分块调度"
+      ],
+      "answer_points": [
+        "把通信和专家计算做更细粒度分块，尽早启动可用数据对应的计算。",
+        "检查负载均衡、消息大小和调度，减少等待与不必要的数据搬运。",
+        "在精度允许且实现支持时评估低精度通信（如 FP8），并测量量化开销、误差和端到端收益。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-20",
+      "question": "端到端测试发现 MFU 较低时，如何定位瓶颈并确定优化优先级？",
+      "category": "framework",
+      "knowledge_points": [
+        "MFU",
+        "Nsight Systems",
+        "Nsight Compute",
+        "CPU-GPU 同步",
+        "通信重叠"
+      ],
+      "answer_points": [
+        "先用 Nsight Systems 查看端到端时间线，定位 GPU 空泡、CPU 调度/同步开销及通信是否与计算重叠。",
+        "再用 Nsight Compute 分析热点 Kernel 的计算、访存、Occupancy 和指令瓶颈。",
+        "按热点占比和可优化空间估算端到端收益，避免只优化耗时占比很小的 Kernel。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-21",
+      "question": "多卡 TP 下启用 CUDA Graph 后程序卡住，应如何判断是 Graph 本身还是通信路径中的问题？",
+      "category": "framework",
+      "knowledge_points": [
+        "CUDA Graph",
+        "Tensor Parallelism",
+        "NCCL",
+        "死锁定位",
+        "最小复现"
+      ],
+      "answer_points": [
+        "通过关闭 Graph、TP=1/TP>1、改变精度或禁用通信融合等对照实验缩小触发条件。",
+        "检查各 Rank 的 collective 调用顺序、shape、stream/event 依赖，以及捕获与回放期间使用的资源和同步标记。",
+        "最小复现后区分触发条件与根因：Graph 可能暴露已有的同步/通信错误，不一定是根因本身。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-22",
+      "question": "强化学习训练中的 Router Replay 如何缓解推理与训练路由不一致？微小数值误差为何可能改变 Top-K 专家选择？",
+      "category": "framework",
+      "knowledge_points": [
+        "Router Replay",
+        "MoE",
+        "Top-K",
+        "推理训练一致性",
+        "数值误差"
+      ],
+      "answer_points": [
+        "Router Replay 记录并在训练对应阶段重放前向生成的路由决策，避免因计算路径或精度差异导致路由发生变化。",
+        "当多个专家的 Router Logit 接近 Top-K 边界时，微小数值扰动可能改变排序并切换被选专家。",
+        "需要明确路由记录与回放的阶段、索引和生命周期，并验证训练语义与梯度路径。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-23",
+      "question": "如何拆分评估 W4A16 推理的性能收益：权重带宽、反量化、算子融合和 MTP 分别贡献多少？",
+      "category": "framework",
+      "knowledge_points": [
+        "W4A16",
+        "权重带宽",
+        "反量化",
+        "算子融合",
+        "Amdahl 定律"
+      ],
+      "answer_points": [
+        "通过消融实验分别开关量化、融合和 MTP，保持输入、Batch、序列长度及测量条件一致。",
+        "结合权重读取量、反量化指令/耗时和 Kernel 时间，区分带宽节省与反量化、融合带来的变化。",
+        "把单个 FFN 或 Kernel 的加速映射到端到端耗时占比，评估整体收益及测量误差。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-24",
+      "question": "适配新的 GPU/NPU 时，如何区分性能问题来自算子库、手写 Kernel 还是编译器生成代码？FP8/FP4 落地还需验证什么？",
+      "category": "compiler",
+      "knowledge_points": [
+        "算子库",
+        "编译器",
+        "手写 Kernel",
+        "FP8",
+        "FP4",
+        "精度验证"
+      ],
+      "answer_points": [
+        "对齐输入、Shape、精度和测量环境，分别基准测试库实现、编译器生成实现与手写 Kernel。",
+        "结合编译产物、性能计数器和时间线定位瓶颈来源，检查数据布局、指令选择和访存效率。",
+        "验证 FP8/FP4 的格式、Scale 粒度、舍入/饱和、累加精度、误差分布及端到端模型质量。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-25",
+      "question": "Python 程序没有报错但一直卡住、进程仍然存活时，如何保留现场并排查阻塞原因？",
+      "category": "framework",
+      "knowledge_points": [
+        "Python 调试",
+        "线程栈",
+        "死锁",
+        "同步阻塞",
+        "进程诊断"
+      ],
+      "answer_points": [
+        "先记录进程状态、线程和资源占用，避免重启后丢失现场。",
+        "采集 Python 线程栈（如 faulthandler、py-spy）及必要的原生栈，检查锁等待、同步调用、I/O 或 CUDA/NCCL 阻塞。",
+        "结合线程间等待关系和日志时间戳，区分死锁、长时间计算与外部资源等待。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-26",
+      "question": "C++ 申请一个很大的数组时，为什么第一次访问和后续访问的耗时可能不同？",
+      "category": "framework",
+      "knowledge_points": [
+        "Linux Lazy Allocation",
+        "Page Fault",
+        "虚拟内存",
+        "首次访问"
+      ],
+      "answer_points": [
+        "内存分配可能先只建立虚拟地址空间；物理页通常在首次触碰时按需分配并建立映射。",
+        "首次访问可能触发缺页、清零和页表更新，后续命中已映射页面时通常不再承担相同开销。",
+        "应区分 malloc/new 耗时与实际触碰页面的耗时，并控制预热、NUMA 和缓存等测量因素。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "manual-20261002-27",
+      "question": "NumPy 为什么通常比 Python 的逐元素 for-loop 快？",
+      "category": "framework",
+      "knowledge_points": [
+        "NumPy",
+        "CPython",
+        "Native Code",
+        "SIMD",
+        "GIL"
+      ],
+      "answer_points": [
+        "Python 循环逐元素执行解释器调度、动态类型和对象操作，循环开销较高。",
+        "NumPy 将批量循环下沉到 C/C++ 等原生实现，可减少解释器开销并利用 SIMD/向量化。",
+        "部分 NumPy 操作会释放 GIL；具体收益依赖算子实现、数据类型、数组布局和计算规模。"
+      ],
+      "source_title": "技术面试复盘",
+      "first_seen": "2026-10-02"
+    },
+    {
       "id": "6aaff56d000000002600a9b6",
       "question": "fsdp 过程做梯度规约时是什么精度注意过通信 cast 数据时的开销吗，通信量会估算吗？",
       "category": "communication",
