@@ -14,12 +14,12 @@ function render() {
   $('#categories').querySelectorAll('[data-category]').forEach(button => button.addEventListener('click', () => { state.category = button.dataset.category; render(); }));
   $('#list-title').innerHTML = `${state.category === 'all' ? '全部题目' : `${categoryMeta.find(x => x.id === state.category)?.name || ''}题目`} <small>${items.length}</small>`;
   if (!items.length) {
-    $('#questions').innerHTML = `<div class="empty"><strong>${state.items.length ? '没有匹配的题目' : '题库正在等待首次采集'}</strong><p>${state.items.length ? '换一个关键词试试。' : '数据只会在本机完成授权后采集并同步；目前没有伪造或预置题目。'}</p>${!state.items.length ? '<p class="notice">管理员：按仓库 README 完成本机二维码登录和定时任务配置。</p>' : ''}</div>`;
+    $('#questions').innerHTML = `<div class="empty"><strong>${state.items.length ? '没有匹配的题目' : '题库暂时没有题目'}</strong><p>${state.items.length ? '换一个关键词试试。' : '题库内容会持续整理和更新，请稍后再来查看。'}</p></div>`;
     return;
   }
   $('#questions').innerHTML = items.map((item, index) => {
     const category = categoryMeta.find(c => c.id === item.category);
-    return `<article class="question-card"><div class="q-icon">${String(index + 1).padStart(2, '0')}</div><div class="q-content"><h3>${esc(item.question || item.title)}</h3>${item.source_title ? `<div class="source-title">来源笔记：${esc(item.source_title)}</div>` : ''}<div class="tags"><span class="tag category">${esc(category?.name || '待分类')}</span>${(item.tags || []).slice(0, 4).map(tag => `<span class="tag">${esc(tag)}</span>`).join('')}</div></div><a class="source" href="${esc(item.source_url)}" target="_blank" rel="noopener noreferrer">查看来源 ↗</a><time class="q-date">${esc(item.first_seen || '')}</time></article>`;
+    return `<article class="question-card"><div class="q-icon">${String(index + 1).padStart(2, '0')}</div><div class="q-content"><h3>${esc(item.question || item.title)}</h3>${item.source_title ? `<div class="source-title">整理来源：${esc(item.source_title)}</div>` : ''}<div class="tags"><span class="tag category">${esc(category?.name || '待分类')}</span>${(item.tags || []).slice(0, 4).map(tag => `<span class="tag">${esc(tag)}</span>`).join('')}</div>${Array.isArray(item.answer_points) && item.answer_points.length ? `<details class="answer-points"><summary>回答要点</summary><ul>${item.answer_points.map(point => `<li>${esc(point)}</li>`).join('')}</ul></details>` : ''}</div>${item.source_url ? `<a class="source" href="${esc(item.source_url)}" target="_blank" rel="noopener noreferrer">查看来源 ↗</a>` : ''}<time class="q-date">${esc(item.first_seen || '')}</time></article>`;
   }).join('');
 }
 $('#search').addEventListener('input', event => { state.query = event.target.value; render(); });

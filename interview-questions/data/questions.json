@@ -370,6 +370,298 @@
       "source_title": "字节跳动 AI Infra 面试一百题(十四)",
       "source_url": "https://www.xiaohongshu.com/explore/6a28c5000000000035032728?xsec_token=ABl5fNe4n6jy3dtMv35dAtUJ3W1jd8VTIj7DHcRWIvCiA%3D",
       "first_seen": "2026-10-02"
+    },
+    {
+      "id": "kimi-20261002-01",
+      "question": "DeepEP 的 Normal 模式和 Low-Latency 模式分别适用于什么场景？它们在吞吐、时延和数据传输方面有什么区别？",
+      "category": "communication",
+      "source_title": "Kimi AI Infra 一面",
+      "source_url": "",
+      "first_seen": "2026-10-02",
+      "tags": [
+        "DeepEP",
+        "MoE",
+        "All-to-All"
+      ],
+      "answer_points": [
+        "Normal 模式偏向训练和 Prefill，优先追求吞吐。",
+        "Low-Latency 模式面向 Decode，优先降低时延。",
+        "比较时关注数据布局、通信路径和主机侧同步开销；低时延路径应尽量避免不必要的 D2H 同步。"
+      ]
+    },
+    {
+      "id": "kimi-20261002-02",
+      "question": "Ulysses SP 和 Ring Attention 的序列并行机制有什么区别？它们分别采用什么通信方式，如何与计算重叠？",
+      "category": "communication",
+      "source_title": "Kimi AI Infra 一面",
+      "source_url": "",
+      "first_seen": "2026-10-02",
+      "tags": [
+        "Sequence Parallelism",
+        "Ulysses",
+        "Ring Attention"
+      ],
+      "answer_points": [
+        "Ulysses 通过 All-to-All 在序列分片和注意力头分片之间转换布局。",
+        "Ring Attention 让 KV 分块在 Rank 间环形传递，各 Rank 分块计算注意力。",
+        "Ring Attention 可将 KV 通信与分块注意力计算重叠；实际效率取决于分块、拓扑和计算通信比。"
+      ]
+    },
+    {
+      "id": "kimi-20261002-03",
+      "question": "Decode Context Parallelism（DCP）如何切分 KV Cache 并完成注意力计算？",
+      "category": "communication",
+      "source_title": "Kimi AI Infra 一面",
+      "source_url": "",
+      "first_seen": "2026-10-02",
+      "tags": [
+        "DCP",
+        "KV Cache",
+        "Attention"
+      ],
+      "answer_points": [
+        "将 KV Cache 沿序列维分片到多个 Rank。",
+        "各 Rank 获得对应 Query 后，对本地 KV 分片计算局部注意力结果，并生成局部输出与 LogSumExp（LSE）。",
+        "最后跨 Rank 合并局部输出和 LSE，得到与全量 KV 计算等价的注意力结果。"
+      ]
+    },
+    {
+      "id": "kimi-20261002-04",
+      "question": "分块注意力中的 Online Softmax 和 LSE Merge 如何稳定地合并多个分块的结果？",
+      "category": "operator",
+      "source_title": "Kimi AI Infra 一面",
+      "source_url": "",
+      "first_seen": "2026-10-02",
+      "tags": [
+        "Online Softmax",
+        "LSE",
+        "Attention"
+      ],
+      "answer_points": [
+        "每个分块维护运行最大值、指数和以及加权 Value 累加。",
+        "合并新分块时，用新的全局最大值对旧累加量和新分块累加量分别重缩放。",
+        "最终用归一化因子得到输出；跨 Rank 合并时可使用各分片的 LSE 计算稳定权重。"
+      ]
+    },
+    {
+      "id": "kimi-20261002-05",
+      "question": "从 Ampere 到 Hopper 再到 Blackwell，GPU 矩阵计算和异步数据搬运机制有哪些演进？",
+      "category": "operator",
+      "source_title": "Kimi AI Infra 一面",
+      "source_url": "",
+      "first_seen": "2026-10-02",
+      "tags": [
+        "Ampere",
+        "Hopper",
+        "Blackwell",
+        "GPU Architecture"
+      ],
+      "answer_points": [
+        "Ampere 常见路径包括 cp.async 与 MMA。",
+        "Hopper 引入 TMA、WGMMA 等机制，强化异步搬运和 Warp Group 级矩阵计算。",
+        "Blackwell 进一步提供新一代 Tensor Core 与 Tensor Memory 相关能力，例如 TCGEN05 路径。",
+        "整体趋势是更显式的异步执行、数据移动和 Software Pipeline；具体能力需按目标 GPU 与指令集核对。"
+      ]
+    },
+    {
+      "id": "kimi-20261002-06",
+      "question": "使用 Tensor Memory 和 Tensor Core 的 GEMM Kernel 时，如何设计多阶段 Pipeline 并选择 num_stages？",
+      "category": "operator",
+      "source_title": "Kimi AI Infra 一面",
+      "source_url": "",
+      "first_seen": "2026-10-02",
+      "tags": [
+        "Tensor Memory",
+        "Pipeline",
+        "GEMM"
+      ],
+      "answer_points": [
+        "常用双缓冲或多缓冲，让下一阶段数据搬运与当前阶段计算重叠。",
+        "根据数据搬运延迟、计算耗时和 tile 形状估计所需阶段数。",
+        "阶段数还受共享内存、寄存器、Tensor Memory 容量和占用率约束；并非越大越好，应通过资源估算与 Profiling 调优。"
+      ]
+    },
+    {
+      "id": "kimi-20261002-07",
+      "question": "寄存器和 Shared Memory 的使用量如何影响 GPU Occupancy？",
+      "category": "operator",
+      "source_title": "Kimi AI Infra 一面",
+      "source_url": "",
+      "first_seen": "2026-10-02",
+      "tags": [
+        "Occupancy",
+        "Register",
+        "Shared Memory"
+      ],
+      "answer_points": [
+        "每个 CTA 的寄存器和共享内存占用会限制一个 SM 可同时驻留的 CTA 数量。",
+        "还需考虑线程数、寄存器分配粒度以及硬件上限。",
+        "Occupancy 不是越高越好，应结合访存延迟隐藏能力、指令级并行和资源复用综合评估。"
+      ]
+    },
+    {
+      "id": "kimi-20261002-08",
+      "question": "Persistent Kernel 如何隐藏延迟？它与常规 Kernel 相比，对 Software Pipeline 有什么要求？",
+      "category": "operator",
+      "source_title": "Kimi AI Infra 一面",
+      "source_url": "",
+      "first_seen": "2026-10-02",
+      "tags": [
+        "Persistent Kernel",
+        "Latency Hiding",
+        "Pipeline"
+      ],
+      "answer_points": [
+        "Persistent Kernel 让有限数量的 CTA 常驻 SM，并循环处理多个 Tile 或任务。",
+        "它可以减少重复调度开销，但本身不保证自动隐藏访存延迟。",
+        "需要在 Kernel 内安排异步搬运、计算与同步的流水线，并保证足够的并行工作和资源占用。"
+      ]
+    },
+    {
+      "id": "kimi-20261002-09",
+      "question": "Grouped GEMM 中 Contiguous 和 Masked 输入有什么区别？Tile 应如何调度？",
+      "category": "operator",
+      "source_title": "Kimi AI Infra 一面",
+      "source_url": "",
+      "first_seen": "2026-10-02",
+      "tags": [
+        "Grouped GEMM",
+        "Tile Scheduling",
+        "L2 Reuse"
+      ],
+      "answer_points": [
+        "Contiguous 输入通常具有更规整的存储布局；Masked 输入可处理不规则尺寸或 Padding，但可能引入无效计算。",
+        "调度时要考虑不同 GEMM 的 M、N、K 尺寸及 Tile 数量，避免负载不均。",
+        "可结合 Tile 排序、Swizzle 和工作分配改善负载均衡与 L2 Cache 复用。"
+      ]
+    },
+    {
+      "id": "kimi-20261002-10",
+      "question": "MXFP8 和 Block-wise FP8 在量化粒度、Scale 开销和矩阵计算中有什么区别？",
+      "category": "operator",
+      "source_title": "Kimi AI Infra 一面",
+      "source_url": "",
+      "first_seen": "2026-10-02",
+      "tags": [
+        "MXFP8",
+        "FP8",
+        "Quantization"
+      ],
+      "answer_points": [
+        "比较量化分组粒度、Scale 的表示与存储开销，以及硬件对相应格式的支持。",
+        "较细粒度的缩放可能提升数值适应性，但会增加 Scale 元数据和加载处理成本。",
+        "Kernel 设计需评估 Scale 解码与搬运能否和 MMA 重叠，并结合精度、吞吐和硬件路径测试。"
+      ]
+    },
+    {
+      "id": "kimi-20261002-11",
+      "question": "实现 GEMM Kernel 时，TMA 和 cp.async 分别适合什么场景？应如何选择？",
+      "category": "operator",
+      "source_title": "Kimi AI Infra 一面",
+      "source_url": "",
+      "first_seen": "2026-10-02",
+      "tags": [
+        "TMA",
+        "cp.async",
+        "GEMM"
+      ],
+      "answer_points": [
+        "TMA 更适合规则的多维 Tensor Tile 搬运，可利用硬件描述符和异步机制减少线程侧搬运工作。",
+        "cp.async 粒度更细、控制更灵活，适合不规则布局或需要精细控制的数据搬运。",
+        "选择时应根据目标架构、数据布局、对齐要求、同步方式和 Kernel Profiling 结果决定。"
+      ]
+    },
+    {
+      "id": "kimi-20261002-12",
+      "question": "为什么异步 Host-to-Device（H2D）传输通常需要 Pinned Memory？使用 Pageable Memory 有什么问题？",
+      "category": "communication",
+      "source_title": "Kimi AI Infra 一面",
+      "source_url": "",
+      "first_seen": "2026-10-02",
+      "tags": [
+        "H2D",
+        "Pinned Memory",
+        "DMA"
+      ],
+      "answer_points": [
+        "Pinned Memory 的物理页被锁定，不会被换出，设备可通过 DMA 稳定访问。",
+        "Pageable Memory 可能需要运行时额外 Pin 或复制到内部 Staging Buffer，因此可能增加一次主机侧拷贝并影响异步语义和带宽。",
+        "Pinned Memory 也会占用不可换出的物理内存，不应无节制分配。"
+      ]
+    },
+    {
+      "id": "kimi-20261002-13",
+      "question": "如何判断一个 Memory-bound Kernel 是否还有优化空间，以及继续优化是否值得？",
+      "category": "operator",
+      "source_title": "Kimi AI Infra 一面",
+      "source_url": "",
+      "first_seen": "2026-10-02",
+      "tags": [
+        "Memory Bound",
+        "Roofline",
+        "Amdahl Law"
+      ],
+      "answer_points": [
+        "测量实际内存吞吐，并结合 Roofline 和可达到的硬件带宽上限估算差距；需区分理论峰值与实际可达带宽。",
+        "检查寄存器、Occupancy、Active Warps 和内存级并行度，判断是否有足够并发隐藏访存延迟。",
+        "最后看该 Kernel 在端到端耗时中的占比，按 Amdahl 定律估算整体收益，再决定投入。"
+      ]
+    },
+    {
+      "id": "kimi-20261002-14",
+      "question": "为什么在 Hopper 或 Blackwell 上，仅靠普通 LDG 加载有时难以打满显存带宽？可以如何改进？",
+      "category": "operator",
+      "source_title": "Kimi AI Infra 一面",
+      "source_url": "",
+      "first_seen": "2026-10-02",
+      "tags": [
+        "Hopper",
+        "Blackwell",
+        "LDG",
+        "Memory Level Parallelism"
+      ],
+      "answer_points": [
+        "需要足够多的 Outstanding Memory Requests 和 Memory-Level Parallelism 才能覆盖访存延迟。",
+        "可通过增加独立加载以提升 ILP、合理增加 Pipeline Stage，或采用 TMA 异步搬运并与计算流水重叠。",
+        "需要结合访问模式、寄存器压力和 Occupancy 调优；TMA 并非对所有负载都更优。"
+      ]
+    },
+    {
+      "id": "kimi-20261002-15",
+      "question": "对于矩阵向量乘法 GEMV：A[M,N] × B[N,1]，如何设计高性能 CUDA Kernel？",
+      "category": "operator",
+      "source_title": "Kimi AI Infra 一面",
+      "source_url": "",
+      "first_seen": "2026-10-02",
+      "tags": [
+        "GEMV",
+        "CUDA",
+        "Reduction"
+      ],
+      "answer_points": [
+        "每个输出行本质上是 A 的一行与向量 B 的点积，需要沿 N 维做 Reduction。",
+        "合理划分行和列方向的 Tile，确保 A 的相邻元素由相邻线程读取，以实现 Coalesced Memory Access。",
+        "B 会被多行复用，通常先利用 Cache；是否放入 Shared Memory 要看复用和搬运成本。",
+        "可在 Warp 或 Block 内完成分段累加与 Reduction，并处理尾部边界。"
+      ]
+    },
+    {
+      "id": "kimi-20261002-16",
+      "question": "什么样的数据适合放入 Shared Memory？在什么情况下 Shared Memory 反而会降低性能？",
+      "category": "operator",
+      "source_title": "Kimi AI Infra 一面",
+      "source_url": "",
+      "first_seen": "2026-10-02",
+      "tags": [
+        "Shared Memory",
+        "Data Reuse",
+        "Occupancy"
+      ],
+      "answer_points": [
+        "核心判断标准是数据是否会被多个线程或多个计算步骤重复使用，Shared Memory 是否能减少昂贵的全局访存。",
+        "还要计入 Global-to-Shared 搬运、同步和布局转换成本，以及是否能和计算重叠。",
+        "如果没有足够的数据复用，Shared Memory 可能只是增加拷贝和同步；占用过多也会降低 Occupancy。"
+      ]
     }
   ]
 }

@@ -42,7 +42,7 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual(data["schema_version"], 1)
         self.assertGreater(len(data["questions"]), 0)
         self.assertTrue({q["category"] for q in data["questions"]} <= {"operator", "compiler", "communication", "framework"})
-        self.assertTrue(all(q.get("question") and q.get("source_url") for q in data["questions"]))
+        self.assertTrue(all(q.get("question") and (q.get("source_url") or q.get("source_title")) for q in data["questions"]))
 
 if __name__ == "__main__":
     unittest.main()
