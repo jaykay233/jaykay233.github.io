@@ -6,7 +6,7 @@ reads search results and short note descriptions to extract question-like lines;
 saves full note text, comments, profiles, or media, and never bypasses challenges.
 """
 from __future__ import annotations
-import argparse, datetime as dt, json, os, re, sys, time, unicodedata, urllib.parse
+import argparse, datetime as dt, html, json, os, re, sys, time, unicodedata, urllib.parse
 from pathlib import Path
 
 UPSTREAM = Path(os.environ.get("SPIDER_XHS_PATH", Path.home() / ".local/share/archatlas/Spider_XHS"))
@@ -34,6 +34,31 @@ def normalize(text: str) -> str:
     text = unicodedata.normalize("NFKC", text).lower()
     return re.sub(r"[\W_]+", "", text, flags=re.UNICODE)
 
+
+def clean_plain_text(text: str) -> str:
+    """Remove decorative/formatting characters while preserving technical tokens."""
+    text = html.unescape(unicodedata.normalize("NFKC", str(text or "")))
+    text = re.sub(r"<[^>]+>", " ", text)
+    text = re.sub(r"```|`|\*\*|~~", "", text)
+    # Emojis and decorative symbols become spaces; retain common code/token marks.
+    keep_symbols = set("+-./_#=<>%")
+    text = "".join(
+        " " if unicodedata.category(char).startswith("S") and char not in keep_symbols else char
+        for char in text
+    )
+    text = text.replace("&", "和")
+    text = re.sub(r"^\s*\d{1,3}[.)、]\s*", "", text)
+    text = re.sub(r"(?<=[\u4e00-\u9fff])(?=[A-Za-z0-9])", " ", text)
+    text = re.sub(r"(?<=[A-Za-z0-9])(?=[\u4e00-\u9fff])", " ", text)
+    text = re.sub(r"(?<=[A-Za-z0-9+#])(?=[\u4e00-\u9fff])", " ", text)
+    return re.sub(r"\s+", " ", text).strip(" \t\r\n·-—:：")
+
+
+def clean_question(text: str) -> str:
+    """Render each extracted prompt as one plain-text question ending in ？."""
+    text = clean_plain_text(text).replace(",", "，").replace(";", "；").strip(" .。!！?？")
+    return f"{text}？" if text else ""
+
 def classify(title: str, fallback: str) -> str:
     value = title.lower()
     scores = {category: sum(value.count(term) for term in terms) for category, terms in CATEGORY_TERMS.items()}
@@ -53,15 +78,18 @@ def question_candidates(text: str, limit: int = 4) -> list[str]:
         line = re.sub(r"<[^>]+>", " ", line)
         line = re.sub(r"^\s*(?:[-*•◼■▪□●○◆▶▸]+|\d{1,3}[.)、])\s*", "", line)
         for part in re.split(r"(?<=[。！？?!])\s*", line):
-            part = re.sub(r"\s+", " ", part).strip(" ·-—:：")
+            part = clean_plain_text(part)
             if not 4 <= len(part) <= 140:
                 continue
-            looks_like_question = ("?" in part or "？" in part or
-                re.search(r"(什么|为什么|为何|如何|怎么|怎样|是否|能否|可否|有哪些|有什么|区别|介绍|谈谈|比较|解释|说明|简述|讲讲|说说)", part))
+            explicit_question = re.search(
+                r"(什么|为什么|为何|如何|怎么|怎样|是否|能否|可否|有哪些|有什么|区别|介绍|谈谈|比较|解释|说明|简述|讲讲|说说)",
+                part,
+            )
+            topic_prompt = re.search(r"(原理|流程|作用)", part) and not re.search(r"[:：]", part)
+            looks_like_question = "?" in part or "？" in part or bool(explicit_question or topic_prompt)
             if not looks_like_question:
                 continue
-            if part[-1] not in "?？。！!":
-                part += "？"
+            part = clean_question(part)
             key = normalize(part)
             if key not in seen:
                 seen.add(key); candidates.append(part)
@@ -146,7 +174,7 @@ def collect(auth) -> list[dict]:
                     results.setdefault(key, {
                         "id": note_id, "question": question,
                         "category": classify(question + " " + source_title, category),
-                        "source_title": source_title, "source_url": url,
+                        "source_title": clean_plain_text(source_title), "source_url": url,
                         "first_seen": dt.date.today().isoformat(),
                     })
                 inspected += 1
@@ -161,6 +189,9 @@ def main() -> int:
     args = parser.parse_args()
     try:
         fresh, old = collect(get_auth(args.login)), load_existing()
+        for row in old.get("questions", []):
+            row["question"] = clean_question(row.get("question", ""))
+            row["source_title"] = clean_plain_text(row.get("source_title", ""))
         old_by_key = {normalize(row.get("question", "")): row for row in old.get("questions", [])}
         merged, today = {}, dt.date.today().isoformat()
         for row in fresh:

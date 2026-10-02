@@ -21,7 +21,11 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual(found, ["什么是 GQA？", "如何实现 FlashAttention？"])
         self.assertNotIn("大量资料", " ".join(found))
         self.assertEqual(collector.question_candidates("◼GPU作用: 并行计算大法好！"), [])
-        self.assertEqual(collector.question_candidates("请详细介绍NCCL Broadcast通信原语的实现原理。"), ["请详细介绍NCCL Broadcast通信原语的实现原理。"])
+        self.assertEqual(collector.question_candidates("✅ 1. LoRA低秩适配原理&优势"), ["LoRA 低秩适配原理和优势？"])
+        self.assertEqual(collector.question_candidates("请详细介绍NCCL Broadcast通信原语的实现原理。"), ["请详细介绍 NCCL Broadcast 通信原语的实现原理？"])
+
+    def test_clean_question_preserves_technical_tokens(self):
+        self.assertEqual(collector.clean_question("🔹 all_gather和C++优化!"), "all_gather 和 C++ 优化？")
 
     def test_source_url_validates_identifier_and_encodes_token(self):
         url = collector.source_url({"id": "abc123456", "xsec_token": "tok_123"})
