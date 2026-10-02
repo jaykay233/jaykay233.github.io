@@ -1,6 +1,6 @@
 #!/bin/bash
 set -euo pipefail
-export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+export PATH="$HOME/.local/share/archatlas/node-v22.23.3/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 UPSTREAM="$HOME/.local/share/archatlas/Spider_XHS"
 cd "$ROOT"

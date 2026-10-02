@@ -6,7 +6,7 @@ reads search results and short note descriptions to extract question-like lines;
 saves full note text, comments, profiles, or media, and never bypasses challenges.
 """
 from __future__ import annotations
-import argparse, datetime as dt, json, os, re, sys, time, unicodedata
+import argparse, datetime as dt, json, os, re, sys, time, unicodedata, urllib.parse
 from pathlib import Path
 
 UPSTREAM = Path(os.environ.get("SPIDER_XHS_PATH", Path.home() / ".local/share/archatlas/Spider_XHS"))
@@ -51,13 +51,13 @@ def question_candidates(text: str, limit: int = 4) -> list[str]:
     candidates, seen = [], set()
     for line in re.split(r"[\r\n]+", text or ""):
         line = re.sub(r"<[^>]+>", " ", line)
-        line = re.sub(r"^\s*(?:[-*•]+|\d{1,3}[.)、])\s*", "", line)
+        line = re.sub(r"^\s*(?:[-*•◼■▪□●○◆▶▸]+|\d{1,3}[.)、])\s*", "", line)
         for part in re.split(r"(?<=[。！？?!])\s*", line):
             part = re.sub(r"\s+", " ", part).strip(" ·-—:：")
             if not 4 <= len(part) <= 140:
                 continue
             looks_like_question = ("?" in part or "？" in part or
-                re.search(r"(什么|为什么|为何|如何|怎么|怎样|是否|能否|可否|有哪些|有什么|区别|原理|流程|作用|介绍一下|谈谈|比较一下|解释一下|请说明|请简述)", part))
+                re.search(r"(什么|为什么|为何|如何|怎么|怎样|是否|能否|可否|有哪些|有什么|区别|介绍|谈谈|比较|解释|说明|简述|讲讲|说说)", part))
             if not looks_like_question:
                 continue
             if part[-1] not in "?？。！!":
@@ -74,8 +74,9 @@ def source_url(item: dict) -> str:
     note_id = str(item.get("id") or item.get("note_id") or "").strip()
     if not re.fullmatch(r"[A-Za-z0-9_-]{6,100}", note_id): return ""
     token = str(item.get("xsec_token") or "").strip()
-    if token and re.fullmatch(r"[A-Za-z0-9._~-]{1,500}", token):
-        return f"https://www.xiaohongshu.com/explore/{note_id}?xsec_token={token}"
+    if token and len(token) <= 500:
+        query = urllib.parse.urlencode({"xsec_token": token})
+        return f"https://www.xiaohongshu.com/explore/{note_id}?{query}"
     return f"https://www.xiaohongshu.com/explore/{note_id}"
 
 def load_existing() -> dict:

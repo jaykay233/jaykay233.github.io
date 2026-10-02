@@ -1,6 +1,375 @@
 {
   "schema_version": 1,
-  "updated_at": null,
+  "updated_at": "2026-10-02",
   "source": "short question prompts distilled locally from public notes; source links retained",
-  "questions": []
+  "questions": [
+    {
+      "id": "6aaff56d000000002600a9b6",
+      "question": "fsdp过程做梯度规约时是什么精度注意过通信cast数据时的开销吗，通信量会估算吗？",
+      "category": "communication",
+      "source_title": "快手infra一面",
+      "source_url": "https://www.xiaohongshu.com/explore/6aaff56d000000002600a9b6?xsec_token=ABAOYYzyRcloF1POHZt-qZrkD2kIuu9sM3QTAo0byfD4A%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "69a41ce8000000002802066a",
+      "question": "在NCCL中，ReduceScatter通信原语通常采用什么算法实现？",
+      "category": "communication",
+      "source_title": "大模型推理面试370题：RDMA技术原理",
+      "source_url": "https://www.xiaohongshu.com/explore/69a41ce8000000002802066a?xsec_token=ABWcxCMp4XhxUn3uhOD--M3GlUiXxV3kej7xxHdDPFr5g%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6998a257000000000e00f217",
+      "question": "在Tensor Parallelism中，前向传播为什么需要AllReduce同步？",
+      "category": "communication",
+      "source_title": "大模型推理面试350题：RDMA技术原理",
+      "source_url": "https://www.xiaohongshu.com/explore/6998a257000000000e00f217?xsec_token=ABRrBV7e-a-lpYbSSZIiiyTwV-6hCNu8dbMav9blUKyac%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6998a257000000000e00f217",
+      "question": "在Tensor Parallelism中，反向传播的通信模式与前向传播有什么不同？",
+      "category": "communication",
+      "source_title": "大模型推理面试350题：RDMA技术原理",
+      "source_url": "https://www.xiaohongshu.com/explore/6998a257000000000e00f217?xsec_token=ABRrBV7e-a-lpYbSSZIiiyTwV-6hCNu8dbMav9blUKyac%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6abdd2cc000000001303cc52",
+      "question": "常见追问：怎么组合？",
+      "category": "communication",
+      "source_title": "AI Infra面试最常考的5个技术题",
+      "source_url": "https://www.xiaohongshu.com/explore/6abdd2cc000000001303cc52?xsec_token=ABd2MTHySjLNLqBeqM0jisbqESc-c_1jT2TqCB-zvBVzg%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "69a41ce8000000002802066a",
+      "question": "请介绍NCCL中Point-to-Point通信的核心接口ncclSend和ncclRecv，以及如何正确使用它们？",
+      "category": "communication",
+      "source_title": "大模型推理面试370题：RDMA技术原理",
+      "source_url": "https://www.xiaohongshu.com/explore/69a41ce8000000002802066a?xsec_token=ABWcxCMp4XhxUn3uhOD--M3GlUiXxV3kej7xxHdDPFr5g%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "69a41ce8000000002802066a",
+      "question": "请解释RDMA（远程直接内存访问）的工作原理，以及它相比传统TCP/IP网络通信有哪些优势？",
+      "category": "communication",
+      "source_title": "大模型推理面试370题：RDMA技术原理",
+      "source_url": "https://www.xiaohongshu.com/explore/69a41ce8000000002802066a?xsec_token=ABWcxCMp4XhxUn3uhOD--M3GlUiXxV3kej7xxHdDPFr5g%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "69a41ce8000000002802066a",
+      "question": "请详细介绍NCCL中Broadcast通信原语的实现原理，以及它在分布式训练中的典型应用场景。",
+      "category": "communication",
+      "source_title": "大模型推理面试370题：RDMA技术原理",
+      "source_url": "https://www.xiaohongshu.com/explore/69a41ce8000000002802066a?xsec_token=ABWcxCMp4XhxUn3uhOD--M3GlUiXxV3kej7xxHdDPFr5g%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6abdd2cc000000001303cc52",
+      "question": "通信发生在哪里？",
+      "category": "communication",
+      "source_title": "AI Infra面试最常考的5个技术题",
+      "source_url": "https://www.xiaohongshu.com/explore/6abdd2cc000000001303cc52?xsec_token=ABd2MTHySjLNLqBeqM0jisbqESc-c_1jT2TqCB-zvBVzg%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6abdd2cc000000001303cc52",
+      "question": "🔹 GPU 间为什么需要通信？",
+      "category": "communication",
+      "source_title": "AI Infra面试最常考的5个技术题",
+      "source_url": "https://www.xiaohongshu.com/explore/6abdd2cc000000001303cc52?xsec_token=ABd2MTHySjLNLqBeqM0jisbqESc-c_1jT2TqCB-zvBVzg%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6abdd2cc000000001303cc52",
+      "question": "🔹 Token 如何分发到 Expert？",
+      "category": "communication",
+      "source_title": "AI Infra面试最常考的5个技术题",
+      "source_url": "https://www.xiaohongshu.com/explore/6abdd2cc000000001303cc52?xsec_token=ABd2MTHySjLNLqBeqM0jisbqESc-c_1jT2TqCB-zvBVzg%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6aaff56d000000002600a9b6",
+      "question": "fsdp做过什么优化吗？",
+      "category": "compiler",
+      "source_title": "快手infra一面",
+      "source_url": "https://www.xiaohongshu.com/explore/6aaff56d000000002600a9b6?xsec_token=ABAOYYzyRcloF1POHZt-qZrkD2kIuu9sM3QTAo0byfD4A%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6aaff56d000000002600a9b6",
+      "question": "torch.compile的底层机制，如何运作，怎么定位哪里适合做compile？",
+      "category": "compiler",
+      "source_title": "快手infra一面",
+      "source_url": "https://www.xiaohongshu.com/explore/6aaff56d000000002600a9b6?xsec_token=ABAOYYzyRcloF1POHZt-qZrkD2kIuu9sM3QTAo0byfD4A%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a8eee4a000000002a03be50",
+      "question": "上来先聊项目，架构和多缓冲的 load 耗时估算问得很细，不是泛泛而谈，会追问具体参数怎么算的。",
+      "category": "compiler",
+      "source_title": "字节编译器面经｜MLIR方向真实两轮面经复盘",
+      "source_url": "https://www.xiaohongshu.com/explore/6a8eee4a000000002a03be50?xsec_token=AB5REmYxEwJsOAdxY4WNihxaOhhzqvWUdviT2rjAcM6AQ%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a8eee4a000000002a03be50",
+      "question": "八股集中在 MLIR 体系：pass 怎么分类、PassManager 的注册和调用链路、Interface 的设计思路、SCF 里有哪些具体 op。",
+      "category": "compiler",
+      "source_title": "字节编译器面经｜MLIR方向真实两轮面经复盘",
+      "source_url": "https://www.xiaohongshu.com/explore/6a8eee4a000000002a03be50?xsec_token=AB5REmYxEwJsOAdxY4WNihxaOhhzqvWUdviT2rjAcM6AQ%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a881f09000000003b016a63",
+      "question": "多模态中的 ViT 更偏计算瓶颈还是 IO 瓶颈？",
+      "category": "compiler",
+      "source_title": "寒武纪 推理优化 日常实习面经",
+      "source_url": "https://www.xiaohongshu.com/explore/6a881f09000000003b016a63?xsec_token=AB8LZb85sIrYaOizYSZ2283VsaMdR38CCpYFa_I3EoyqY%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a8eee4a000000002a03be50",
+      "question": "大 shape 怎么切分到不同核上执行——考的是并行策略和 tiling 设计？",
+      "category": "compiler",
+      "source_title": "字节编译器面经｜MLIR方向真实两轮面经复盘",
+      "source_url": "https://www.xiaohongshu.com/explore/6a8eee4a000000002a03be50?xsec_token=AB5REmYxEwJsOAdxY4WNihxaOhhzqvWUdviT2rjAcM6AQ%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6aaff56d000000002600a9b6",
+      "question": "如何排查和定位问题的，nsys和ncu有用过吗？",
+      "category": "compiler",
+      "source_title": "快手infra一面",
+      "source_url": "https://www.xiaohongshu.com/explore/6aaff56d000000002600a9b6?xsec_token=ABAOYYzyRcloF1POHZt-qZrkD2kIuu9sM3QTAo0byfD4A%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a969b840000000012001103",
+      "question": "面试官真正会往下追的是：图怎么捕获、IR 为什么分层、融合到底省了什么，以及 Compile 变慢时你会怎么定位。",
+      "category": "compiler",
+      "source_title": "2026 AI编译器与算子融合面试攻略",
+      "source_url": "https://www.xiaohongshu.com/explore/6a969b840000000012001103?xsec_token=AB-noxd3HFc3NM-KsyTOBo5A53yG0ormj-FDxlChHTAJA%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a5dc6ec000000001102df0b",
+      "question": "1️⃣ 怎么用vLLM部署并调优一个推理服务？",
+      "category": "framework",
+      "source_title": "AI Infra面试被问最多的5个问题",
+      "source_url": "https://www.xiaohongshu.com/explore/6a5dc6ec000000001102df0b?xsec_token=AB__cl0g9jH9UO8QzCkIwGlEFrze6BDC62lCCnzIGuFFU%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a5dc6ec000000001102df0b",
+      "question": "2️⃣ K8s上怎么管理GPU资源？",
+      "category": "framework",
+      "source_title": "AI Infra面试被问最多的5个问题",
+      "source_url": "https://www.xiaohongshu.com/explore/6a5dc6ec000000001102df0b?xsec_token=AB__cl0g9jH9UO8QzCkIwGlEFrze6BDC62lCCnzIGuFFU%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a7d2e0100000000280020b0",
+      "question": "GDR验证失败你怎么定位到根因？",
+      "category": "framework",
+      "source_title": "分布式训练工程师面试最容易答崩的3类题！",
+      "source_url": "https://www.xiaohongshu.com/explore/6a7d2e0100000000280020b0?xsec_token=ABK1yTmSaGl-QAoCAxOjpjKKN1UwnXfSzs35BrlQF4OYQ%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a5dc6ec000000001102df0b",
+      "question": "GPU拓扑感知调度、MIG切分是怎么配的？",
+      "category": "framework",
+      "source_title": "AI Infra面试被问最多的5个问题",
+      "source_url": "https://www.xiaohongshu.com/explore/6a5dc6ec000000001102df0b?xsec_token=AB__cl0g9jH9UO8QzCkIwGlEFrze6BDC62lCCnzIGuFFU%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a7d2e0100000000280020b0",
+      "question": "IB的分层结构你怎么讲清楚？",
+      "category": "framework",
+      "source_title": "分布式训练工程师面试最容易答崩的3类题！",
+      "source_url": "https://www.xiaohongshu.com/explore/6a7d2e0100000000280020b0?xsec_token=ABK1yTmSaGl-QAoCAxOjpjKKN1UwnXfSzs35BrlQF4OYQ%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a66188b000000000401f0f2",
+      "question": "Megatron先说原理，各种并行，然后介绍实际项目中如何考虑各种并行度的选择？",
+      "category": "framework",
+      "source_title": "腾讯混元Ai infra",
+      "source_url": "https://www.xiaohongshu.com/explore/6a66188b000000000401f0f2?xsec_token=ABarxKmIQ04INRcvbOdnfQpFJQAxT6hQDmnv2DNE1HfWw%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a881f09000000003b016a63",
+      "question": "nano-vLLM 和正式版 vLLM 有什么区别？",
+      "category": "framework",
+      "source_title": "寒武纪 推理优化 日常实习面经",
+      "source_url": "https://www.xiaohongshu.com/explore/6a881f09000000003b016a63?xsec_token=AB8LZb85sIrYaOizYSZ2283VsaMdR38CCpYFa_I3EoyqY%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a7d2e0100000000280020b0",
+      "question": "NVSwitch全互联和PCIe树形差别在哪？",
+      "category": "framework",
+      "source_title": "分布式训练工程师面试最容易答崩的3类题！",
+      "source_url": "https://www.xiaohongshu.com/explore/6a7d2e0100000000280020b0?xsec_token=ABK1yTmSaGl-QAoCAxOjpjKKN1UwnXfSzs35BrlQF4OYQ%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a5dc6ec000000001102df0b",
+      "question": "Pod挂了怎么自动恢复？",
+      "category": "framework",
+      "source_title": "AI Infra面试被问最多的5个问题",
+      "source_url": "https://www.xiaohongshu.com/explore/6a5dc6ec000000001102df0b?xsec_token=AB__cl0g9jH9UO8QzCkIwGlEFrze6BDC62lCCnzIGuFFU%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a881f09000000003b016a63",
+      "question": "Qwen3.5 的多模态输入在框架层需要做哪些扩展？",
+      "category": "framework",
+      "source_title": "寒武纪 推理优化 日常实习面经",
+      "source_url": "https://www.xiaohongshu.com/explore/6a881f09000000003b016a63?xsec_token=AB8LZb85sIrYaOizYSZ2283VsaMdR38CCpYFa_I3EoyqY%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a881f09000000003b016a63",
+      "question": "SGLang 里的 Replay SSM 机制了解吗？",
+      "category": "framework",
+      "source_title": "寒武纪 推理优化 日常实习面经",
+      "source_url": "https://www.xiaohongshu.com/explore/6a881f09000000003b016a63?xsec_token=AB8LZb85sIrYaOizYSZ2283VsaMdR38CCpYFa_I3EoyqY%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "69ed981b000000003601b6e6",
+      "question": "✅ 1. LoRA低秩适配原理&优势？",
+      "category": "framework",
+      "source_title": "智谱大模型岗｜一面面经👀细节拷打😭",
+      "source_url": "https://www.xiaohongshu.com/explore/69ed981b000000003601b6e6?xsec_token=ABnZ9mNMPx0PdIMB-P8bB3bwWLZmdBPCUnSrXQTYg0ags%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "69ed981b000000003601b6e6",
+      "question": "✅ 2. 显存不足？",
+      "category": "framework",
+      "source_title": "智谱大模型岗｜一面面经👀细节拷打😭",
+      "source_url": "https://www.xiaohongshu.com/explore/69ed981b000000003601b6e6?xsec_token=ABnZ9mNMPx0PdIMB-P8bB3bwWLZmdBPCUnSrXQTYg0ags%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "69ed981b000000003601b6e6",
+      "question": "从单卡到多卡，显存优化全流程方案？",
+      "category": "framework",
+      "source_title": "智谱大模型岗｜一面面经👀细节拷打😭",
+      "source_url": "https://www.xiaohongshu.com/explore/69ed981b000000003601b6e6?xsec_token=ABnZ9mNMPx0PdIMB-P8bB3bwWLZmdBPCUnSrXQTYg0ags%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a7d2e0100000000280020b0",
+      "question": "如何定位TCP栈CPU高、吞吐上不去？",
+      "category": "framework",
+      "source_title": "分布式训练工程师面试最容易答崩的3类题！",
+      "source_url": "https://www.xiaohongshu.com/explore/6a7d2e0100000000280020b0?xsec_token=ABK1yTmSaGl-QAoCAxOjpjKKN1UwnXfSzs35BrlQF4OYQ%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "68a731c3000000001d0237b8",
+      "question": "[2] 你在算子开发中，kernel 设计所使用的PTX版本？",
+      "category": "operator",
+      "source_title": "【面经】燧原科技-算子开发",
+      "source_url": "https://www.xiaohongshu.com/explore/68a731c3000000001d0237b8?xsec_token=ABmzqqVSblrfwe8Gt6WH8Mp54exJHrp-pdW-KVpuLRjxo%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "68a731c3000000001d0237b8",
+      "question": "[3] 考虑过使用NVCC直接编译 CUDA C 代码，然后将其汇编的PTX代码作为kernel进行编译和执行吗？",
+      "category": "operator",
+      "source_title": "【面经】燧原科技-算子开发",
+      "source_url": "https://www.xiaohongshu.com/explore/68a731c3000000001d0237b8?xsec_token=ABmzqqVSblrfwe8Gt6WH8Mp54exJHrp-pdW-KVpuLRjxo%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "68a731c3000000001d0237b8",
+      "question": "[4] 模型的执行中，你所做的int8量化和反量化是如何实现的？",
+      "category": "operator",
+      "source_title": "【面经】燧原科技-算子开发",
+      "source_url": "https://www.xiaohongshu.com/explore/68a731c3000000001d0237b8?xsec_token=ABmzqqVSblrfwe8Gt6WH8Mp54exJHrp-pdW-KVpuLRjxo%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a6e9a94000000002500fddd",
+      "question": "你为什么选择来寒武纪做算子编译优化，而不是去互联网大厂做后端或者算法？",
+      "category": "operator",
+      "source_title": "寒武纪｜算子编译优化工程师面经",
+      "source_url": "https://www.xiaohongshu.com/explore/6a6e9a94000000002500fddd?xsec_token=AByr_PDA_bzGGcNszktgHJpXQBYMEkUU4PUlcQ70f5OX8%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a6e9a94000000002500fddd",
+      "question": "你在做毕设或者参加学科竞赛的时候，遇到过最棘手的技术难题是什么，当时是怎么一步步排查和解决的？",
+      "category": "operator",
+      "source_title": "寒武纪｜算子编译优化工程师面经",
+      "source_url": "https://www.xiaohongshu.com/explore/6a6e9a94000000002500fddd?xsec_token=AByr_PDA_bzGGcNszktgHJpXQBYMEkUU4PUlcQ70f5OX8%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a6e9a94000000002500fddd",
+      "question": "你在学校写过CUDA或者做过GPU、NPU算子加速的项目吗？",
+      "category": "operator",
+      "source_title": "寒武纪｜算子编译优化工程师面经",
+      "source_url": "https://www.xiaohongshu.com/explore/6a6e9a94000000002500fddd?xsec_token=AByr_PDA_bzGGcNszktgHJpXQBYMEkUU4PUlcQ70f5OX8%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "68a731c3000000001d0237b8",
+      "question": "回答了slice2/3D算子，功能，API接口入参，数据类型，开发流程，PTX实现过程，验收标准等；？",
+      "category": "operator",
+      "source_title": "【面经】燧原科技-算子开发",
+      "source_url": "https://www.xiaohongshu.com/explore/68a731c3000000001d0237b8?xsec_token=ABmzqqVSblrfwe8Gt6WH8Mp54exJHrp-pdW-KVpuLRjxo%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a6e9a94000000002500fddd",
+      "question": "算子优化往往需要反复调试和做枯燥的性能分析，你平时是怎么保持专注力的，能举个你在实验室或者项目里死磕一个性能瓶颈的例子吗？",
+      "category": "operator",
+      "source_title": "寒武纪｜算子编译优化工程师面经",
+      "source_url": "https://www.xiaohongshu.com/explore/6a6e9a94000000002500fddd?xsec_token=AByr_PDA_bzGGcNszktgHJpXQBYMEkUU4PUlcQ70f5OX8%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a28c5000000000035032728",
+      "question": "维度：系统工程与性能分析；要点：重点关注能否建立“what-if”对照、跨层指标关联和复现路径，而不是拍脑袋；参考资源：Straggler 研究；PyTorch Profiler；Nsight。",
+      "category": "operator",
+      "source_title": "字节跳动 AI Infra 面试一百题（十四）",
+      "source_url": "https://www.xiaohongshu.com/explore/6a28c5000000000035032728?xsec_token=ABl5fNe4n6jy3dtMv35dAtUJ3W1jd8VTIj7DHcRWIvCiA%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a28c5000000000035032728",
+      "question": "问题：Universal Checkpointing 为什么对大规模训练很重要？",
+      "category": "operator",
+      "source_title": "字节跳动 AI Infra 面试一百题（十四）",
+      "source_url": "https://www.xiaohongshu.com/explore/6a28c5000000000035032728?xsec_token=ABl5fNe4n6jy3dtMv35dAtUJ3W1jd8VTIj7DHcRWIvCiA%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a28c5000000000035032728",
+      "question": "问题：如果训练集群出现“偶发性慢步骤”，应如何区分是代码回归、数据倾斜、节点问题还是网络问题？",
+      "category": "operator",
+      "source_title": "字节跳动 AI Infra 面试一百题（十四）",
+      "source_url": "https://www.xiaohongshu.com/explore/6a28c5000000000035032728?xsec_token=ABl5fNe4n6jy3dtMv35dAtUJ3W1jd8VTIj7DHcRWIvCiA%3D",
+      "first_seen": "2026-10-02"
+    },
+    {
+      "id": "6a28c5000000000035032728",
+      "question": "问题：如果需要在 Triton、手写 CUDA 和 torch.compile 之间选择一种优化路径，应如何做决策？",
+      "category": "operator",
+      "source_title": "字节跳动 AI Infra 面试一百题（十四）",
+      "source_url": "https://www.xiaohongshu.com/explore/6a28c5000000000035032728?xsec_token=ABl5fNe4n6jy3dtMv35dAtUJ3W1jd8VTIj7DHcRWIvCiA%3D",
+      "first_seen": "2026-10-02"
+    }
+  ]
 }

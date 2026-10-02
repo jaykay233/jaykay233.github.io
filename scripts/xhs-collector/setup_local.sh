@@ -1,5 +1,6 @@
 #!/bin/bash
 set -euo pipefail
+export PATH="$HOME/.local/share/archatlas/node-v22.23.3/bin:$PATH"
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 PYTHON_BIN="${PYTHON_BIN:-python3}"
 if ! command -v "$PYTHON_BIN" >/dev/null 2>&1 || ! "$PYTHON_BIN" -c 'import sys; sys.exit(0 if sys.version_info >= (3, 10) else 1)'; then
@@ -17,6 +18,8 @@ if [ ! -d "$UPSTREAM/.git" ]; then
 else
   echo "Using existing Spider_XHS checkout at $UPSTREAM"
 fi
+# Spider_XHS' local Node signing runtime requires its npm dependency (crypto-js).
+npm --prefix "$UPSTREAM" install --no-audit --no-fund
 "$PYTHON_BIN" -m venv "$ROOT/.xhs-venv"
 "$ROOT/.xhs-venv/bin/python" -m pip install --upgrade pip
 "$ROOT/.xhs-venv/bin/pip" install -r "$UPSTREAM/requirements.txt" keyring
