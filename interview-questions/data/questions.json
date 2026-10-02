@@ -14,9 +14,9 @@
         "Software Pipeline"
       ],
       "answer_points": [
-        "TMA 可异步地把 Global Memory 中的 tile 搬到 Shared Memory。",
-        "通过多 stage pipeline，让当前 tile 计算与后续 tile 搬运并行。",
-        "常见重叠粒度是 tile 或 pipeline stage；能否有效重叠取决于数据依赖、stage 数和资源占用。"
+        "TMA 可将 Global Memory 中的多维数据块异步搬到 Shared Memory，搬运由专用硬件执行。",
+        "用双缓冲或多缓冲：计算当前 tile 时预取后续 tile，并通过 barrier 保证消费者只读取已完成的数据。",
+        "重叠通常发生在相邻 tile/stage 之间；数据依赖、搬运与计算时长、缓冲区数量和资源占用决定实际效果。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -32,9 +32,9 @@
         "Barrier Phase"
       ],
       "answer_points": [
-        "生产者为 barrier 设置预期事务字节数并发起异步搬运。",
-        "搬运完成后由硬件更新事务完成状态；消费者等待 barrier 达到完成条件后再读取数据。",
-        "循环复用 barrier 时要正确推进 phase/parity，避免把上一轮完成状态误认为本轮完成。"
+        "生产者初始化 mbarrier，并登记异步事务的预期字节数后发起拷贝。",
+        "异步事务完成时更新 barrier 的完成状态；消费者等待当前 phase 完成后再使用数据。",
+        "循环复用 barrier 时需正确切换 phase/parity，并确保 barrier 生命周期覆盖所有异步访问。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -50,9 +50,9 @@
         "Kernel Launch"
       ],
       "answer_points": [
-        "拆分可能缩短单个 Kernel 的活跃区间、降低每线程寄存器需求，从而增加可驻留 CTA/warp。",
-        "代价是增加 Kernel Launch，并可能引入中间结果写回和再次读取。",
-        "应结合寄存器数、Occupancy、访存流量和端到端耗时判断，不能只看单个 Kernel 的理论 Occupancy。"
+        "拆分可缩短变量活跃区间、减少单个 Kernel 的寄存器需求，有时能提高可驻留 CTA 数。",
+        "代价是额外 launch、全局内存中间结果读写，以及可能丢失融合带来的数据复用。",
+        "比较寄存器/溢出、Occupancy、访存流量和端到端延迟；拆分并不必然更快。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -69,9 +69,9 @@
         "分块"
       ],
       "answer_points": [
-        "对 C[M,N] += A[M,K] × B[K,N]，计算量约为 2MNK FLOPs。",
-        "若每个 k 步都从内存读写 C，C 会被反复访问。",
-        "将一个或多个 C 元素的部分和保存在寄存器中，完成 K 维累加后再写回，可减少 C 的重复读写；更大规模可用 tiling 提高 A、B 复用。"
+        "M×N×K GEMM 约需 2MNK FLOPs；访存量需按元素字节数、缓存复用和具体循环顺序估算。",
+        "若每个 k 都从显存读写 C，C 会产生重复读改写；把部分和留在寄存器中，完成 K 维累加后再写回。",
+        "进一步用分块复用 A、B，并调整循环顺序改善缓存局部性；区分理论加载量与缓存后的实际 DRAM 流量。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -88,9 +88,9 @@
         "XOR Swizzle"
       ],
       "answer_points": [
-        "常见 NVIDIA 架构可按 32 个 bank、连续字地址交错映射来理解；具体宽度和模式要结合架构及访问类型确认。",
-        "同一 warp 的多个线程访问同一 bank 的不同地址时，访问会被拆成多个冲突事务；广播同一地址通常是例外。",
-        "可通过 padding 改变行步长，或用 swizzle/XOR swizzle 重排地址映射，减少热点 bank。"
+        "常见 NVIDIA Shared Memory 可按 32 个 bank、每 bank 每周期服务一个 32-bit word 理解；具体规则需核对目标架构和访问宽度。",
+        "对 32-bit 标量访问，bank 通常为 (byte_address / 4) mod 32；同一 warp 中不同地址落到同一 bank 会串行分解。",
+        "同一地址的广播通常不算普通冲突；可用 padding、数据重排或 swizzle/XOR swizzle 改变 bank 映射。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -106,9 +106,9 @@
         "Bank Conflict 统计"
       ],
       "answer_points": [
-        "先按访问元素宽度把字节地址换算为 bank word index，再根据 bank 数计算 bank = word_index mod bank_count。",
-        "按 bank 分组统计不同地址的访问；同一地址的广播访问不按普通冲突处理。",
-        "每个 bank 所需的串行服务轮数由该 bank 上不同地址的访问决定，再结合多次访问向量化规则统计总事务数。"
+        "对每条标量访存指令，逐 lane 计算 bank = (address / word_size) mod bank_count。",
+        "按 bank 统计不同 word 地址；同一地址的多 lane 访问按广播处理，多个不同地址会形成冲突 wavefront。",
+        "简单 32-bit 标量访问下，冲突度由最拥挤 bank 的不同地址数决定；向量化访问需按硬件拆分的子事务分别统计。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -127,9 +127,9 @@
         "异步 Pipeline"
       ],
       "answer_points": [
-        "讨论时可按异步数据搬运、矩阵乘指令、片上存储和线程协作机制逐代比较。",
-        "Hopper 引入 TMA、WGMMA、Warp Specialization、Cluster/Multicast 等重要能力。",
-        "Blackwell 增加 Tensor Memory、TCGEN05 及 2-SM 协作 MMA 等能力；应说明这些机制如何改变数据搬运和计算 pipeline，而不只背名词。"
+        "Ampere 支持 cp.async 等异步 Global-to-Shared 搬运，并提升 Tensor Core 能力。",
+        "Hopper 引入 TMA、WGMMA、Warp Specialization 与 Thread Block Cluster/Multicast，强化异步搬运和 CTA 协作。",
+        "Blackwell 增加 Tensor Memory、TCGEN05 及新一代多 SM Tensor Core 路径；回答时应联系数据流、同步和 pipeline，而非只列名词。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -146,9 +146,9 @@
         "GPU 架构"
       ],
       "answer_points": [
-        "可从减少 HBM 与片上存储之间的数据搬运、分块计算与在线 Softmax 讲起。",
-        "进一步比较不同代际对 GPU 指令、异步执行、并行调度及硬件特性的利用。",
-        "回答应区分算法层面的 IO 优化与针对新硬件的 Kernel 实现优化。"
+        "FlashAttention 通过分块计算和 Online Softmax 避免显式物化完整的 S×S 注意力矩阵，降低 HBM 读写。",
+        "后续版本持续改进并行划分、工作分配和反向传播效率，并利用新 GPU 的异步搬运、矩阵指令及 warp/CTA 协作。",
+        "比较代际时区分算法层面的 IO 复杂度与针对具体架构的 Kernel 调度优化；实现细节依版本和硬件而异。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -165,9 +165,9 @@
         "数值误差"
       ],
       "answer_points": [
-        "Softmax 中的 Max、Exp 和归一化会影响关键路径；其吞吐可能受特殊函数单元及依赖链限制。",
-        "在线 Softmax 可维护 running max 与归一化和；Max 更新时对已有累积量做相应重缩放。",
-        "可在满足误差约束时用近似或延迟部分更新降低关键路径依赖，需验证数值误差和端到端收益。"
+        "Softmax 的 Max、Exp、归一化存在数据依赖，可能限制流水线吞吐；Exp 也会受特殊函数吞吐约束。",
+        "在线 Softmax 维护 running max m、指数和 l 及加权输出 o；更新最大值时按 exp(m_old−m_new) 重缩放旧累积量。",
+        "延迟部分 Max 更新或使用近似 Exp 可缩短关键路径，但需满足误差约束，并以目标 GPU 上的性能和数值测试验证。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -184,9 +184,9 @@
         "性能测量"
       ],
       "answer_points": [
-        "先核实两款产品对应的芯片配置与公开架构资料，避免把产品级配置差异误当成架构定律。",
-        "若特殊函数单元供给增加，Exp 等操作可能获得更高吞吐，但实际收益还受访存、依赖链、占用率和其他指令限制。",
-        "用相同输入和精度分别测微基准与端到端 Kernel，并结合 Nsight Compute 指标验证瓶颈是否确实位于特殊函数吞吐。"
+        "先核对 B200/B300 对应 SKU、芯片配置及官方规格，避免把产品配置差异直接推广为架构结论。",
+        "SFU 吞吐增加只有在 Exp 等特殊函数是瓶颈时才可能转化为提速；依赖链、访存、占用率也可能主导。",
+        "用相同输入做微基准和端到端对比，结合 Nsight Compute 的指令/管线利用率、stall 与吞吐指标确认瓶颈。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -203,9 +203,9 @@
         "确定性计算"
       ],
       "answer_points": [
-        "关闭 Split-K 可能减少并行度，但可避免跨分块归约及其额外开销，并有助于确定性。",
-        "针对常见 M/N/K 与 dtype 选择 tile、CTA 数和调度策略，避免小 M 场景下固定 tile 造成大量空算。",
-        "为不适合主路径的 shape/dtype 提供明确 fallback，并通过多 shape 基准和正确性测试验证。"
+        "Split-K 可增加小 M 下的并行度，但需要跨分片归约；原子累加或不同归约顺序可能影响确定性并增加开销。",
+        "针对常见 M/N/K、dtype 选择 tile、CTA 数和调度方式；小 M 时避免过大的固定 tile 和空算。",
+        "为不适合主路径的 shape/dtype 设定可验证的 fallback，并以正确性、确定性和多 shape 基准共同评估。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -222,9 +222,9 @@
         "Occupancy"
       ],
       "answer_points": [
-        "先确定每线程处理的数据及 Warp 内归约方式，再决定是否需要跨 Warp 的 Shared Memory 归约。",
-        "跨 Warp 通常需要写入部分结果、同步后由一个或多个 Warp 继续归约。",
-        "寄存器和 Shared Memory 用量会限制每个 SM 的驻留 CTA/warp；Occupancy 需要结合并行度和延迟隐藏需求衡量。"
+        "每个线程先做局部累加，Warp 内可用 shuffle 指令归约。",
+        "跨 Warp 时先把 Warp 部分和写入 Shared Memory，同步后由一个 Warp 完成最终归约。",
+        "寄存器/Shared Memory 用量与线程数限制驻留 CTA/warp；Occupancy 帮助隐藏延迟，但也要考虑指令级并行和总工作量。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -241,9 +241,9 @@
         "寄存器压力"
       ],
       "answer_points": [
-        "Megakernel 通常指在单个较大的 Kernel 中融合多个计算阶段并自行安排阶段调度。",
-        "可能减少 Kernel Launch、中间结果落入显存及重复调度开销。",
-        "也可能增加寄存器/共享内存占用、同步复杂度和代码尺寸，降低 Occupancy 或使负载不均；应以端到端数据验证。"
+        "Megakernel 将多个阶段或任务调度融合进一个较大的 GPU Kernel。",
+        "可减少 launch 次数、中间结果写回/重读和主机端调度开销。",
+        "代价包括更高寄存器/Shared Memory 压力、复杂同步与负载均衡，以及可能降低 Occupancy；要看端到端结果。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -259,9 +259,9 @@
         "Head Partition"
       ],
       "answer_points": [
-        "输入按序列维分布在多个 Rank 上；通过 All-to-All 将序列分片转换为 Head 分片，使每个 Rank 能处理完整序列上的一部分 Head。",
-        "Attention 计算后可通过反向布局转换把输出恢复为序列分片。",
-        "通信开销取决于张量大小、并行组规模、网络拓扑及实现方式。"
+        "输入先沿序列维分片；Ulysses 在 SP 组内做 All-to-All，把序列分片转换为 Head 分片。",
+        "转换后每个 Rank 对完整序列上的本地 Head 分片计算 Attention。",
+        "输出再通过反向 All-to-All 转回序列分片；通信规模受激活大小、组规模和拓扑影响。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -277,9 +277,9 @@
         "Head Dimension"
       ],
       "answer_points": [
-        "设全局张量为 [B,S,H,D]，SP 组大小为 P；变换前每 Rank 持有约 [B,S/P,H,D]。",
-        "交换后每 Rank 持有约 [B,S,H/P,D]（实际轴顺序取决于实现）。",
-        "元素总量在组内保持一致，变化的是序列维与 Head 维的分片布局；需要明确 Gather/Scatter 的轴与 Rank 分组。"
+        "设张量为 [B,S,H,D]，SP 组大小 P；变换前每 Rank 通常持有 [B,S/P,H,D]。",
+        "All-to-All 后通常变为 [B,S,H/P,D]，序列维从分片变完整、Head 维反向分片。",
+        "元素总量保持不变；实际轴顺序和可整除要求以实现为准。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -295,9 +295,9 @@
         "通信组划分"
       ],
       "answer_points": [
-        "将 8 个 Rank 看作 TP×SP 的二维网格。举例按 rank=tp_rank×4+sp_rank 编号。",
-        "固定 sp_rank 得到 TP 组，例如 [0,4]、[1,5]、[2,6]、[3,7]；固定 tp_rank 得到 SP 组，例如 [0,1,2,3]、[4,5,6,7]。",
-        "Ulysses 的序列与 Head 布局 All-to-All 在对应 SP 组内执行；实际 Rank 编号顺序可以不同，但组大小与坐标映射必须一致。"
+        "把 8 个 Rank 映射为 TP×SP=2×4 网格。若 rank=tp_rank×4+sp_rank，SP 组为 [0,1,2,3] 与 [4,5,6,7]。",
+        "固定 sp_rank 得到 TP 组：[0,4]、[1,5]、[2,6]、[3,7]。",
+        "Ulysses 的 All-to-All 在每个 SP=4 组内进行；rank 编号可不同，但进程组坐标必须一致。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -314,9 +314,9 @@
         "All-to-All"
       ],
       "answer_points": [
-        "TP 通常沿模型隐藏维或 Head 相关维度切分计算，Ulysses SP 沿序列维分片输入。",
-        "进入 Attention 前，SP 组可通过 All-to-All 把序列分片转为 Head 分片；Attention 输出后再转换回序列分片。",
-        "TP 与 SP 的具体顺序、张量轴和通信组要以模型实现为准，不能把两种并行简单视作同一维度切分。"
+        "TP 通常切分隐藏维或 Attention Head/投影维；SP 将激活沿序列维切分。",
+        "Ulysses Attention 前在 SP 组内交换序列与 Head 布局，计算后再换回；TP 的投影切分与相应通信仍按 TP 组执行。",
+        "逐步标出每个算子的局部 Shape、持有维度及通信组，避免把 TP 和 SP 误认为同一维度切分。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -333,9 +333,9 @@
         "Process Group"
       ],
       "answer_points": [
-        "正交划分通常把 TP、SP 作为不同网格维度，进程组可按固定坐标分别构造。",
-        "非正交设计允许并行分组或张量切分不再对应互相独立的网格轴，可能改变通信组成员和数据重排方式。",
-        "比较时应落到具体 rank 映射、张量布局、通信量和拓扑，避免只凭 TPSP 名称推断实现。"
+        "正交布局把 TP、SP 映射到网格的独立维度，通常可分别按固定坐标构造进程组。",
+        "非正交 TPSP 的分组/切分关系不再是简单独立笛卡尔积，可能复用或交叠通信组，改变数据重排和通信量。",
+        "TPSP 具体定义依实现或论文；分析时应先画 rank 映射、张量布局与 collective，再比较拓扑和开销。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -352,9 +352,9 @@
         "分块调度"
       ],
       "answer_points": [
-        "把通信和专家计算做更细粒度分块，尽早启动可用数据对应的计算。",
-        "检查负载均衡、消息大小和调度，减少等待与不必要的数据搬运。",
-        "在精度允许且实现支持时评估低精度通信（如 FP8），并测量量化开销、误差和端到端收益。"
+        "先分解 dispatch、专家计算、combine 的耗时，并检查 token 分布不均、消息大小和网络拓扑。",
+        "通过负载均衡、通信分块/流水化及与专家计算重叠，减少空等并让已到达的数据尽早计算。",
+        "评估降低通信精度或压缩传输（如 FP8）的收益，同时验证误差、转换成本和端到端效果。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -371,9 +371,9 @@
         "通信重叠"
       ],
       "answer_points": [
-        "先用 Nsight Systems 查看端到端时间线，定位 GPU 空泡、CPU 调度/同步开销及通信是否与计算重叠。",
-        "再用 Nsight Compute 分析热点 Kernel 的计算、访存、Occupancy 和指令瓶颈。",
-        "按热点占比和可优化空间估算端到端收益，避免只优化耗时占比很小的 Kernel。"
+        "用 Nsight Systems 先看端到端时间线：GPU 空泡、CPU 输入/调度、同步以及通信与计算的重叠情况。",
+        "用 Nsight Compute 分析热点 Kernel 的计算/访存吞吐、Occupancy、stall 和指令瓶颈。",
+        "按耗时占比、可优化空间和 Amdahl 定律排序；确认 MFU 口径、峰值定义和测试负载一致。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -390,9 +390,9 @@
         "最小复现"
       ],
       "answer_points": [
-        "通过关闭 Graph、TP=1/TP>1、改变精度或禁用通信融合等对照实验缩小触发条件。",
-        "检查各 Rank 的 collective 调用顺序、shape、stream/event 依赖，以及捕获与回放期间使用的资源和同步标记。",
-        "最小复现后区分触发条件与根因：Graph 可能暴露已有的同步/通信错误，不一定是根因本身。"
+        "用对照实验缩小条件：关闭 Graph、TP=1/多卡、改变 dtype/shape，并逐项禁用融合通信路径。",
+        "检查各 Rank collective 次序与参数、stream/event 依赖、静态地址与缓冲区生命周期，以及 Graph capture/replay 兼容性。",
+        "收集所有 Rank 的日志和调用栈做最小复现；Graph 可能只是触发条件，根因也可能是已有同步或通信错误。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -409,9 +409,9 @@
         "数值误差"
       ],
       "answer_points": [
-        "Router Replay 记录并在训练对应阶段重放前向生成的路由决策，避免因计算路径或精度差异导致路由发生变化。",
-        "当多个专家的 Router Logit 接近 Top-K 边界时，微小数值扰动可能改变排序并切换被选专家。",
-        "需要明确路由记录与回放的阶段、索引和生命周期，并验证训练语义与梯度路径。"
+        "Router Logit 接近 Top-K 边界时，微小的舍入差异即可改变排序，使 token 被分到不同专家。",
+        "Router Replay 记录并在训练对应步骤重放路由决策，降低 rollout 与训练重算路径不一致造成的偏差。",
+        "需明确记录的是专家索引还是连同权重、token 对齐方式和生命周期，并确保梯度及训练目标语义正确。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -428,9 +428,9 @@
         "Amdahl 定律"
       ],
       "answer_points": [
-        "通过消融实验分别开关量化、融合和 MTP，保持输入、Batch、序列长度及测量条件一致。",
-        "结合权重读取量、反量化指令/耗时和 Kernel 时间，区分带宽节省与反量化、融合带来的变化。",
-        "把单个 FFN 或 Kernel 的加速映射到端到端耗时占比，评估整体收益及测量误差。"
+        "在相同模型、输入、Batch/长度和硬件条件下做消融：分别比较 W4A16、融合和 MTP 开关。",
+        "W4 可降低权重读取字节数，但要扣除 Scale 元数据、反量化和额外指令成本；融合主要减少 launch/中间访存。",
+        "单测 FFN 与端到端分别报告，并按各阶段耗时及 MTP 接受率拆分收益，避免把多项优化重复归因。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -448,9 +448,9 @@
         "精度验证"
       ],
       "answer_points": [
-        "对齐输入、Shape、精度和测量环境，分别基准测试库实现、编译器生成实现与手写 Kernel。",
-        "结合编译产物、性能计数器和时间线定位瓶颈来源，检查数据布局、指令选择和访存效率。",
-        "验证 FP8/FP4 的格式、Scale 粒度、舍入/饱和、累加精度、误差分布及端到端模型质量。"
+        "固定 Shape、dtype、精度和输入，分别测算子库、编译器生成实现和手写 Kernel，先确认结果正确。",
+        "检查 IR/汇编、访存布局、指令利用率与性能计数器，区分库调用、编译代码和 Kernel 算法瓶颈。",
+        "验证 FP8/FP4 格式、Scale 粒度、舍入/饱和、累加精度、误差分布及模型质量。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -467,9 +467,9 @@
         "进程诊断"
       ],
       "answer_points": [
-        "先记录进程状态、线程和资源占用，避免重启后丢失现场。",
-        "采集 Python 线程栈（如 faulthandler、py-spy）及必要的原生栈，检查锁等待、同步调用、I/O 或 CUDA/NCCL 阻塞。",
-        "结合线程间等待关系和日志时间戳，区分死锁、长时间计算与外部资源等待。"
+        "先保留进程、线程、资源和日志现场，不要急于重启。",
+        "采集 Python 栈（faulthandler/py-spy）及必要的原生栈（gdb/pstack），检查锁等待、I/O、CUDA/NCCL 同步和线程池阻塞。",
+        "结合等待关系、系统调用和时间线区分死锁、长计算、资源耗尽或外部服务等待。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -485,9 +485,9 @@
         "首次访问"
       ],
       "answer_points": [
-        "内存分配可能先只建立虚拟地址空间；物理页通常在首次触碰时按需分配并建立映射。",
-        "首次访问可能触发缺页、清零和页表更新，后续命中已映射页面时通常不再承担相同开销。",
-        "应区分 malloc/new 耗时与实际触碰页面的耗时，并控制预热、NUMA 和缓存等测量因素。"
+        "malloc/new 可能只预留虚拟地址空间；Linux 常在页面首次触碰时分配/映射物理页。",
+        "首次触碰会产生缺页处理、页清零和页表建立成本，后续访问不再承担相同的 page fault 开销。",
+        "测量时区分分配与触页，并控制预热、NUMA 首次触碰、缓存和页面数量。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -504,9 +504,9 @@
         "GIL"
       ],
       "answer_points": [
-        "Python 循环逐元素执行解释器调度、动态类型和对象操作，循环开销较高。",
-        "NumPy 将批量循环下沉到 C/C++ 等原生实现，可减少解释器开销并利用 SIMD/向量化。",
-        "部分 NumPy 操作会释放 GIL；具体收益依赖算子实现、数据类型、数组布局和计算规模。"
+        "Python for-loop 每个元素都承担解释器调度、动态类型和对象操作开销。",
+        "NumPy 将批量循环放到 C/C++ 等原生实现，可使用连续内存、向量化/SIMD 和优化数学库。",
+        "部分 NumPy 运算会释放 GIL；实际速度取决于算子、dtype、布局、数据规模及是否产生临时数组。"
       ],
       "source_title": "技术面试复盘",
       "first_seen": "2026-10-02"
@@ -524,6 +524,11 @@
         "混合精度",
         "通信 Cast",
         "通信量估算"
+      ],
+      "answer_points": [
+        "规约 dtype 由训练策略决定：可用 FP32 保精度，也可用 BF16/FP16 减少通信量；需核对梯度累加和数值稳定性。",
+        "Cast 开销包括读写/转换 Kernel 与可能的同步；可通过 Profile 比较 cast 时间及是否与通信重叠。",
+        "通信字节数约为元素数×传输 dtype 字节数×collective 的链路系数；Ring All-Reduce 每 Rank 发送量约 2(P−1)/P 个张量，实际值依算法/拓扑而变。"
       ]
     },
     {
@@ -539,6 +544,11 @@
         "Ring Algorithm",
         "Tree Algorithm",
         "带宽与时延"
+      ],
+      "answer_points": [
+        "ReduceScatter 将输入按 Rank 分块：各 Rank 对对应元素做规约，最终每 Rank 只保留一个结果分片。",
+        "NCCL 会按消息大小、拓扑和协议选择 Ring、Tree 等算法；Ring 通常带宽利用好，Tree 更偏低时延/层级扩展。",
+        "区分算法（Ring/Tree）与传输协议（Simple/LL/LL128）；具体选择可用 NCCL 日志和基准验证。"
       ]
     },
     {
@@ -554,6 +564,11 @@
         "Row Parallel",
         "AllReduce",
         "激活布局"
+      ],
+      "answer_points": [
+        "典型 Row-Parallel Linear 中，各 TP Rank 计算输出的部分和，需 All-Reduce 求和得到完整输出。",
+        "Column-Parallel Linear 通常输出不同特征分片，不必立即 All-Reduce。",
+        "开启 Sequence Parallel 时，某些 All-Reduce 可拆成 Reduce-Scatter 与后续 All-Gather；是否通信取决于算子布局。"
       ]
     },
     {
@@ -569,6 +584,11 @@
         "AllReduce",
         "ReduceScatter",
         "梯度同步"
+      ],
+      "answer_points": [
+        "前向中，Column Parallel 分片输出特征；Row Parallel 对部分输出求和，通常触发 All-Reduce 或 Reduce-Scatter。",
+        "反向需按线性层切分方式计算输入梯度和权重梯度：某些输入梯度需要跨 Rank 求和，权重梯度通常在本地分片累积。",
+        "具体通信取决于 TP 算子、Sequence Parallel 和布局；用前向/反向张量 Shape 跟踪比笼统说“都 All-Reduce”准确。"
       ]
     },
     {
@@ -584,6 +604,11 @@
         "ncclRecv",
         "通信配对",
         "Deadlock 避免"
+      ],
+      "answer_points": [
+        "ncclSend/ncclRecv 在同一 communicator 内按 peer、count、datatype 配对，并使用兼容的 stream 顺序。",
+        "相互发送/接收的多条 P2P 操作可用 ncclGroupStart/End 一起提交，避免阻塞式调用次序造成死锁。",
+        "保证双方匹配的消息数量与调用顺序，并检查 buffer 生命周期、stream/event 依赖和错误返回。"
       ]
     },
     {
@@ -599,6 +624,11 @@
         "Kernel Bypass",
         "Zero-copy",
         "TCP/IP"
+      ],
+      "answer_points": [
+        "RDMA 通过注册内存、Queue Pair 和 Work Request，让网卡在本机与远端内存间直接 DMA 传输。",
+        "接收端/发送端通过 Completion Queue 获取完成状态；数据面可绕过远端 CPU 的逐包处理。",
+        "相对传统 TCP/IP 可降低 CPU 开销、拷贝和时延，并提升吞吐；仍受网卡、交换网络、注册和拓扑限制。"
       ]
     },
     {
@@ -613,6 +643,11 @@
         "集合通信",
         "通信拓扑",
         "分布式训练"
+      ],
+      "answer_points": [
+        "Broadcast 将 root Rank 的同一数据分发给 communicator 中所有 Rank，所有参与者需使用匹配的 root、count 和 datatype。",
+        "NCCL 根据消息规模和拓扑选择 Ring、Tree 等实现；调用通常与 stream 异步关联。",
+        "典型用途是同步模型参数、状态或少量控制数据；应区分 Broadcast 与 AllGather 的数据来源和语义。"
       ]
     },
     {
@@ -628,6 +663,11 @@
         "Expert Parallelism",
         "All-to-All",
         "负载均衡"
+      ],
+      "answer_points": [
+        "Router 为每个 token 计算专家分数并选 Top-K 专家，得到 token-to-expert 映射及门控权重。",
+        "Dispatch 按专家重排/打包 token，并通过 All-to-All 或本地搬运送到持有对应专家的 Rank。",
+        "专家执行 MLP 后，Combine 按 token 索引回排并按门控权重合并；容量、Padding 和负载均衡会影响通信与算力。"
       ]
     },
     {
@@ -644,6 +684,11 @@
         "AOTAutograd",
         "TorchInductor",
         "Graph Break"
+      ],
+      "answer_points": [
+        "TorchDynamo 捕获 Python 执行中的张量图，AOTAutograd 处理前后向图，TorchInductor 等后端生成优化代码/Kernel。",
+        "Python 控制流、动态 Shape 或不支持算子可能造成 graph break/recompile；先用日志检查图断点与编译次数。",
+        "适合可重复执行、张量计算占比高且图结构稳定的路径；以预热后端到端收益衡量，并计入编译开销。"
       ]
     },
     {
@@ -659,6 +704,11 @@
         "PassManager",
         "Dialect Interface",
         "SCF Ops"
+      ],
+      "answer_points": [
+        "Pass 是对 IR 的分析或变换，可作用于 Operation/Module；PassManager 按嵌套 pipeline 顺序执行并验证 IR。",
+        "Dialect 定义方言的类型与操作；Dialect Interface 为不同 Dialect 提供可查询的通用行为/扩展点。",
+        "SCF 提供结构化控制流，如 scf.for、scf.if、scf.while 与 yield；常通过 canonicalize 和逐级 lowering 转换到更低层 IR。"
       ]
     },
     {
@@ -674,6 +724,11 @@
         "矩阵乘",
         "显存带宽",
         "输入分辨率"
+      ],
+      "answer_points": [
+        "ViT 的瓶颈取决于分辨率、Patch 数、Batch、隐藏维和实现；注意力计算随序列长度增长，MLP 常占大量 FLOPs。",
+        "图像解码/增强或 Host-to-Device 可能让端到端受 IO/CPU 限制；仅看 FLOPs 无法判断。",
+        "用时间线、Kernel profile、算术强度和吞吐指标分解预处理、搬运与 GPU 计算耗时。"
       ]
     },
     {
@@ -689,6 +744,11 @@
         "CTA Scheduling",
         "Kernel Occupancy",
         "Coalesced Access"
+      ],
+      "answer_points": [
+        "把张量迭代空间切成 CTA tile，再将逻辑 CTA 网格映射到 GPU；SM 调度器负责把 CTA 分配到可用 SM。",
+        "Tile 需权衡数据复用、合并访存、并行度、尾部 Mask、寄存器/Shared Memory 和 Occupancy。",
+        "通过 Nsight 指标评估；可用 swizzle 调整 CTA 顺序以改善 L2 局部性或负载均衡，但不应假设能固定指定 SM。"
       ]
     },
     {
@@ -704,6 +764,11 @@
         "Kernel Profiling",
         "Roofline Model",
         "瓶颈分类"
+      ],
+      "answer_points": [
+        "Nsight Systems 看全局时间线：Kernel Launch 间隙、CPU 线程、同步、数据拷贝和通信重叠。",
+        "Nsight Compute 看单个热点 Kernel：DRAM/L2 吞吐、计算管线、Occupancy、指令与 Stall。",
+        "Launch-bound 常表现为短 Kernel 和较大调度间隙；Memory/Compute-bound 需结合 Roofline 与硬件利用率确认。"
       ]
     },
     {
@@ -719,6 +784,11 @@
         "KV Cache",
         "Continuous Batching",
         "Batch Token Budget"
+      ],
+      "answer_points": [
+        "PagedAttention 将 KV Cache 切为固定大小物理块，通过 Block Table 映射逻辑序列位置，减少连续分配和碎片浪费。",
+        "Continuous Batching 按迭代动态加入/移除请求，提高 Decode 阶段 GPU 利用率。",
+        "调 max_num_batched_tokens、max_num_seqs、KV Cache/GPU 利用率、Block Size、并行配置等，并按首 Token 延迟和吞吐的目标测量。"
       ]
     },
     {
@@ -734,6 +804,11 @@
         "GPU Operator",
         "GPU Scheduling",
         "Resource Isolation"
+      ],
+      "answer_points": [
+        "GPU Device Plugin 向 kubelet 注册可分配 GPU 资源，并在容器分配阶段配置设备和挂载。",
+        "GPU Operator 自动化驱动、Device Plugin、监控和相关组件的部署与生命周期管理。",
+        "Pod 通过资源 requests/limits 申请 GPU；调度还需考虑节点标签、MIG/Time-Slicing、拓扑与驱动兼容。"
       ]
     },
     {
@@ -749,6 +824,11 @@
         "ACS",
         "IOMMU",
         "NIC-GPU Affinity"
+      ],
+      "answer_points": [
+        "确认 GPU/NIC 型号、驱动、CUDA、Peer Memory/DMABUF 支持及 GPUDirect RDMA 配置正确。",
+        "检查 nvidia-smi topo、PCIe 路径、ACS/IOMMU、NUMA 亲和性和 NIC/GPU 是否处于支持的拓扑关系。",
+        "用 ib_write_bw 等先做基准，再看日志、计数器和对照路径区分配置、权限、拓扑或性能问题。"
       ]
     },
     {
@@ -764,6 +844,11 @@
         "MIG",
         "Topology-aware Scheduling",
         "NVLink"
+      ],
+      "answer_points": [
+        "多卡任务优先放在 NVLink/NVSwitch 连通性好的 GPU 组，并把 CPU 与内存绑定到对应 NUMA 节点。",
+        "结合 NIC-GPU 亲和性安排通信进程；MIG 调度还要匹配实例 Profile、显存和隔离需求。",
+        "通过设备拓扑信息和实测带宽验证调度结果，避免只按 GPU 数量做放置。"
       ]
     },
     {
@@ -779,6 +864,11 @@
         "Subnet Manager",
         "Verbs",
         "RDMA Data Path"
+      ],
+      "answer_points": [
+        "HCA 执行 RDMA 发送/接收；Verbs API 创建 QP、注册 MR、提交 Work Request 并轮询 CQ。",
+        "Subnet Manager 发现并配置 InfiniBand 子网、分配地址/路径信息；Switch 按路由转发数据包。",
+        "典型流程是注册内存、建立并交换 QP 信息、提交工作请求、网络转发，最后由 CQ 通知完成。"
       ]
     },
     {
@@ -795,6 +885,11 @@
         "Pipeline Parallelism",
         "Context Parallelism",
         "Expert Parallelism"
+      ],
+      "answer_points": [
+        "DP 在不同 Rank 放置模型副本并切分数据；TP 切分层内张量；PP 按层切阶段；CP 切分序列/上下文；EP 切分专家。",
+        "各维度组合受总 Rank 数、模型 Shape、显存、Batch/序列长度及 NVLink/网络拓扑约束。",
+        "先估算计算与通信，再选择并行组和微批流水；注意 EP/CP 等组的构造规则以及负载均衡。"
       ]
     },
     {
@@ -810,6 +905,11 @@
         "KV Cache",
         "Continuous Batching",
         "Serving Scheduler"
+      ],
+      "answer_points": [
+        "比较两者的请求调度、Prefill/Decode 批处理、KV Cache 分块/回收和 Kernel/并行能力。",
+        "nano-vLLM 通常以精简实现帮助理解核心机制；vLLM 面向更广泛模型与生产负载，功能和优化随版本变化。",
+        "用相同模型、硬件、请求分布和质量设置比较吞吐、首 Token/逐 Token 延迟、并发、显存与稳定性。"
       ]
     },
     {
@@ -825,6 +925,11 @@
         "Bisection Bandwidth",
         "All-to-All",
         "集合通信"
+      ],
+      "answer_points": [
+        "NVSwitch 提供 GPU 间高带宽互联，适合高密度 All-to-All；实际带宽取决于交换结构和 GPU 代际。",
+        "PCIe 通常是分层树形/交换拓扑，可能有上行链路争用、NUMA 路径差异和较低的双向聚合带宽。",
+        "比较时测点对点、双向、All-Reduce/All-to-All，并结合 hop、二分带宽和拓扑图；不能仅凭名义带宽推断。"
       ]
     },
     {
@@ -840,6 +945,11 @@
         "Readiness Probe",
         "GPU Pod",
         "Graceful Shutdown"
+      ],
+      "answer_points": [
+        "Readiness Probe 决定是否接流量，Liveness/Startup Probe 处理失活与启动过程；探针要避免过于敏感。",
+        "故障 Pod 被控制器重建/重调度；终止前用优雅下线、连接排空和 preStop 防止请求中断。",
+        "确保副本数、资源配额和调度约束允许恢复，并验证未 Ready 实例不会进入 Service Endpoint。"
       ]
     },
     {
@@ -855,6 +965,11 @@
         "Image/Video Preprocessing",
         "Tokenization",
         "KV Cache"
+      ],
+      "answer_points": [
+        "图像/视频先解码、缩放/裁剪或抽帧，再经视觉编码器生成 Patch/Frame 特征。",
+        "Projector/Resampler 将视觉特征映射到语言模型维度，并按多模态标记与文本 Token 对齐、拼接。",
+        "Prefill 时把融合序列送入模型并建立相应 KV Cache；需考虑高分辨率/视频导致的 Token 数与缓存增长。"
       ]
     },
     {
@@ -869,6 +984,11 @@
         "State Space Model",
         "State Reuse",
         "Request Scheduling"
+      ],
+      "answer_points": [
+        "SSM/Mamba 类模型依赖每层的递归状态，状态通常不像 Transformer KV 一样可按 Token 直接复用。",
+        "Replay 思路是在需要某个前缀状态时重放前缀 Token，重建状态；可缓存可复用边界/前缀状态以减少重复计算。",
+        "调度器需保证状态与请求前缀、分支及设备内存生命周期一致；具体 SGLang 后端机制需按版本核对。"
       ]
     },
     {
@@ -884,6 +1004,11 @@
         "Rank",
         "Weight Merge",
         "Inference Overhead"
+      ],
+      "answer_points": [
+        "LoRA 将权重更新近似为低秩矩阵 ΔW = (α/r)BA，参数量从完整矩阵降为约 r(in+out)。",
+        "Rank 越大表达能力和参数/计算开销通常越高；常见初始化令一支随机、另一支为零，使初始 ΔW 为零。",
+        "推理可将 ΔW 合并进基座权重以减少额外矩阵乘，但多适配器动态服务常需保留独立路径；合并会增加权重副本/切换成本。"
       ]
     },
     {
@@ -899,6 +1024,11 @@
         "Activation",
         "Memory Fragmentation",
         "OOM Debugging"
+      ],
+      "answer_points": [
+        "分别核对参数权重、梯度/优化器状态、激活、KV Cache、临时 Workspace 和通信 Buffer 的生命周期与大小。",
+        "用框架 allocated/reserved、峰值统计、NVML 和显存快照区分真实占用、缓存分配器保留和碎片。",
+        "再通过减小 Batch/序列、激活重计算、KV 配额或 Workspace 限制做对照，确认主要来源。"
       ]
     },
     {
@@ -914,6 +1044,11 @@
         "Activation Checkpointing",
         "FSDP",
         "Tensor Parallelism"
+      ],
+      "answer_points": [
+        "按参数量、dtype 估算权重/梯度；Adam 还需一阶和二阶状态（常见 FP32），具体取决于优化器与混合精度策略。",
+        "激活随 Batch、序列长度、层数和隐藏维变化；还需计入通信 Bucket、临时 Workspace 与碎片余量。",
+        "用 DP/ZeRO/FSDP 分片状态，TP/PP/CP 分摊模型与激活，配合 Activation Checkpointing、较小 Microbatch 和低精度；以峰值实测校准。"
       ]
     },
     {
@@ -929,6 +1064,11 @@
         "RSS/RPS",
         "Congestion Control",
         "Network Throughput"
+      ],
+      "answer_points": [
+        "先测链路吞吐、重传、丢包、RTT 和 CPU/软中断分布，检查 NIC 队列与驱动统计。",
+        "检查 RSS/RPS/XPS、IRQ 亲和性、NUMA、队列数、MTU、拥塞控制及 TCP 窗口是否匹配负载。",
+        "用 perf、/proc/interrupts、ethtool -S 和对照基准定位拷贝/协议栈成本；优化后验证吞吐与 CPU 是否同时改善。"
       ]
     },
     {
@@ -944,6 +1084,11 @@
         "SASS",
         "NVCC",
         "Binary Compatibility"
+      ],
+      "answer_points": [
+        "PTX ISA 版本定义虚拟指令集及特性；Compute Capability 标识 GPU 硬件能力/目标架构。",
+        "nvcc 可将 PTX 编译为目标 SM 的 SASS（cubin），也可把 PTX 放入 Fatbin 供 Driver 在运行时 JIT。",
+        "选择兼容 Toolkit/Driver 的 PTX 版本及目标 SM；SASS 是实际机器指令，编译器会根据硬件进行选择和优化。"
       ]
     },
     {
@@ -959,6 +1104,11 @@
         "SASS",
         "ptxas",
         "JIT Compilation"
+      ],
+      "answer_points": [
+        "CUDA C++ 是高层源代码；PTX 是 NVIDIA 虚拟 ISA；SASS 是特定 GPU 的机器指令。",
+        "编译器前端将 CUDA C++ 转为 PTX，ptxas 可把 PTX 编为目标架构 SASS/cubin。",
+        "Fatbin 可同时携带 cubin 与 PTX；若无兼容 cubin，驱动可 JIT PTX。PTX 文本不能直接作为 Kernel 启动，需先加载/编译成模块代码。"
       ]
     },
     {
@@ -974,6 +1124,11 @@
         "Zero Point",
         "Calibration",
         "Quantization Error"
+      ],
+      "answer_points": [
+        "仿射量化常用 q=clamp(round(x/scale)+zero_point)，反量化为 x̂=scale×(q−zero_point)。",
+        "Scale/Zero Point 可由 min-max、校准数据或误差优化确定；对称量化通常令 zero_point=0。",
+        "处理舍入模式、饱和范围和异常值；用代表性校准集与误差指标/下游精度验证量化误差。"
       ]
     },
     {
@@ -989,6 +1144,11 @@
         "PyTorch Profiler",
         "Nsight Systems",
         "Reproducible Benchmark"
+      ],
+      "answer_points": [
+        "先分解每步数据等待、前向/反向、通信、优化器和检查点耗时，并比较 Rank 间分布以找慢 Rank。",
+        "结合跨层时间戳/指标关联 DataLoader、Kernel、Collective、节点健康与网络负载，定位相关因子。",
+        "用可复现的 What-if 对照一次改变一个因素（如节点/数据分片/通信路径），验证相关性是否为因果。"
       ]
     },
     {
@@ -1003,6 +1163,11 @@
         "Checkpoint Resharding",
         "Distributed Training",
         "Fault Tolerance"
+      ],
+      "answer_points": [
+        "将模型/优化器状态表示为与当前 Rank 分片无关的逻辑张量，并保存分片元数据、版本和随机状态等必要信息。",
+        "恢复时根据新 DP/TP/PP 等并行配置重新分配或重分片到目标 Rank。",
+        "需校验参数映射、优化器状态、精度和一致性；转换后做完整性检查与恢复训练验证。"
       ]
     },
     {
@@ -1018,6 +1183,11 @@
         "Node Health",
         "Network Congestion",
         "Distributed Training"
+      ],
+      "answer_points": [
+        "比较各 Rank 的 Step Time 与阶段耗时，检查数据加载、通信等待和计算是否存在离群点。",
+        "代码回归用版本/配置对照，数据倾斜看样本与 Token 负载，硬件故障查 Xid/ECC/温度/频率，网络拥塞看链路与重传指标。",
+        "用节点替换、数据重放或网络隔离等单变量实验验证根因，避免只凭总 Step Time 猜测。"
       ]
     },
     {
@@ -1033,6 +1203,11 @@
         "torch.compile",
         "Compiler Fusion",
         "Performance Portability"
+      ],
+      "answer_points": [
+        "torch.compile 适合高层 PyTorch 图融合和常规自动生成，先检查 graph break、动态 Shape 与编译收益。",
+        "Triton 适合快速实现自定义 tile/布局的 GPU Kernel；手写 CUDA 适合需要精细控制指令、同步、异步流水或特殊硬件路径。",
+        "按性能瓶颈、Shape 稳定性、维护成本和目标硬件选择，并比较端到端收益而非单 Kernel 峰值。"
       ]
     },
     {
@@ -1043,9 +1218,9 @@
       "source_url": "",
       "first_seen": "2026-10-02",
       "answer_points": [
-        "Normal 模式偏向训练和 Prefill，优先追求吞吐。",
-        "Low-Latency 模式面向 Decode，优先降低时延。",
-        "比较时关注数据布局、通信路径和主机侧同步开销；低时延路径应尽量避免不必要的 D2H 同步。"
+        "Normal 模式面向训练/Prefill 等较大流量，优先吞吐和带宽利用；Low-Latency 面向 Decode 小消息，优先降低尾延迟。",
+        "两者的数据布局、同步/传输路径与适用 Batch 不同；应结合 token 数、专家数和拓扑选型。",
+        "检查 CPU/D2H 同步是否进入关键路径，并在同一负载下比较吞吐、P50/P99 延迟和资源占用。"
       ],
       "knowledge_points": [
         "DeepEP",
@@ -1061,9 +1236,9 @@
       "source_url": "",
       "first_seen": "2026-10-02",
       "answer_points": [
-        "Ulysses 通过 All-to-All 在序列分片和注意力头分片之间转换布局。",
-        "Ring Attention 让 KV 分块在 Rank 间环形传递，各 Rank 分块计算注意力。",
-        "Ring Attention 可将 KV 通信与分块注意力计算重叠；实际效率取决于分块、拓扑和计算通信比。"
+        "Ulysses 通过 All-to-All 在序列分片与 Head 分片间全量换布局，通信集中但可并行完成。",
+        "Ring Attention 按块在 Rank 间轮转传递 K/V，各 Rank 边收数据边计算局部 Attention。",
+        "Ring 更容易做分块通信-计算重叠，Ulysses 依赖快速 All-to-All；选择取决于互联带宽、Head 数、序列长度和实现。"
       ],
       "knowledge_points": [
         "Sequence Parallelism",
@@ -1079,9 +1254,9 @@
       "source_url": "",
       "first_seen": "2026-10-02",
       "answer_points": [
-        "将 KV Cache 沿序列维分片到多个 Rank。",
-        "各 Rank 获得对应 Query 后，对本地 KV 分片计算局部注意力结果，并生成局部输出与 LogSumExp（LSE）。",
-        "最后跨 Rank 合并局部输出和 LSE，得到与全量 KV 计算等价的注意力结果。"
+        "Decode Context Parallelism 通常沿 KV 序列维把 Cache 分到多个 Rank；Query 在组内复制或按实现分发。",
+        "每个 Rank 用本地 KV 分片计算局部输出及 LSE/归一化统计量。",
+        "跨 Rank 按稳定 Softmax 规则合并各分片结果，得到与全量 KV Attention 等价的输出；通信和归并开销需计入。"
       ],
       "knowledge_points": [
         "DCP",
@@ -1097,9 +1272,9 @@
       "source_url": "",
       "first_seen": "2026-10-02",
       "answer_points": [
-        "每个分块维护运行最大值、指数和以及加权 Value 累加。",
-        "合并新分块时，用新的全局最大值对旧累加量和新分块累加量分别重缩放。",
-        "最终用归一化因子得到输出；跨 Rank 合并时可使用各分片的 LSE 计算稳定权重。"
+        "每个分块维护最大值 m、指数和 l，以及加权 Value 累加 o。",
+        "合并两块时取 m=max(m1,m2)，分别乘 exp(m1−m)、exp(m2−m) 重缩放 l 和 o 后相加。",
+        "最终输出为 o/l，LSE 为 m+log(l)；该形式避免大 Logit 直接指数溢出。"
       ],
       "knowledge_points": [
         "Online Softmax",
@@ -1115,10 +1290,9 @@
       "source_url": "",
       "first_seen": "2026-10-02",
       "answer_points": [
-        "Ampere 常见路径包括 cp.async 与 MMA。",
-        "Hopper 引入 TMA、WGMMA 等机制，强化异步搬运和 Warp Group 级矩阵计算。",
-        "Blackwell 进一步提供新一代 Tensor Core 与 Tensor Memory 相关能力，例如 TCGEN05 路径。",
-        "整体趋势是更显式的异步执行、数据移动和 Software Pipeline；具体能力需按目标 GPU 与指令集核对。"
+        "Ampere 常用 cp.async 将 Global Memory 异步搬入 Shared Memory，并用 Tensor Core MMA 计算。",
+        "Hopper 提供 TMA 多维异步搬运与 WGMMA 等 Warp-Group 矩阵计算机制。",
+        "Blackwell 增加 Tensor Memory、TCGEN05 等路径；比较时关注搬运粒度、同步对象、计算单元和可实现的 pipeline。"
       ],
       "knowledge_points": [
         "Ampere",
@@ -1135,9 +1309,9 @@
       "source_url": "",
       "first_seen": "2026-10-02",
       "answer_points": [
-        "常用双缓冲或多缓冲，让下一阶段数据搬运与当前阶段计算重叠。",
-        "根据数据搬运延迟、计算耗时和 tile 形状估计所需阶段数。",
-        "阶段数还受共享内存、寄存器、Tensor Memory 容量和占用率约束；并非越大越好，应通过资源估算与 Profiling 调优。"
+        "将 TMA/其他异步搬运、Tensor Memory/Shared Memory 中的数据准备与 Tensor Core MMA 分 stage 排程。",
+        "num_stages 需足以覆盖搬运延迟并保持计算端不断粮；结合每 stage tile 大小和搬运/计算耗时估算。",
+        "更多 stage 会增加存储占用并可能降低 Occupancy；通过资源估算与 Profiling 搜索，不是越大越好。"
       ],
       "knowledge_points": [
         "Tensor Memory",
@@ -1153,9 +1327,9 @@
       "source_url": "",
       "first_seen": "2026-10-02",
       "answer_points": [
-        "每个 CTA 的寄存器和共享内存占用会限制一个 SM 可同时驻留的 CTA 数量。",
-        "还需考虑线程数、寄存器分配粒度以及硬件上限。",
-        "Occupancy 不是越高越好，应结合访存延迟隐藏能力、指令级并行和资源复用综合评估。"
+        "每 CTA 的线程数、寄存器总量和 Shared Memory 用量共同限制每 SM 可驻留 CTA/warp 数。",
+        "寄存器/共享内存分配粒度及硬件上限也会造成台阶式变化；过量寄存器可能 spill 到 local memory。",
+        "更高 Occupancy 有助隐藏延迟，但不等于更高性能；需结合 ILP、访存延迟和实际吞吐判断。"
       ],
       "knowledge_points": [
         "Occupancy",
@@ -1171,9 +1345,9 @@
       "source_url": "",
       "first_seen": "2026-10-02",
       "answer_points": [
-        "Persistent Kernel 让有限数量的 CTA 常驻 SM，并循环处理多个 Tile 或任务。",
-        "它可以减少重复调度开销，但本身不保证自动隐藏访存延迟。",
-        "需要在 Kernel 内安排异步搬运、计算与同步的流水线，并保证足够的并行工作和资源占用。"
+        "Persistent Kernel 启动有限数量的常驻 CTA，由每个 CTA 循环领取多个 tile/任务，减少重复调度开销。",
+        "靠多缓冲和异步搬运与计算重叠隐藏访存/执行延迟；需要明确生产者-消费者同步。",
+        "任务数过少、负载不均或资源占用过高会导致 SM 空闲/低 Occupancy；需按任务粒度和硬件并行度调度。"
       ],
       "knowledge_points": [
         "Persistent Kernel",
@@ -1189,9 +1363,9 @@
       "source_url": "",
       "first_seen": "2026-10-02",
       "answer_points": [
-        "Contiguous 输入通常具有更规整的存储布局；Masked 输入可处理不规则尺寸或 Padding，但可能引入无效计算。",
-        "调度时要考虑不同 GEMM 的 M、N、K 尺寸及 Tile 数量，避免负载不均。",
-        "可结合 Tile 排序、Swizzle 和工作分配改善负载均衡与 L2 Cache 复用。"
+        "Contiguous 通常指各组矩阵按规整连续布局存储；Masked 路径用掩码处理不规则边界/尺寸，可能产生无效计算。",
+        "按每个 GEMM 的 M/N/K 和 tile 数生成任务，避免长尾或某些 CTA 负载过重。",
+        "可按工作量做 Tile 排序/Swizzle，并利用相邻任务的 L2 数据复用；术语细节依具体实现而定。"
       ],
       "knowledge_points": [
         "Grouped GEMM",
@@ -1207,9 +1381,9 @@
       "source_url": "",
       "first_seen": "2026-10-02",
       "answer_points": [
-        "比较量化分组粒度、Scale 的表示与存储开销，以及硬件对相应格式的支持。",
-        "较细粒度的缩放可能提升数值适应性，但会增加 Scale 元数据和加载处理成本。",
-        "Kernel 设计需评估 Scale 解码与搬运能否和 MMA 重叠，并结合精度、吞吐和硬件路径测试。"
+        "MXFP8 是微缩放格式家族，通常按小块共享紧凑 Scale（常见规范为每 32 个值一组、E8M0 Scale）；需按具体格式核实。",
+        "Block-wise FP8 是更宽泛的分组缩放方案，块大小和 Scale 表示可因实现而异，常用 FP32 Scale。",
+        "更细粒度可改善动态范围适配但增加 Scale 元数据/加载；比较硬件支持、误差、转换成本和 MMA 吞吐。"
       ],
       "knowledge_points": [
         "MXFP8",
@@ -1225,9 +1399,9 @@
       "source_url": "",
       "first_seen": "2026-10-02",
       "answer_points": [
-        "TMA 更适合规则的多维 Tensor Tile 搬运，可利用硬件描述符和异步机制减少线程侧搬运工作。",
-        "cp.async 粒度更细、控制更灵活，适合不规则布局或需要精细控制的数据搬运。",
-        "选择时应根据目标架构、数据布局、对齐要求、同步方式和 Kernel Profiling 结果决定。"
+        "TMA 适合 Hopper 及更新架构上规则多维 Tensor Tile 的 bulk 搬运，描述符可表达维度/步长并配合 mbarrier。",
+        "cp.async 适合 Ampere 起线程显式发起较细粒度 Global-to-Shared 拷贝，控制灵活但需线程参与搬运与同步。",
+        "根据架构、布局规则性、对齐、同步方式和搬运/计算比选择；不规则负载不一定适合 TMA。"
       ],
       "knowledge_points": [
         "TMA",
@@ -1243,9 +1417,9 @@
       "source_url": "",
       "first_seen": "2026-10-02",
       "answer_points": [
-        "Pinned Memory 的物理页被锁定，不会被换出，设备可通过 DMA 稳定访问。",
-        "Pageable Memory 可能需要运行时额外 Pin 或复制到内部 Staging Buffer，因此可能增加一次主机侧拷贝并影响异步语义和带宽。",
-        "Pinned Memory 也会占用不可换出的物理内存，不应无节制分配。"
+        "Pinned Memory 的物理页被锁定，DMA 期间地址稳定，通常可支持真正异步的 H2D 传输。",
+        "Pageable 内存可能先被运行时复制到内部 pinned staging buffer，增加一次主机拷贝并使调用无法完全异步。",
+        "Pinned 内存消耗不可换出的系统 RAM，应复用有限缓冲区，避免过度锁页。"
       ],
       "knowledge_points": [
         "H2D",
@@ -1261,9 +1435,9 @@
       "source_url": "",
       "first_seen": "2026-10-02",
       "answer_points": [
-        "测量实际内存吞吐，并结合 Roofline 和可达到的硬件带宽上限估算差距；需区分理论峰值与实际可达带宽。",
-        "检查寄存器、Occupancy、Active Warps 和内存级并行度，判断是否有足够并发隐藏访存延迟。",
-        "最后看该 Kernel 在端到端耗时中的占比，按 Amdahl 定律估算整体收益，再决定投入。"
+        "测量实际 DRAM/L2 吞吐，并与该访问模式可达到的带宽上限比较；Roofline 给出性能上界而非保证值。",
+        "检查合并访存、事务效率、缓存复用、寄存器、Active Warps 和 outstanding requests，判断是否缺少并行度隐藏延迟。",
+        "结合 Kernel 的端到端占比用 Amdahl 定律估算最大收益，再决定优化投入。"
       ],
       "knowledge_points": [
         "Memory Bound",
@@ -1279,9 +1453,9 @@
       "source_url": "",
       "first_seen": "2026-10-02",
       "answer_points": [
-        "需要足够多的 Outstanding Memory Requests 和 Memory-Level Parallelism 才能覆盖访存延迟。",
-        "可通过增加独立加载以提升 ILP、合理增加 Pipeline Stage，或采用 TMA 异步搬运并与计算流水重叠。",
-        "需要结合访问模式、寄存器压力和 Occupancy 调优；TMA 并非对所有负载都更优。"
+        "普通 LDG 的带宽受未完成请求数、内存级并行度、合并效率和活跃 Warp 数限制；依赖链过长会让流水线断粮。",
+        "增加独立加载/ILP、合理预取与多 stage，改善 coalescing 并确保足够的并发 CTA/warp。",
+        "TMA 可减少搬运指令并支持异步流水，但不自动增加所有场景的带宽；结合寄存器占用和 Profile 验证。"
       ],
       "knowledge_points": [
         "Hopper",
@@ -1298,10 +1472,9 @@
       "source_url": "",
       "first_seen": "2026-10-02",
       "answer_points": [
-        "每个输出行本质上是 A 的一行与向量 B 的点积，需要沿 N 维做 Reduction。",
-        "合理划分行和列方向的 Tile，确保 A 的相邻元素由相邻线程读取，以实现 Coalesced Memory Access。",
-        "B 会被多行复用，通常先利用 Cache；是否放入 Shared Memory 要看复用和搬运成本。",
-        "可在 Warp 或 Block 内完成分段累加与 Reduction，并处理尾部边界。"
+        "GEMV 的主成本是读取 A，算术强度低；常按行分配 Warp/CTA，使相邻 Lane 读取连续的 N 维元素。",
+        "线程分段乘加后用 Warp Shuffle 或跨 Warp Shared Memory 做归约，并处理 N 尾部。",
+        "向量 B 会被多行复用，先利用 Cache；仅在复用足够且搬运/同步划算时放入 Shared Memory。"
       ],
       "knowledge_points": [
         "GEMV",
@@ -1317,9 +1490,9 @@
       "source_url": "",
       "first_seen": "2026-10-02",
       "answer_points": [
-        "核心判断标准是数据是否会被多个线程或多个计算步骤重复使用，Shared Memory 是否能减少昂贵的全局访存。",
-        "还要计入 Global-to-Shared 搬运、同步和布局转换成本，以及是否能和计算重叠。",
-        "如果没有足够的数据复用，Shared Memory 可能只是增加拷贝和同步；占用过多也会降低 Occupancy。"
+        "适合跨线程或跨计算阶段反复复用、需要重排布局，或需显式协作的 tile 数据。",
+        "收益需超过 Global-to-Shared 搬运、同步、bank conflict 与地址计算成本。",
+        "无复用、数据块太小或占用过多 Shared Memory 时，可能增加开销并降低 Occupancy；应通过基准验证。"
       ],
       "knowledge_points": [
         "Shared Memory",
