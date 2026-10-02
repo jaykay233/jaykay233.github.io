@@ -23,6 +23,14 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual(collector.question_candidates("◼GPU作用: 并行计算大法好！"), [])
         self.assertEqual(collector.question_candidates("✅ 1. LoRA低秩适配原理&优势"), ["LoRA 低秩适配原理和优势？"])
         self.assertEqual(collector.question_candidates("请详细介绍NCCL Broadcast通信原语的实现原理。"), ["请详细介绍 NCCL Broadcast 通信原语的实现原理？"])
+        self.assertEqual(collector.question_candidates("你在学校写过 CUDA 或者做过 GPU 算子项目吗？"), [])
+        self.assertEqual(collector.question_candidates("面试官真正会往下追的是：图怎么捕获，IR 为什么分层？"), [])
+        self.assertEqual(collector.question_candidates("上来先聊项目，追问具体参数怎么算的？"), [])
+
+    def test_knowledge_points_require_concrete_concepts(self):
+        self.assertIn("NCCL Collectives", collector.extract_knowledge_points("NCCL ReduceScatter 的 Ring 算法是什么？"))
+        self.assertIn("Roofline / Memory Bandwidth", collector.extract_knowledge_points("Memory-bound Kernel 如何用 Roofline 判断？"))
+        self.assertEqual(collector.extract_knowledge_points("GPU 间为什么需要通信？"), [])
 
     def test_clean_question_preserves_technical_tokens(self):
         self.assertEqual(collector.clean_question("🔹 all_gather和C++优化!"), "all_gather 和 C++ 优化？")
@@ -43,6 +51,9 @@ class CollectorTests(unittest.TestCase):
         self.assertGreater(len(data["questions"]), 0)
         self.assertTrue({q["category"] for q in data["questions"]} <= {"operator", "compiler", "communication", "framework"})
         self.assertTrue(all(q.get("question") and (q.get("source_url") or q.get("source_title")) for q in data["questions"]))
+        self.assertTrue(all(q.get("knowledge_points") for q in data["questions"]))
+        self.assertFalse(any("你在学校写过 CUDA" in q["question"] for q in data["questions"]))
+        self.assertFalse(any("面试官真正会往下追" in q["question"] or "上来先聊项目" in q["question"] for q in data["questions"]))
 
 if __name__ == "__main__":
     unittest.main()

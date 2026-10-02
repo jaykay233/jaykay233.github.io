@@ -23,6 +23,42 @@ SEARCHES = {
     "communication": ["NCCL 集合通信 面试题", "RDMA 大模型通信 面试"],
     "framework": ["vLLM Megatron 面试题", "大模型训练推理框架 面试"],
 }
+KNOWLEDGE_POINT_RULES = [
+    ("Pinned/ Pageable Memory", r"pinned memory|pageable memory|pinned|pageable"),
+    ("H2D / DMA", r"h2d|host.?to.?device|dma"),
+    ("NCCL Collectives", r"nccl|all.?reduce|all.?gather|reduce.?scatter|all.?to.?all|broadcast"),
+    ("RDMA / InfiniBand", r"rdma|infiniband|\bib\b|verbs|gpudirect"),
+    ("Tensor Parallelism", r"tensor parallel|\btp\b|张量并行"),
+    ("Sequence Parallelism", r"sequence parallel|\bsp\b|序列并行|ulysses|ring attention"),
+    ("Context Parallelism", r"context parallel|\bcp\b|dcp|上下文并行"),
+    ("Expert Parallelism / MoE", r"expert parallel|\bep\b|deep.?ep|expert|moe|专家并行"),
+    ("FSDP / ZeRO", r"fsdp|zero.?[123]|fully sharded"),
+    ("CUDA / PTX", r"cuda|\bptx\b|\bsass\b|nvcc|kernel"),
+    ("Triton", r"triton"),
+    ("torch.compile / Inductor", r"torch\.compile|inductor|torchdynamo|aotautograd"),
+    ("MLIR / PassManager", r"mlir|passmanager|pass manager|\bscf\b"),
+    ("FlashAttention / Attention", r"flash.?attention|online softmax|attention|gqa|mqa"),
+    ("KV Cache / PagedAttention", r"kv.?cache|paged.?attention"),
+    ("Roofline / Memory Bandwidth", r"roofline|memory.?bound|显存带宽|memory bandwidth"),
+    ("Occupancy / Latency Hiding", r"occupancy|active warps|persistent kernel|latency hiding"),
+    ("TMA / Asynchronous Pipeline", r"\btma\b|cp\.async|wgmma|tcgen|pipeline|num_stages"),
+    ("GEMM / Tiling", r"gemm|tiling|tile scheduling|grouped gemm"),
+    ("GEMV / Reduction", r"gemv|reduction|规约"),
+    ("FP8 / Quantization", r"mxfp8|fp8|int8|quant|量化|反量化"),
+    ("Shared Memory / Data Reuse", r"shared memory|共享内存|data reuse"),
+    ("Kubernetes / GPU Scheduling", r"kubernetes|\bk8s\b|gpu scheduling|mig|device plugin"),
+    ("vLLM / Inference Serving", r"vllm|sglang|inference serving|continuous batching"),
+    ("Checkpointing / Fault Tolerance", r"checkpoint|故障恢复|fault tolerance"),
+    ("TCP/IP / Network", r"tcp|network|网络|infini.?band"),
+    ("GPU Topology / NUMA", r"topology|numa|nvswitch|pcie|nvlink"),
+]
+LOW_SIGNAL_PATTERNS = (
+    r"你在学校.*(写过|做过)|有没有.*(项目|经验)|做过.*吗",
+    r"为什么选择.*(公司|岗位|行业)|最棘手.*(问题|难题)|保持专注",
+    r"做过什么优化吗|聊聊你的项目经历|介绍一下你的项目经历",
+    r"上来先聊项目|面试官.*(追问|往下追)|八股集中|考的是|回答了.*(功能|接口|开发流程)",
+)
+
 CATEGORY_TERMS = {
     "operator": ("算子", "cuda", "triton", "kernel", "内核", "算子优化", "flashattention", "flash attention"),
     "compiler": ("编译器", "编译", "compiler", "torch.compile", "inductor", "算子融合", "图优化"),
@@ -65,6 +101,15 @@ def classify(title: str, fallback: str) -> str:
     winner = max(scores, key=scores.get)
     return winner if scores[winner] else fallback
 
+def extract_knowledge_points(text: str) -> list[str]:
+    """Attach concrete technical concepts; return empty for generic prompts."""
+    value = str(text or "").lower()
+    points = []
+    for label, pattern in KNOWLEDGE_POINT_RULES:
+        if re.search(pattern, value, re.IGNORECASE) and label not in points:
+            points.append(label)
+    return points[:6]
+
 def title_from_item(item: dict) -> str:
     card = item.get("note_card") or {}
     # This is attribution metadata only; candidate question text is extracted separately.
@@ -87,7 +132,7 @@ def question_candidates(text: str, limit: int = 4) -> list[str]:
             )
             topic_prompt = re.search(r"(原理|流程|作用)", part) and not re.search(r"[:：]", part)
             looks_like_question = "?" in part or "？" in part or bool(explicit_question or topic_prompt)
-            if not looks_like_question:
+            if not looks_like_question or any(re.search(pattern, part, re.IGNORECASE) for pattern in LOW_SIGNAL_PATTERNS):
                 continue
             part = clean_question(part)
             key = normalize(part)
@@ -171,9 +216,13 @@ def collect(auth) -> list[dict]:
                 for question in question_candidates(description):
                     key = normalize(question)
                     if not key: continue
+                    knowledge_points = extract_knowledge_points(question)
+                    if not knowledge_points:
+                        continue
                     results.setdefault(key, {
                         "id": note_id, "question": question,
                         "category": classify(question + " " + source_title, category),
+                        "knowledge_points": knowledge_points,
                         "source_title": clean_plain_text(source_title), "source_url": url,
                         "first_seen": dt.date.today().isoformat(),
                     })
@@ -192,11 +241,14 @@ def main() -> int:
         for row in old.get("questions", []):
             row["question"] = clean_question(row.get("question", ""))
             row["source_title"] = clean_plain_text(row.get("source_title", ""))
+            row["knowledge_points"] = row.get("knowledge_points") or extract_knowledge_points(row["question"])
         old_by_key = {normalize(row.get("question", "")): row for row in old.get("questions", [])}
         merged, today = {}, dt.date.today().isoformat()
         for row in fresh:
             prior = old_by_key.get(normalize(row["question"]))
-            if prior: row["first_seen"] = prior.get("first_seen", today)
+            if prior:
+                row["first_seen"] = prior.get("first_seen", today)
+                row["knowledge_points"] = prior.get("knowledge_points") or row.get("knowledge_points", [])
             merged[normalize(row["question"])] = row
         for key, row in old_by_key.items(): merged.setdefault(key, row)
         payload = {"schema_version": 1, "updated_at": today,
