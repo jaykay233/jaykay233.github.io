@@ -5,7 +5,7 @@
   "questions": [
     {
       "id": "manual-20261002-01",
-      "question": "在 CUDA Kernel 中，TMA 如何让全局内存搬运与计算重叠？重叠发生在什么粒度？",
+      "question": "TMA 如何实现访存与计算重叠？重叠粒度是什么？",
       "category": "operator",
       "knowledge_points": [
         "TMA",
@@ -23,7 +23,7 @@
     },
     {
       "id": "manual-20261002-02",
-      "question": "异步数据搬运如何通过 mbarrier 与消费者线程同步？",
+      "question": "异步数据搬运如何用 mbarrier 同步？",
       "category": "operator",
       "knowledge_points": [
         "mbarrier",
@@ -41,7 +41,7 @@
     },
     {
       "id": "manual-20261002-03",
-      "question": "把一个计算拆成多个 CUDA Kernel，会如何影响寄存器压力和 Occupancy？",
+      "question": "拆分 CUDA Kernel 对寄存器压力和 Occupancy 有何影响？",
       "category": "operator",
       "knowledge_points": [
         "Kernel 拆分",
@@ -59,7 +59,7 @@
     },
     {
       "id": "manual-20261002-04",
-      "question": "对三重循环的 Naive GEMM，如何估算计算量和访存量，并减少输出矩阵 C 的重复访存？",
+      "question": "Naive GEMM 的计算量和访存量如何估算？如何减少 C 的重复访存？",
       "category": "operator",
       "knowledge_points": [
         "GEMM",
@@ -78,7 +78,7 @@
     },
     {
       "id": "manual-20261002-05",
-      "question": "GPU Shared Memory 的 Bank 如何组织？什么访问模式会产生 Bank Conflict，常见解决方法有哪些？",
+      "question": "Shared Memory Bank 如何组织？Bank Conflict 如何产生和消除？",
       "category": "operator",
       "knowledge_points": [
         "Shared Memory",
@@ -97,7 +97,7 @@
     },
     {
       "id": "manual-20261002-06",
-      "question": "给定一个 warp 中 32 个线程各自访问的 Shared Memory 地址，如何计算 Bank Conflict 次数？",
+      "question": "如何计算一个 Warp 的 Shared Memory Bank Conflict 次数？",
       "category": "operator",
       "knowledge_points": [
         "Warp",
@@ -115,7 +115,7 @@
     },
     {
       "id": "manual-20261002-07",
-      "question": "Ampere、Hopper 和 Blackwell 在 GPU Kernel 编程模型与矩阵计算硬件上有哪些主要变化？",
+      "question": "Ampere、Hopper、Blackwell 的 Kernel 编程与矩阵计算能力如何演进？",
       "category": "operator",
       "knowledge_points": [
         "Ampere",
@@ -136,7 +136,7 @@
     },
     {
       "id": "manual-20261002-08",
-      "question": "FlashAttention 1 到 4 的核心优化方向如何演进？各代主要解决了什么瓶颈？",
+      "question": "FlashAttention 1–4 的主要优化方向是什么？",
       "category": "operator",
       "knowledge_points": [
         "FlashAttention",
@@ -155,7 +155,7 @@
     },
     {
       "id": "manual-20261002-09",
-      "question": "FlashAttention-4 为什么要优化 Softmax 和 Exp？延迟更新 Max 与近似 Exp 的思路是什么？",
+      "question": "FlashAttention-4 如何优化 Softmax/Exp？延迟更新 Max 与近似 Exp 的原理是什么？",
       "category": "operator",
       "knowledge_points": [
         "FlashAttention-4",
@@ -174,7 +174,7 @@
     },
     {
       "id": "manual-20261002-10",
-      "question": "B300 相比 B200 的硬件变化会如何影响 Softmax/Exp 等特殊函数密集型 Kernel？如何验证 SFU 数量变化带来的收益？",
+      "question": "B300 的 SFU 变化如何影响 Softmax/Exp Kernel 性能？如何验证？",
       "category": "operator",
       "knowledge_points": [
         "B200",
@@ -193,7 +193,7 @@
     },
     {
       "id": "manual-20261002-11",
-      "question": "确定性 Router GEMM 如何优化？关闭 Split-K 后变慢、小 M 时固定 Tile 浪费时，如何选择调度策略？",
+      "question": "确定性 Router GEMM 如何选择 Split-K、Tile 和调度策略？",
       "category": "operator",
       "knowledge_points": [
         "Router GEMM",
@@ -212,7 +212,7 @@
     },
     {
       "id": "manual-20261002-12",
-      "question": "CUDA Reduction 如何设计线程块与 Warp 的分工，并处理跨 Warp 归约和同步？SM 调度与 Occupancy 又如何影响性能？",
+      "question": "CUDA Reduction 如何设计 Warp/Block 归约？Occupancy 和 SM 调度有何影响？",
       "category": "operator",
       "knowledge_points": [
         "CUDA Reduction",
@@ -231,7 +231,7 @@
     },
     {
       "id": "manual-20261002-13",
-      "question": "什么是 Megakernel？把多个计算阶段融合进一个 Kernel 能减少哪些开销，又会带来什么代价？",
+      "question": "Megakernel 有哪些收益与代价？",
       "category": "operator",
       "knowledge_points": [
         "Megakernel",
@@ -250,7 +250,7 @@
     },
     {
       "id": "manual-20261002-14",
-      "question": "Ulysses Sequence Parallelism 的基本原理是什么？它如何利用 All-to-All 完成序列维与 Attention Head 维的布局转换？",
+      "question": "Ulysses SP 如何通过 All-to-All 转换序列维与 Head 维布局？",
       "category": "communication",
       "knowledge_points": [
         "Ulysses SP",
@@ -268,7 +268,7 @@
     },
     {
       "id": "manual-20261002-15",
-      "question": "Ulysses SP 执行 All-to-All 前后，Attention 输入张量的 Shape 和数据分布如何变化？",
+      "question": "Ulysses SP 的 All-to-All 前后，张量 Shape 如何变化？",
       "category": "communication",
       "knowledge_points": [
         "All-to-All",
@@ -286,7 +286,7 @@
     },
     {
       "id": "manual-20261002-16",
-      "question": "8 张卡配置 TP=2、Ulysses SP=4 时，TP 组和 SP 组如何划分？All-to-All 应在哪个通信组内执行？",
+      "question": "TP=2、Ulysses SP=4 的 8 卡中，TP 组和 SP 组如何划分？",
       "category": "communication",
       "knowledge_points": [
         "Tensor Parallelism",
@@ -304,7 +304,7 @@
     },
     {
       "id": "manual-20261002-17",
-      "question": "TP 与 Ulysses SP 同时使用时，隐藏维和序列维分别如何切分？Attention 前后需要进行哪些布局转换？",
+      "question": "TP 与 Ulysses SP 如何组合切分 Hidden 和 Sequence 维？",
       "category": "communication",
       "knowledge_points": [
         "TP + SP",
@@ -323,7 +323,7 @@
     },
     {
       "id": "manual-20261002-18",
-      "question": "什么是 TP/SP 非正交并行（TPSP）？它与把 TP 和 SP 放在独立并行维度上的方式有何区别？",
+      "question": "TP/SP 非正交并行（TPSP）与正交并行有何区别？",
       "category": "communication",
       "knowledge_points": [
         "TPSP",
@@ -342,7 +342,7 @@
     },
     {
       "id": "manual-20261002-19",
-      "question": "MoE 的 EP 通信开销较大且难以被计算掩盖时，可以从哪些方向降低端到端开销？",
+      "question": "EP 通信无法被计算掩盖时，如何降低开销？",
       "category": "communication",
       "knowledge_points": [
         "Expert Parallelism",
@@ -361,7 +361,7 @@
     },
     {
       "id": "manual-20261002-20",
-      "question": "端到端测试发现 MFU 较低时，如何定位瓶颈并确定优化优先级？",
+      "question": "MFU 偏低时如何定位瓶颈并确定优化优先级？",
       "category": "framework",
       "knowledge_points": [
         "MFU",
@@ -380,7 +380,7 @@
     },
     {
       "id": "manual-20261002-21",
-      "question": "多卡 TP 下启用 CUDA Graph 后程序卡住，应如何判断是 Graph 本身还是通信路径中的问题？",
+      "question": "多卡 TP 的 CUDA Graph 卡住时，如何定位根因？",
       "category": "framework",
       "knowledge_points": [
         "CUDA Graph",
@@ -399,7 +399,7 @@
     },
     {
       "id": "manual-20261002-22",
-      "question": "强化学习训练中的 Router Replay 如何缓解推理与训练路由不一致？微小数值误差为何可能改变 Top-K 专家选择？",
+      "question": "Router Replay 如何缓解推理与训练路由不一致？Top-K 为什么会放大数值误差？",
       "category": "framework",
       "knowledge_points": [
         "Router Replay",
@@ -418,7 +418,7 @@
     },
     {
       "id": "manual-20261002-23",
-      "question": "如何拆分评估 W4A16 推理的性能收益：权重带宽、反量化、算子融合和 MTP 分别贡献多少？",
+      "question": "如何拆分 W4A16 推理收益：带宽、反量化、融合与 MTP？",
       "category": "framework",
       "knowledge_points": [
         "W4A16",
@@ -437,7 +437,7 @@
     },
     {
       "id": "manual-20261002-24",
-      "question": "适配新的 GPU/NPU 时，如何区分性能问题来自算子库、手写 Kernel 还是编译器生成代码？FP8/FP4 落地还需验证什么？",
+      "question": "GPU/NPU 适配如何定位算子库、编译器和手写 Kernel 的性能问题？如何验证 FP8/FP4 精度？",
       "category": "compiler",
       "knowledge_points": [
         "算子库",
@@ -457,7 +457,7 @@
     },
     {
       "id": "manual-20261002-25",
-      "question": "Python 程序没有报错但一直卡住、进程仍然存活时，如何保留现场并排查阻塞原因？",
+      "question": "Python 进程存活但无响应时，如何定位阻塞？",
       "category": "framework",
       "knowledge_points": [
         "Python 调试",
@@ -476,7 +476,7 @@
     },
     {
       "id": "manual-20261002-26",
-      "question": "C++ 申请一个很大的数组时，为什么第一次访问和后续访问的耗时可能不同？",
+      "question": "Linux Lazy Allocation 如何导致大数组首次与后续访问耗时不同？",
       "category": "framework",
       "knowledge_points": [
         "Linux Lazy Allocation",
@@ -494,7 +494,7 @@
     },
     {
       "id": "manual-20261002-27",
-      "question": "NumPy 为什么通常比 Python 的逐元素 for-loop 快？",
+      "question": "NumPy 为什么比 Python 逐元素循环快？",
       "category": "framework",
       "knowledge_points": [
         "NumPy",
@@ -513,7 +513,7 @@
     },
     {
       "id": "6aaff56d000000002600a9b6",
-      "question": "fsdp 过程做梯度规约时是什么精度注意过通信 cast 数据时的开销吗，通信量会估算吗？",
+      "question": "FSDP 梯度规约精度如何选择？Cast 开销与通信量如何估算？",
       "category": "communication",
       "source_title": "快手 infra 一面",
       "source_url": "https://www.xiaohongshu.com/explore/6aaff56d000000002600a9b6?xsec_token=ABAOYYzyRcloF1POHZt-qZrkD2kIuu9sM3QTAo0byfD4A%3D",
@@ -528,7 +528,7 @@
     },
     {
       "id": "69a41ce8000000002802066a",
-      "question": "在 NCCL 中，ReduceScatter 通信原语通常采用什么算法实现？",
+      "question": "NCCL ReduceScatter 常用哪些算法？",
       "category": "communication",
       "source_title": "大模型推理面试 370 题:RDMA 技术原理",
       "source_url": "https://www.xiaohongshu.com/explore/69a41ce8000000002802066a?xsec_token=ABWcxCMp4XhxUn3uhOD--M3GlUiXxV3kej7xxHdDPFr5g%3D",
@@ -543,7 +543,7 @@
     },
     {
       "id": "6998a257000000000e00f217",
-      "question": "在 Tensor Parallelism 中，前向传播为什么需要 AllReduce 同步？",
+      "question": "TP 前向为什么需要 AllReduce？",
       "category": "communication",
       "source_title": "大模型推理面试 350 题:RDMA 技术原理",
       "source_url": "https://www.xiaohongshu.com/explore/6998a257000000000e00f217?xsec_token=ABRrBV7e-a-lpYbSSZIiiyTwV-6hCNu8dbMav9blUKyac%3D",
@@ -558,7 +558,7 @@
     },
     {
       "id": "6998a257000000000e00f217",
-      "question": "在 Tensor Parallelism 中，反向传播的通信模式与前向传播有什么不同？",
+      "question": "TP 前向与反向的通信模式有何不同？",
       "category": "communication",
       "source_title": "大模型推理面试 350 题:RDMA 技术原理",
       "source_url": "https://www.xiaohongshu.com/explore/6998a257000000000e00f217?xsec_token=ABRrBV7e-a-lpYbSSZIiiyTwV-6hCNu8dbMav9blUKyac%3D",
@@ -573,7 +573,7 @@
     },
     {
       "id": "69a41ce8000000002802066a",
-      "question": "请介绍 NCCL 中 Point-to-Point 通信的核心接口 ncclSend 和 ncclRecv，以及如何正确使用它们？",
+      "question": "NCCL 的 ncclSend/ncclRecv 如何配合使用？",
       "category": "communication",
       "source_title": "大模型推理面试 370 题:RDMA 技术原理",
       "source_url": "https://www.xiaohongshu.com/explore/69a41ce8000000002802066a?xsec_token=ABWcxCMp4XhxUn3uhOD--M3GlUiXxV3kej7xxHdDPFr5g%3D",
@@ -588,7 +588,7 @@
     },
     {
       "id": "69a41ce8000000002802066a",
-      "question": "请解释 RDMA(远程直接内存访问)的工作原理，以及它相比传统 TCP/IP 网络通信有哪些优势？",
+      "question": "RDMA 如何工作？相比 TCP/IP 有何优势？",
       "category": "communication",
       "source_title": "大模型推理面试 370 题:RDMA 技术原理",
       "source_url": "https://www.xiaohongshu.com/explore/69a41ce8000000002802066a?xsec_token=ABWcxCMp4XhxUn3uhOD--M3GlUiXxV3kej7xxHdDPFr5g%3D",
@@ -603,7 +603,7 @@
     },
     {
       "id": "69a41ce8000000002802066a",
-      "question": "请详细介绍 NCCL 中 Broadcast 通信原语的实现原理，以及它在分布式训练中的典型应用场景？",
+      "question": "NCCL Broadcast 如何实现？有哪些典型用途？",
       "category": "communication",
       "source_title": "大模型推理面试 370 题:RDMA 技术原理",
       "source_url": "https://www.xiaohongshu.com/explore/69a41ce8000000002802066a?xsec_token=ABWcxCMp4XhxUn3uhOD--M3GlUiXxV3kej7xxHdDPFr5g%3D",
@@ -617,7 +617,7 @@
     },
     {
       "id": "6abdd2cc000000001303cc52",
-      "question": "Token 如何分发到 Expert？",
+      "question": "MoE 中的 Token 如何路由并分发到 Expert？",
       "category": "communication",
       "source_title": "AI Infra 面试最常考的 5 个技术题",
       "source_url": "https://www.xiaohongshu.com/explore/6abdd2cc000000001303cc52?xsec_token=ABd2MTHySjLNLqBeqM0jisbqESc-c_1jT2TqCB-zvBVzg%3D",
@@ -632,7 +632,7 @@
     },
     {
       "id": "6aaff56d000000002600a9b6",
-      "question": "torch.compile 的底层机制，如何运作，怎么定位哪里适合做 compile？",
+      "question": "torch.compile 如何编译？如何判断代码是否适合编译？",
       "category": "compiler",
       "source_title": "快手 infra 一面",
       "source_url": "https://www.xiaohongshu.com/explore/6aaff56d000000002600a9b6?xsec_token=ABAOYYzyRcloF1POHZt-qZrkD2kIuu9sM3QTAo0byfD4A%3D",
@@ -648,7 +648,7 @@
     },
     {
       "id": "6a8eee4a000000002a03be50",
-      "question": "MLIR 中 Pass 如何分类？PassManager 如何注册并调用 Pass？Dialect Interface 应如何设计？SCF Dialect 中有哪些常用 Ops？",
+      "question": "MLIR Pass 如何分类和执行？Dialect Interface 与 SCF Ops 有什么作用？",
       "category": "compiler",
       "source_title": "字节编译器面经 MLIR 方向真实两轮面经复盘",
       "source_url": "https://www.xiaohongshu.com/explore/6a8eee4a000000002a03be50?xsec_token=AB5REmYxEwJsOAdxY4WNihxaOhhzqvWUdviT2rjAcM6AQ%3D",
@@ -663,7 +663,7 @@
     },
     {
       "id": "6a881f09000000003b016a63",
-      "question": "多模态中的 ViT 更偏计算瓶颈还是 IO 瓶颈？",
+      "question": "多模态 ViT 更受计算还是 IO 限制？如何判断？",
       "category": "compiler",
       "source_title": "寒武纪 推理优化 日常实习面经",
       "source_url": "https://www.xiaohongshu.com/explore/6a881f09000000003b016a63?xsec_token=AB8LZb85sIrYaOizYSZ2283VsaMdR38CCpYFa_I3EoyqY%3D",
@@ -678,7 +678,7 @@
     },
     {
       "id": "6a8eee4a000000002a03be50",
-      "question": "大规模 Tensor Shape 如何切分到不同 SM 或 CTA 执行？如何设计 Tiling 与并行映射？",
+      "question": "大规模 Tensor 如何映射到 SM/CTA？Tiling 如何设计？",
       "category": "compiler",
       "source_title": "字节编译器面经 MLIR 方向真实两轮面经复盘",
       "source_url": "https://www.xiaohongshu.com/explore/6a8eee4a000000002a03be50?xsec_token=AB5REmYxEwJsOAdxY4WNihxaOhhzqvWUdviT2rjAcM6AQ%3D",
@@ -693,7 +693,7 @@
     },
     {
       "id": "6aaff56d000000002600a9b6",
-      "question": "如何结合 Nsight Systems 和 Nsight Compute 判断 Kernel 是 Launch-bound、Memory-bound 还是 Compute-bound？",
+      "question": "如何用 Nsight Systems 和 Nsight Compute 定位 Kernel 瓶颈？",
       "category": "compiler",
       "source_title": "快手 infra 一面",
       "source_url": "https://www.xiaohongshu.com/explore/6aaff56d000000002600a9b6?xsec_token=ABAOYYzyRcloF1POHZt-qZrkD2kIuu9sM3QTAo0byfD4A%3D",
@@ -708,7 +708,7 @@
     },
     {
       "id": "6a5dc6ec000000001102df0b",
-      "question": "vLLM 如何通过 PagedAttention 管理 KV Cache、通过 Continuous Batching 提升吞吐？调优时应关注哪些参数？",
+      "question": "vLLM 如何用 PagedAttention 管理 KV Cache、用 Continuous Batching 提升吞吐？调优关注哪些参数？",
       "category": "framework",
       "source_title": "AI Infra 面试被问最多的 5 个问题",
       "source_url": "https://www.xiaohongshu.com/explore/6a5dc6ec000000001102df0b?xsec_token=AB__cl0g9jH9UO8QzCkIwGlEFrze6BDC62lCCnzIGuFFU%3D",
@@ -723,7 +723,7 @@
     },
     {
       "id": "6a5dc6ec000000001102df0b",
-      "question": "Kubernetes 如何通过 Device Plugin 和 GPU Operator 管理 GPU 资源，并实现 GPU 工作负载调度？",
+      "question": "Kubernetes 如何用 Device Plugin 和 GPU Operator 管理与调度 GPU？",
       "category": "framework",
       "source_title": "AI Infra 面试被问最多的 5 个问题",
       "source_url": "https://www.xiaohongshu.com/explore/6a5dc6ec000000001102df0b?xsec_token=AB__cl0g9jH9UO8QzCkIwGlEFrze6BDC62lCCnzIGuFFU%3D",
@@ -738,7 +738,7 @@
     },
     {
       "id": "6a7d2e0100000000280020b0",
-      "question": "GPUDirect RDMA 验证失败时，如何通过 PCIe 拓扑、ACS/IOMMU 配置及 NIC 到 GPU 的亲和性定位问题？",
+      "question": "GPUDirect RDMA 验证失败时，如何排查 PCIe、ACS/IOMMU 和 NIC-GPU 亲和性？",
       "category": "framework",
       "source_title": "分布式训练工程师面试最容易答崩的 3 类题!",
       "source_url": "https://www.xiaohongshu.com/explore/6a7d2e0100000000280020b0?xsec_token=ABK1yTmSaGl-QAoCAxOjpjKKN1UwnXfSzs35BrlQF4OYQ%3D",
@@ -753,7 +753,7 @@
     },
     {
       "id": "6a5dc6ec000000001102df0b",
-      "question": "如何结合 GPU 拓扑、NUMA 亲和性和 MIG 实例配置进行拓扑感知调度？",
+      "question": "GPU 拓扑、NUMA 和 MIG 如何用于拓扑感知调度？",
       "category": "framework",
       "source_title": "AI Infra 面试被问最多的 5 个问题",
       "source_url": "https://www.xiaohongshu.com/explore/6a5dc6ec000000001102df0b?xsec_token=AB__cl0g9jH9UO8QzCkIwGlEFrze6BDC62lCCnzIGuFFU%3D",
@@ -768,7 +768,7 @@
     },
     {
       "id": "6a7d2e0100000000280020b0",
-      "question": "InfiniBand 通信中 HCA、Subnet Manager、Switch 和 Verbs 分别承担什么职责？一次 RDMA 操作如何经过这些组件？",
+      "question": "InfiniBand 的 HCA、Subnet Manager、Switch 和 Verbs 分别负责什么？RDMA 操作如何流转？",
       "category": "framework",
       "source_title": "分布式训练工程师面试最容易答崩的 3 类题!",
       "source_url": "https://www.xiaohongshu.com/explore/6a7d2e0100000000280020b0?xsec_token=ABK1yTmSaGl-QAoCAxOjpjKKN1UwnXfSzs35BrlQF4OYQ%3D",
@@ -783,7 +783,7 @@
     },
     {
       "id": "6a66188b000000000401f0f2",
-      "question": "Megatron-LM 中 DP、TP、PP、CP 和 EP 分别如何切分计算？如何根据模型规模、互联拓扑和显存约束选择并行策略？",
+      "question": "Megatron-LM 的 DP、TP、PP、CP、EP 如何切分计算？并行策略如何选择？",
       "category": "framework",
       "source_title": "腾讯混元 Ai infra",
       "source_url": "https://www.xiaohongshu.com/explore/6a66188b000000000401f0f2?xsec_token=ABarxKmIQ04INRcvbOdnfQpFJQAxT6hQDmnv2DNE1HfWw%3D",
@@ -799,7 +799,7 @@
     },
     {
       "id": "6a881f09000000003b016a63",
-      "question": "对比 nano-vLLM 与 vLLM 的请求调度、PagedAttention/KV Cache 管理和批处理机制，它们在生产能力上有哪些差异？",
+      "question": "nano-vLLM 与 vLLM 的调度、KV Cache 和批处理机制有何差异？",
       "category": "framework",
       "source_title": "寒武纪 推理优化 日常实习面经",
       "source_url": "https://www.xiaohongshu.com/explore/6a881f09000000003b016a63?xsec_token=AB8LZb85sIrYaOizYSZ2283VsaMdR38CCpYFa_I3EoyqY%3D",
@@ -814,7 +814,7 @@
     },
     {
       "id": "6a7d2e0100000000280020b0",
-      "question": "NVSwitch 全互联与 PCIe 树形拓扑在双向带宽、通信跳数、二分带宽和集合通信性能上有什么区别？",
+      "question": "NVSwitch 与 PCIe 拓扑在带宽、通信跳数和集合通信性能上有何差异？",
       "category": "framework",
       "source_title": "分布式训练工程师面试最容易答崩的 3 类题!",
       "source_url": "https://www.xiaohongshu.com/explore/6a7d2e0100000000280020b0?xsec_token=ABK1yTmSaGl-QAoCAxOjpjKKN1UwnXfSzs35BrlQF4OYQ%3D",
@@ -829,7 +829,7 @@
     },
     {
       "id": "6a5dc6ec000000001102df0b",
-      "question": "Kubernetes 中 GPU 推理 Pod 异常退出后，如何通过 Probe、重调度、优雅下线和副本管理恢复服务并避免流量打到未就绪实例？",
+      "question": "Kubernetes GPU 推理 Pod 故障后，如何恢复服务并避免流量发往未就绪实例？",
       "category": "framework",
       "source_title": "AI Infra 面试被问最多的 5 个问题",
       "source_url": "https://www.xiaohongshu.com/explore/6a5dc6ec000000001102df0b?xsec_token=AB__cl0g9jH9UO8QzCkIwGlEFrze6BDC62lCCnzIGuFFU%3D",
@@ -844,7 +844,7 @@
     },
     {
       "id": "6a881f09000000003b016a63",
-      "question": "推理框架如何支持图像和视频输入？请从预处理、视觉编码器调用、跨模态特征对齐、Token 拼接和 KV Cache 管理说明数据流。",
+      "question": "推理框架如何处理图像和视频输入，并管理视觉特征与 KV Cache？",
       "category": "framework",
       "source_title": "寒武纪 推理优化 日常实习面经",
       "source_url": "https://www.xiaohongshu.com/explore/6a881f09000000003b016a63?xsec_token=AB8LZb85sIrYaOizYSZ2283VsaMdR38CCpYFa_I3EoyqY%3D",
@@ -859,7 +859,7 @@
     },
     {
       "id": "6a881f09000000003b016a63",
-      "question": "SGLang 中 Replay SSM 机制要解决什么状态复用问题？它如何与请求调度及 State 管理配合？",
+      "question": "SGLang Replay SSM 如何复用状态并配合请求调度？",
       "category": "framework",
       "source_title": "寒武纪 推理优化 日常实习面经",
       "source_url": "https://www.xiaohongshu.com/explore/6a881f09000000003b016a63?xsec_token=AB8LZb85sIrYaOizYSZ2283VsaMdR38CCpYFa_I3EoyqY%3D",
@@ -873,7 +873,7 @@
     },
     {
       "id": "69ed981b000000003601b6e6",
-      "question": "LoRA 如何用低秩矩阵近似权重更新？Rank、初始化和权重合并分别如何影响参数量、精度与推理开销？",
+      "question": "LoRA 如何用低秩矩阵近似权重更新？Rank、初始化和权重合并如何影响精度与推理开销？",
       "category": "framework",
       "source_title": "智谱大模型岗 一面面经 细节拷打",
       "source_url": "https://www.xiaohongshu.com/explore/69ed981b000000003601b6e6?xsec_token=ABnZ9mNMPx0PdIMB-P8bB3bwWLZmdBPCUnSrXQTYg0ags%3D",
@@ -888,7 +888,7 @@
     },
     {
       "id": "69ed981b000000003601b6e6",
-      "question": "推理服务发生 OOM 时，如何区分模型权重、KV Cache、激活、临时 Buffer 和内存碎片造成的显存压力？",
+      "question": "推理 OOM 如何区分权重、KV Cache、激活、临时 Buffer 和内存碎片？",
       "category": "framework",
       "source_title": "智谱大模型岗 一面面经 细节拷打",
       "source_url": "https://www.xiaohongshu.com/explore/69ed981b000000003601b6e6?xsec_token=ABnZ9mNMPx0PdIMB-P8bB3bwWLZmdBPCUnSrXQTYg0ags%3D",
@@ -903,7 +903,7 @@
     },
     {
       "id": "69ed981b000000003601b6e6",
-      "question": "大模型训练从单卡扩展到多卡时，如何估算并优化参数、梯度、优化器状态和激活显存？",
+      "question": "多卡训练的参数、梯度、优化器状态和激活显存如何估算与优化？",
       "category": "framework",
       "source_title": "智谱大模型岗 一面面经 细节拷打",
       "source_url": "https://www.xiaohongshu.com/explore/69ed981b000000003601b6e6?xsec_token=ABnZ9mNMPx0PdIMB-P8bB3bwWLZmdBPCUnSrXQTYg0ags%3D",
@@ -918,7 +918,7 @@
     },
     {
       "id": "6a7d2e0100000000280020b0",
-      "question": "网络吞吐不足且 TCP 栈 CPU 占用高时，如何检查软中断、RSS/RPS、队列、拥塞控制和拷贝开销来定位瓶颈？",
+      "question": "TCP 网络吞吐低且 CPU 占用高时，如何排查软中断、队列和拷贝开销？",
       "category": "framework",
       "source_title": "分布式训练工程师面试最容易答崩的 3 类题!",
       "source_url": "https://www.xiaohongshu.com/explore/6a7d2e0100000000280020b0?xsec_token=ABK1yTmSaGl-QAoCAxOjpjKKN1UwnXfSzs35BrlQF4OYQ%3D",
@@ -933,7 +933,7 @@
     },
     {
       "id": "68a731c3000000001d0237b8",
-      "question": "CUDA Kernel 如何选择 PTX ISA 版本和目标架构？PTX ISA 版本、Compute Capability 与最终 SASS 指令之间有什么关系？",
+      "question": "PTX ISA、Compute Capability 与 SASS 有什么关系？如何选择 PTX 版本和目标架构？",
       "category": "operator",
       "source_title": "【面经】燧原科技-算子开发",
       "source_url": "https://www.xiaohongshu.com/explore/68a731c3000000001d0237b8?xsec_token=ABmzqqVSblrfwe8Gt6WH8Mp54exJHrp-pdW-KVpuLRjxo%3D",
@@ -948,7 +948,7 @@
     },
     {
       "id": "68a731c3000000001d0237b8",
-      "question": "NVCC 编译链路中的 CUDA C++、PTX 和 SASS 分别是什么？PTX 如何通过 ptxas 或 JIT 生成可执行代码，能否把 PTX 文本直接当作已编译 Kernel 启动？",
+      "question": "CUDA C++、PTX 和 SASS 有什么区别？PTX 如何经 ptxas/JIT 生成可执行代码？",
       "category": "operator",
       "source_title": "【面经】燧原科技-算子开发",
       "source_url": "https://www.xiaohongshu.com/explore/68a731c3000000001d0237b8?xsec_token=ABmzqqVSblrfwe8Gt6WH8Mp54exJHrp-pdW-KVpuLRjxo%3D",
@@ -963,7 +963,7 @@
     },
     {
       "id": "68a731c3000000001d0237b8",
-      "question": "INT8 量化与反量化如何计算 Scale 和 Zero Point？如何处理舍入、饱和、校准数据及量化误差？",
+      "question": "INT8 量化/反量化的 Scale 和 Zero Point 如何确定？如何控制量化误差？",
       "category": "operator",
       "source_title": "【面经】燧原科技-算子开发",
       "source_url": "https://www.xiaohongshu.com/explore/68a731c3000000001d0237b8?xsec_token=ABmzqqVSblrfwe8Gt6WH8Mp54exJHrp-pdW-KVpuLRjxo%3D",
@@ -978,7 +978,7 @@
     },
     {
       "id": "6a28c5000000000035032728",
-      "question": "如何通过可复现的 What-if 对照实验和跨层指标关联，定位训练系统中的 Straggler？",
+      "question": "如何通过对照实验和跨层指标定位训练 Straggler？",
       "category": "operator",
       "source_title": "字节跳动 AI Infra 面试一百题(十四)",
       "source_url": "https://www.xiaohongshu.com/explore/6a28c5000000000035032728?xsec_token=ABl5fNe4n6jy3dtMv35dAtUJ3W1jd8VTIj7DHcRWIvCiA%3D",
@@ -993,7 +993,7 @@
     },
     {
       "id": "6a28c5000000000035032728",
-      "question": "大规模训练中的 Universal Checkpointing 如何支持不同并行配置间的检查点恢复与重分片？它解决了什么故障恢复问题？",
+      "question": "Universal Checkpointing 如何支持不同并行配置间的恢复与重分片？",
       "category": "operator",
       "source_title": "字节跳动 AI Infra 面试一百题(十四)",
       "source_url": "https://www.xiaohongshu.com/explore/6a28c5000000000035032728?xsec_token=ABl5fNe4n6jy3dtMv35dAtUJ3W1jd8VTIj7DHcRWIvCiA%3D",
@@ -1007,7 +1007,7 @@
     },
     {
       "id": "6a28c5000000000035032728",
-      "question": "训练集群出现偶发慢步骤时，如何结合 Step Time 分解、数据负载、节点健康和网络通信指标区分代码回归、数据倾斜、硬件故障与网络拥塞？",
+      "question": "训练集群出现慢步骤时，如何区分代码回归、数据倾斜、硬件故障和网络拥塞？",
       "category": "operator",
       "source_title": "字节跳动 AI Infra 面试一百题(十四)",
       "source_url": "https://www.xiaohongshu.com/explore/6a28c5000000000035032728?xsec_token=ABl5fNe4n6jy3dtMv35dAtUJ3W1jd8VTIj7DHcRWIvCiA%3D",
@@ -1022,7 +1022,7 @@
     },
     {
       "id": "6a28c5000000000035032728",
-      "question": "面对一个性能瓶颈，如何依据算子形态、控制流、可维护性和目标硬件，在 Triton、手写 CUDA 与 torch.compile 之间选择优化路径？",
+      "question": "Triton、手写 CUDA 和 torch.compile 的优化路径如何选择？",
       "category": "operator",
       "source_title": "字节跳动 AI Infra 面试一百题(十四)",
       "source_url": "https://www.xiaohongshu.com/explore/6a28c5000000000035032728?xsec_token=ABl5fNe4n6jy3dtMv35dAtUJ3W1jd8VTIj7DHcRWIvCiA%3D",
@@ -1037,7 +1037,7 @@
     },
     {
       "id": "kimi-20261002-01",
-      "question": "DeepEP 的 Normal 模式和 Low-Latency 模式分别适用于什么场景？它们在吞吐、时延和数据传输方面有什么区别？",
+      "question": "DeepEP Normal 与 Low-Latency 模式有何区别？分别适用于什么场景？",
       "category": "communication",
       "source_title": "Kimi AI Infra 一面",
       "source_url": "",
@@ -1055,7 +1055,7 @@
     },
     {
       "id": "kimi-20261002-02",
-      "question": "Ulysses SP 和 Ring Attention 的序列并行机制有什么区别？它们分别采用什么通信方式，如何与计算重叠？",
+      "question": "Ulysses SP 与 Ring Attention 的通信方式和计算重叠有何区别？",
       "category": "communication",
       "source_title": "Kimi AI Infra 一面",
       "source_url": "",
@@ -1073,7 +1073,7 @@
     },
     {
       "id": "kimi-20261002-03",
-      "question": "Decode Context Parallelism（DCP）如何切分 KV Cache 并完成注意力计算？",
+      "question": "DCP 如何切分 KV Cache 并完成分布式 Attention？",
       "category": "communication",
       "source_title": "Kimi AI Infra 一面",
       "source_url": "",
@@ -1091,7 +1091,7 @@
     },
     {
       "id": "kimi-20261002-04",
-      "question": "分块注意力中的 Online Softmax 和 LSE Merge 如何稳定地合并多个分块的结果？",
+      "question": "Online Softmax 与 LSE Merge 如何稳定合并分块 Attention 结果？",
       "category": "operator",
       "source_title": "Kimi AI Infra 一面",
       "source_url": "",
@@ -1109,7 +1109,7 @@
     },
     {
       "id": "kimi-20261002-05",
-      "question": "从 Ampere 到 Hopper 再到 Blackwell，GPU 矩阵计算和异步数据搬运机制有哪些演进？",
+      "question": "Ampere、Hopper、Blackwell 的矩阵计算与异步搬运机制有何演进？",
       "category": "operator",
       "source_title": "Kimi AI Infra 一面",
       "source_url": "",
@@ -1129,7 +1129,7 @@
     },
     {
       "id": "kimi-20261002-06",
-      "question": "使用 Tensor Memory 和 Tensor Core 的 GEMM Kernel 时，如何设计多阶段 Pipeline 并选择 num_stages？",
+      "question": "GEMM 如何用 Tensor Memory 和 Tensor Core 设计 Pipeline？num_stages 如何选择？",
       "category": "operator",
       "source_title": "Kimi AI Infra 一面",
       "source_url": "",
@@ -1147,7 +1147,7 @@
     },
     {
       "id": "kimi-20261002-07",
-      "question": "寄存器和 Shared Memory 的使用量如何影响 GPU Occupancy？",
+      "question": "寄存器和 Shared Memory 用量如何影响 GPU Occupancy？",
       "category": "operator",
       "source_title": "Kimi AI Infra 一面",
       "source_url": "",
@@ -1165,7 +1165,7 @@
     },
     {
       "id": "kimi-20261002-08",
-      "question": "Persistent Kernel 如何隐藏延迟？它与常规 Kernel 相比，对 Software Pipeline 有什么要求？",
+      "question": "Persistent Kernel 如何隐藏延迟并设计 Software Pipeline？",
       "category": "operator",
       "source_title": "Kimi AI Infra 一面",
       "source_url": "",
@@ -1183,7 +1183,7 @@
     },
     {
       "id": "kimi-20261002-09",
-      "question": "Grouped GEMM 中 Contiguous 和 Masked 输入有什么区别？Tile 应如何调度？",
+      "question": "Grouped GEMM 的 Contiguous 与 Masked 输入有何区别？Tile 如何调度？",
       "category": "operator",
       "source_title": "Kimi AI Infra 一面",
       "source_url": "",
@@ -1201,7 +1201,7 @@
     },
     {
       "id": "kimi-20261002-10",
-      "question": "MXFP8 和 Block-wise FP8 在量化粒度、Scale 开销和矩阵计算中有什么区别？",
+      "question": "MXFP8 与 Block-wise FP8 在量化粒度、Scale 开销和矩阵计算上有何区别？",
       "category": "operator",
       "source_title": "Kimi AI Infra 一面",
       "source_url": "",
@@ -1219,7 +1219,7 @@
     },
     {
       "id": "kimi-20261002-11",
-      "question": "实现 GEMM Kernel 时，TMA 和 cp.async 分别适合什么场景？应如何选择？",
+      "question": "TMA 与 cp.async 分别适用于什么场景？如何选择？",
       "category": "operator",
       "source_title": "Kimi AI Infra 一面",
       "source_url": "",
@@ -1237,7 +1237,7 @@
     },
     {
       "id": "kimi-20261002-12",
-      "question": "为什么异步 Host-to-Device（H2D）传输通常需要 Pinned Memory？使用 Pageable Memory 有什么问题？",
+      "question": "异步 H2D 为什么通常需要 Pinned Memory？Pageable Memory 有什么问题？",
       "category": "communication",
       "source_title": "Kimi AI Infra 一面",
       "source_url": "",
@@ -1255,7 +1255,7 @@
     },
     {
       "id": "kimi-20261002-13",
-      "question": "如何判断一个 Memory-bound Kernel 是否还有优化空间，以及继续优化是否值得？",
+      "question": "如何判断 Memory-bound Kernel 是否值得继续优化？",
       "category": "operator",
       "source_title": "Kimi AI Infra 一面",
       "source_url": "",
@@ -1273,7 +1273,7 @@
     },
     {
       "id": "kimi-20261002-14",
-      "question": "为什么在 Hopper 或 Blackwell 上，仅靠普通 LDG 加载有时难以打满显存带宽？可以如何改进？",
+      "question": "Hopper/Blackwell 上普通 LDG 为何可能无法打满带宽？如何提升访存并行度？",
       "category": "operator",
       "source_title": "Kimi AI Infra 一面",
       "source_url": "",
@@ -1292,7 +1292,7 @@
     },
     {
       "id": "kimi-20261002-15",
-      "question": "对于矩阵向量乘法 GEMV：A[M,N] × B[N,1]，如何设计高性能 CUDA Kernel？",
+      "question": "GEMV Kernel 如何设计合并访存与高效归约？",
       "category": "operator",
       "source_title": "Kimi AI Infra 一面",
       "source_url": "",
@@ -1311,7 +1311,7 @@
     },
     {
       "id": "kimi-20261002-16",
-      "question": "什么样的数据适合放入 Shared Memory？在什么情况下 Shared Memory 反而会降低性能？",
+      "question": "哪些数据适合放入 Shared Memory？什么情况下 Shared Memory 会降低性能？",
       "category": "operator",
       "source_title": "Kimi AI Infra 一面",
       "source_url": "",
