@@ -4,11 +4,11 @@ const categoryMeta = [
   { id: 'communication', name: '通信', en: 'DISTRIBUTED COMMUNICATION', icon: '03' },
   { id: 'framework', name: '框架', en: 'TRAINING & INFERENCE', icon: '04' },
 ];
+const $ = s => document.querySelector(s);
 const params = new URLSearchParams(location.search);
 const state = { category: 'all', query: params.get('q') || '', items: [] };
 $('#search').value = state.query;
 const esc = (s = '') => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const $ = s => document.querySelector(s);
 function render() {
   const query = state.query.trim().toLowerCase();
   const items = state.items.filter(item => (state.category === 'all' || item.category === state.category) && (!query || `${item.question || item.title} ${item.source_title || ''} ${(item.knowledge_points || item.tags || []).join(' ')}`.toLowerCase().includes(query)));
