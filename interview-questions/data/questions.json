@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-02",
-  "source": "short question prompts distilled locally from public notes; source links retained",
+  "updated_at": "2026-10-04",
+  "source": "公开技术资料整理；题目附来源并区分版本，面经原题与技术衍生题分别标注",
   "questions": [
     {
       "id": "manual-20261002-01",
@@ -1498,6 +1498,1984 @@
         "Shared Memory",
         "Data Reuse",
         "Occupancy"
+      ]
+    },
+    {
+      "id": "deepep-20261004-001",
+      "question": "DeepEP 在 MoE 层的 Dispatch 与 Combine 分别完成什么数据变换？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "MoE",
+        "Dispatch",
+        "Combine"
+      ],
+      "source_title": "技术资料整理 · DeepEP 通用 · 官方设计文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "Dispatch 按路由把 token hidden states 发送到持有目标专家的 rank。",
+        "专家计算后，Combine 将各专家输出按 token 路由关系聚合并送回源 rank。",
+        "二者组成 EP all-to-all 数据路径，但输入布局、元数据和归约位置取决于 API 版本与模式。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-002",
+      "question": "为什么 MoE 专家并行需要 All-to-All 通信？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "MoE",
+        "Expert Parallelism",
+        "All-to-All"
+      ],
+      "source_title": "技术资料整理 · DeepEP 通用 · 官方设计文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "Router 为每个 token 选择一个或多个专家，而专家权重分布在不同 rank。",
+        "Dispatch 将 token 发往专家所在 rank，Combine 将专家结果返还 token 来源 rank。",
+        "通信量受 token 数、hidden size、top-k、数据类型、节点拓扑共同影响。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-003",
+      "question": "DeepEP 中 EP rank、local rank 与 RDMA rank 分别指什么？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "EP rank",
+        "RDMA rank",
+        "拓扑"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 文档及代码解读",
+      "source_url": "https://www.cnblogs.com/CQzhangyu/p/18741625",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "EP rank 是 EP 通信组中的进程编号；local rank 表示节点内设备位置。",
+        "RDMA rank 将处于相同节点内互联位置的设备映射到跨节点通信分组。",
+        "具体 rank 映射依赖进程组与设备拓扑，不应将这些编号混为一谈。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-004",
+      "question": "如何从一次 MoE 前向的数据流描述 DeepEP 的位置？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "MoE",
+        "数据流"
+      ],
+      "source_title": "技术资料整理 · DeepEP 通用 · 官方设计文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "Router 产生 top-k 专家索引和权重后调用 Dispatch。",
+        "目标 rank 对接收 token 执行 grouped expert GEMM 等专家计算。",
+        "Combine 聚合专家贡献并将结果返回原始 token 排布。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-005",
+      "question": "Dispatch 的输入、输出为什么通常不保持相同 token 排布？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "Dispatch",
+        "expanded layout"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2 · 官方 EPBuffer API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "输入按源 rank 的 token 顺序组织，输出按目标专家/本地专家布局组织。",
+        "每个 token 可复制到 top-k 个专家，因此接收侧 token 行数可能扩张。",
+        "返回的 handle 或 layout 元数据用于后续 Combine 对应回传和归约。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-006",
+      "question": "什么是 DeepEP expanded layout？它与压紧布局有何区别？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "expanded layout",
+        "expert alignment"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2 · 官方 EPBuffer API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "Expanded layout 为专家 GEMM 准备按专家槽位展开的 token 行。",
+        "压紧布局可避免对齐填充，但下游必须正确处理每专家 token 边界/元数据。",
+        "V2 API 可控制 expansion、zero padding 和 expert alignment，需与 GEMM 输入约定一致。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-007",
+      "question": "top-k 路由会怎样影响 Dispatch 的通信量？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "top-k",
+        "通信量"
+      ],
+      "source_title": "技术资料整理 · DeepEP 通用 · 官方设计文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/309785a94dedeb9ca3cb01091048584a31bfc799/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "一个 token 被路由到多个专家时，hidden state 可能产生多份专家输入。",
+        "忽略压缩、精度和本地命中时，发送量大致随 token 数、hidden 宽度、元素字节数及 top-k 增长。",
+        "路由局部性和本地专家命中会改变实际跨 rank/跨节点流量。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-008",
+      "question": "V1 Buffer 的容量参数为何要按最大 token 数预留？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "Buffer",
+        "容量规划"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 API 文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/309785a94dedeb9ca3cb01091048584a31bfc799/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "通信缓冲区需容纳预期最坏接收量及相应元数据。",
+        "容量不足可能导致分配失败或无法覆盖目标负载，过大则浪费显存。",
+        "V1 的不同 buffer size hint 和 V2 的 EPBuffer 容量接口并不相同，按目标版本 API 规划。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-009",
+      "question": "V1 get_dispatch_layout 的作用是什么？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "get_dispatch_layout",
+        "layout"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 API 文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/309785a94dedeb9ca3cb01091048584a31bfc799/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "根据 top-k 路由信息预先计算 token 在 rank/专家间的分布布局。",
+        "产生后续 dispatch 使用的计数或布局元数据，可与通信按 API 支持的方式异步衔接。",
+        "布局必须与同一次 topk_idx、专家配置和进程组保持一致。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-010",
+      "question": "V1 的 num_tokens_per_rank 与 num_tokens_per_rdma_rank 有何区别？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "token count",
+        "rank group"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 API 文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/309785a94dedeb9ca3cb01091048584a31bfc799/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "前者描述 EP rank 粒度的 token 分布计数，后者描述 RDMA 分组粒度汇总信息。",
+        "分层传输需要相应层级的计数来规划 buffer 和通信工作。",
+        "值应由正确的 layout 计算或依文档传入，不能把 rank 与 RDMA rank 的计数混用。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-011",
+      "question": "为什么调用 DeepEP 的 Dispatch 时要保存返回的 handle？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "handle",
+        "Combine",
+        "autograd"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1/V2 · 官方 EPBuffer API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "Handle 携带 Dispatch 对应的路由/布局上下文，供 Combine 将结果映射回源 token。",
+        "训练反向也可能复用该上下文构造对应的反向通信。",
+        "handle 生命周期必须覆盖相关异步操作，且不可与另一轮路由错误配对。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-012",
+      "question": "为什么 V1 dispatch 的布局计算可能引入 CPU 同步？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "CPU sync",
+        "CUDA Graph"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 API 文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/309785a94dedeb9ca3cb01091048584a31bfc799/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "CPU 侧需要接收计数或元数据才能确定实际输出范围时，会等待 GPU 计算结果。",
+        "该同步可能阻断 CPU 提交并破坏期望的异步执行或 CUDA Graph 捕获。",
+        "可按版本使用容量上界、缓存布局或 GPU 侧计数路径，但要核实适用限制。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-013",
+      "question": "V1 的 num_worst_tokens 参数解决什么问题，有什么限制？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "num_worst_tokens",
+        "CUDA Graph"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 API 文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/309785a94dedeb9ca3cb01091048584a31bfc799/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "提供 token 接收规模的上界，减少依赖实际接收计数的 CPU 同步。",
+        "容量/工作范围按上界预留，可能增加内存或无效工作。",
+        "V1 文档指出其适用范围有限，例如不能将特定仅机内方案外推到跨节点场景。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-014",
+      "question": "V1 dispatch 与 combine 的反向传播各对应什么通信？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "反向传播",
+        "Dispatch",
+        "Combine"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 API 文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/309785a94dedeb9ca3cb01091048584a31bfc799/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "Dispatch 的反向可对应 Combine，将专家侧梯度按原路由聚合回源 token。",
+        "Combine 的反向可对应 Dispatch，把源端梯度发往专家侧。",
+        "还需正确处理 top-k 权重梯度及 handle，不能只交换函数名而忽略张量语义。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-015",
+      "question": "为什么 top-k 权重的乘法位置可能因 DeepEP 模式不同？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "topk_weights",
+        "Combine",
+        "版本差异"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · DeepEP 官方 Issue #72",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/issues/72",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "权重可在专家输出/Combine 路径中应用，具体位置影响通信数据与归约语义。",
+        "Issue 讨论指出 V1 low-latency 与 normal 的分层归约路径不同，权重处理假设也不同。",
+        "应严格按目标版本代码和接口验证，不能把讨论中的推测写成所有实现的固定规则。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-016",
+      "question": "V1 Normal kernel 面向什么负载，核心优化目标是什么？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "Normal",
+        "吞吐",
+        "Prefill"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/309785a94dedeb9ca3cb01091048584a31bfc799/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "面向训练和 Prefill 等相对大流量场景，目标偏向吞吐与链路利用率。",
+        "采用适配节点内/跨节点拓扑的高吞吐 dispatch/combine 路径。",
+        "选择时应比较真实 token 数、top-k、hidden size 与网络结构。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-017",
+      "question": "V1 Normal 的节点内高吞吐路径如何利用 NVLink？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "Normal",
+        "NVLink"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 文档及代码解读",
+      "source_url": "https://www.cnblogs.com/CQzhangyu/p/18741625",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "节点内 rank 间通过 GPU 互联交换激活数据。",
+        "通信缓冲区、任务调度和 GPU kernel 协同完成发送/接收与布局变换。",
+        "性能取决于 NVLink 拓扑、并发请求、数据布局以及 SM 资源竞争。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-018",
+      "question": "V1 Normal 跨节点路径中的 RDMA 承担什么角色？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "Normal",
+        "RDMA",
+        "跨节点"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 文档及 Azure 工程文",
+      "source_url": "https://techcommunity.microsoft.com/blog/azurehighperformancecomputingblog/achieving-optimal-performance-for-deepseek-expert-parallelism-deepep-on-azure/4414699",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "RDMA 网络承载节点之间的激活数据交换，避免把大块数据往返搬到 CPU。",
+        "DeepEP 将 GPU 侧数据路径与机内互联转发结合起来。",
+        "NIC 绑定、GPU-NIC 亲和性和 RDMA 配置会显著影响实际结果。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-019",
+      "question": "V1 Normal 为什么采用分层的节点内与跨节点通信？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "Normal",
+        "分层通信",
+        "NVLink",
+        "RDMA"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 文档及代码解读",
+      "source_url": "https://www.cnblogs.com/CQzhangyu/p/18741625",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "节点内和跨节点链路的带宽、延迟及连接结构不同。",
+        "按拓扑分层可先跨节点转发，再在节点内目标 GPU 间分发，或在 Combine 中反向聚合。",
+        "具体数据路径取决于 rank 布局和实现，需以目标版本 kernel 为准。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-020",
+      "question": "V1 Normal 通信中所谓 NVLink 与 RDMA 两级归约是什么意思？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "Normal",
+        "归约",
+        "拓扑"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · DeepEP 官方 Issue #72",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/issues/72",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "在多层拓扑上，结果可能分别在网络域和节点互联域聚合。",
+        "每级归约的顺序及权重应用位置由实现的数据分组方式决定。",
+        "Issue #72 以 V1 语境讨论与 low-latency 单层路径的差异，不代表 V2 API 的通用描述。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-021",
+      "question": "V1 Normal 为什么允许设置通信使用的 SM 数？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "Normal",
+        "SM budget",
+        "资源分配"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/309785a94dedeb9ca3cb01091048584a31bfc799/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "通信 kernel 使用 SM 执行搬运、调度或相关处理，SM 数会影响通信并行度。",
+        "占用过多 SM 可能挤压专家 GEMM 等计算 kernel 的资源。",
+        "应在端到端负载下调节而不是只最大化通信 kernel 的独立带宽。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-022",
+      "question": "V1 Normal 路径在 CUDA Graph 下需要特别注意什么？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "Normal",
+        "CUDA Graph",
+        "CPU sync"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 API 文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/309785a94dedeb9ca3cb01091048584a31bfc799/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "若捕获路径中发生 CPU 等待 GPU 接收计数，可能无法按预期捕获或回放。",
+        "V1 文档讨论通过 token 上界等方案规避部分同步，但能力有适用边界。",
+        "应使用目标提交的测试和捕获路径验证，不要只凭 eager 模式可运行判断。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-023",
+      "question": "怎样判断 V1 Normal 通信是 NVLink 限制还是 RDMA 限制？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "性能分析",
+        "NVLink",
+        "RDMA"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 文档及 Azure 工程文",
+      "source_url": "https://techcommunity.microsoft.com/blog/azurehighperformancecomputingblog/achieving-optimal-performance-for-deepseek-expert-parallelism-deepep-on-azure/4414699",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "分别统计机内与跨节点传输字节、链路利用率和通信 kernel 时间。",
+        "检查 NIC/GPU/CPU NUMA 亲和性与拓扑，再在单节点和多节点配置对比。",
+        "结合 Nsight Systems、硬件计数器和微基准定位瓶颈，不能只看总耗时。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-024",
+      "question": "V1 Normal 中调大通信 SM 数为什么不一定提升端到端吞吐？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "SM contention",
+        "端到端性能"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/309785a94dedeb9ca3cb01091048584a31bfc799/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "更多通信 SM 可能增加搬运并发，但也会竞争专家 GEMM 可用 SM。",
+        "当瓶颈转移到网络、内存带宽、同步或下游计算时，额外 SM 不会缩短关键路径。",
+        "应同时观察重叠比例、SM 活跃度与 MoE 层端到端时延。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-025",
+      "question": "V1 Low-Latency kernel 主要面向哪种 MoE 推理阶段？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "Low-Latency",
+        "Decode"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/309785a94dedeb9ca3cb01091048584a31bfc799/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "面向 token 数较少、对单步延迟敏感的 Decode 工作负载。",
+        "其设计侧重减少延迟而非大消息峰值带宽。",
+        "Decode 与 Prefill 的负载不同，不能仅凭同一模型名选择通信模式。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-026",
+      "question": "V1 Low-Latency 模式为何强调 RDMA 路径？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "Low-Latency",
+        "RDMA"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/309785a94dedeb9ca3cb01091048584a31bfc799/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "V1 文档为延迟敏感路径设计了 RDMA 通信机制。",
+        "通信路径和队列/同步策略与 Normal 的高吞吐分层路径不同。",
+        "版本演进可能改变机内链路利用方式，需按具体 V1 commit 判断。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-027",
+      "question": "V1 Low-Latency 的 QP 数量会影响什么？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "Low-Latency",
+        "QP",
+        "RDMA"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 API 文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/309785a94dedeb9ca3cb01091048584a31bfc799/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "QP 数量影响并发通信队列及连接/资源消耗。",
+        "队列数不足可能限制并行度，过多可能增加资源压力或不满足实现约束。",
+        "必须遵循目标版本对 QP 与专家数、rank 数的约束并实测。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-028",
+      "question": "V1 Low-Latency 的 return_recv_hook 返回的 hook 做什么？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "recv_hook",
+        "异步接收"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 V1 API 文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/309785a94dedeb9ca3cb01091048584a31bfc799/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "Hook 表示接收数据已满足可消费条件时触发对应接收处理/等待。",
+        "调用方可先提交独立计算，再在真正需要接收结果时调用 hook。",
+        "未调用 hook 前不能假设接收缓冲区数据已经就绪。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-029",
+      "question": "V1 recv_hook 如何帮助 Decode 阶段隐藏通信延迟？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "recv_hook",
+        "overlap",
+        "Decode"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 API 文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/309785a94dedeb9ca3cb01091048584a31bfc799/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "先启动 dispatch 或 combine，再执行与接收结果无依赖的计算。",
+        "在专家 kernel 消费输入前调用 hook 建立正确的数据就绪依赖。",
+        "Overlap 是否有效取决于可并行工作量、rank 到达时间和通信瓶颈。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-030",
+      "question": "V1 文档所说 Low-Latency hook 不占 SM，应如何理解？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "recv_hook",
+        "SM",
+        "同步"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 API 文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/309785a94dedeb9ca3cb01091048584a31bfc799/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "V1 文档描述其 hook-based overlap 方案可避免用一个持续运行的 SM kernel 做等待。",
+        "这不意味着通信和所有接收处理都完全不消耗 GPU/硬件资源。",
+        "不要把该 V1 特性外推到 V2 EPBuffer 的 EventOverlap 接口。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-031",
+      "question": "V1 Low-Latency combine 中 top-k 权重应如何处理？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "Low-Latency",
+        "topk_weights"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · DeepEP 官方 Issue #72",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/issues/72",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "Issue #72 的维护者解释了当时 low-latency inference 路径将权重用于 combine 的设计理由。",
+        "同一讨论后续也出现对发送端乘权和归约效率的不同实现思考。",
+        "面试回答应标明 V1 代码版本，基于对应 kernel 跟踪真实乘权位置。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-032",
+      "question": "V1 Low-Latency 是否等同于完全不使用 NVLink？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "Low-Latency",
+        "NVLink",
+        "版本演进"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/309785a94dedeb9ca3cb01091048584a31bfc799/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "不能把某个早期 V1 版本的路径描述当成永恒规则。",
+        "V1 README 记录后续版本开始尽可能利用 NVLink 的改动。",
+        "回答应指定 commit/date，并区分机内、机间及具体 kernel 路径。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-033",
+      "question": "Normal 与 Low-Latency 模式的选择需要哪些负载指标？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "Normal",
+        "Low-Latency",
+        "模式选择"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/309785a94dedeb9ca3cb01091048584a31bfc799/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "比较每 rank token 数、top-k、hidden size 和专家负载偏斜。",
+        "结合端到端延迟目标、消息规模、节点数与链路拓扑评估。",
+        "同一应用可在 Prefill 与 Decode 使用不同通信配置，需基准而非仅按阶段名称判断。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-034",
+      "question": "DeepEP V1 的 NVSHMEM 在通信架构中承担什么角色？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "V1",
+        "NVSHMEM",
+        "RDMA"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/309785a94dedeb9ca3cb01091048584a31bfc799/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "V1 通过 NVSHMEM 相关机制实现 GPU 参与的跨节点通信路径。",
+        "部署需满足相应 NVSHMEM、GPU、网络和环境配置要求。",
+        "当前官方 V2.5 已移除 V1/NVSHMEM 后端；新旧架构不可混为一谈。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-035",
+      "question": "V1 的 NVSHMEM IBGDA 路径中 GPU 发起通信有什么优势？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "V1",
+        "NVSHMEM",
+        "IBGDA"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 文档及 Azure 工程文",
+      "source_url": "https://techcommunity.microsoft.com/blog/azurehighperformancecomputingblog/achieving-optimal-performance-for-deepseek-expert-parallelism-deepep-on-azure/4414699",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "GPU 发起的 RDMA 数据路径可减少 CPU 在每次通信中的调度参与。",
+        "仍依赖 NIC 能力、注册内存、QP 配置、拓扑和正确同步。",
+        "性能收益需用目标集群测量，不能简化为完全没有 CPU 初始化开销。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-036",
+      "question": "NUMA、GPU 与 HCA 亲和性如何影响 V1 DeepEP 性能？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "V1",
+        "NUMA",
+        "HCA",
+        "affinity"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · Azure HPC 工程文章",
+      "source_url": "https://techcommunity.microsoft.com/blog/azurehighperformancecomputingblog/achieving-optimal-performance-for-deepseek-expert-parallelism-deepep-on-azure/4414699",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "跨 NUMA 访问可能增加 CPU 内存与设备控制路径开销。",
+        "将进程 CPU 核、GPU 与对应 HCA 对齐可改善局部性和网卡选择。",
+        "检查 PCIe 拓扑、GPU/NIC bus ID 和实际流量路径，而不是只按 local rank 猜测。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-037",
+      "question": "NVSHMEM_HCA_LIST 与 NIC PE mapping 的配置目的是什么？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "V1",
+        "NVSHMEM",
+        "HCA"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · Azure HPC 工程文章",
+      "source_url": "https://techcommunity.microsoft.com/blog/azurehighperformancecomputingblog/achieving-optimal-performance-for-deepseek-expert-parallelism-deepep-on-azure/4414699",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "HCA_LIST 用于指定进程可用/期望使用的 HCA 设备集合。",
+        "文章指出启用 NIC PE mapping 后该 HCA 映射配置才按预期生效。",
+        "这些是特定 V1/NVSHMEM 环境配置，V2.5 已移除该后端，不能照搬到新版本。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-038",
+      "question": "V1 Normal 路径中机内转发和跨机直发如何取舍？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "V1",
+        "NVLink",
+        "RDMA",
+        "转发"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 文档及代码解读",
+      "source_url": "https://www.cnblogs.com/CQzhangyu/p/18741625",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "按域内链路与跨节点链路带宽、竞争和目标 rank 布局决定转发路径。",
+        "利用强 NVLink 域中继可能降低跨机小消息压力，也可能增加额外 hop。",
+        "需结合路由概率分布、NIC 映射及消息规模测量。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-039",
+      "question": "多 NIC 系统上如何确认 DeepEP 流量走了预期网卡？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "V1",
+        "NIC",
+        "诊断"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · Azure HPC 工程文章",
+      "source_url": "https://techcommunity.microsoft.com/blog/azurehighperformancecomputingblog/achieving-optimal-performance-for-deepseek-expert-parallelism-deepep-on-azure/4414699",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "核对 GPU/HCA 的 PCI bus ID、NUMA 节点和进程可见设备映射。",
+        "用 NIC 计数器、RDMA 工具和每接口流量确认实际传输路径。",
+        "比较绑定前后性能并检查跨 NUMA 流量，避免只根据环境变量推断路径正确。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-040",
+      "question": "如何区分 V1 DeepEP 的网络问题与 NVSHMEM 初始化问题？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "V1",
+        "NVSHMEM",
+        "故障排查"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 文档及 Azure 工程文章",
+      "source_url": "https://techcommunity.microsoft.com/blog/azurehighperformancecomputingblog/achieving-optimal-performance-for-deepseek-expert-parallelism-deepep-on-azure/4414699",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "先确认 NVSHMEM 版本、编译依赖、设备发现和通信组初始化是否成功。",
+        "再检查 RDMA link、HCA 选择、QP 创建、NIC/GPU 亲和性及网络错误计数。",
+        "用最小多节点通信测试与 DeepEP workload 分层定位，收集完整错误日志。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-041",
+      "question": "为什么不能将 V1 的 NVSHMEM 环境变量直接用于 DeepEP V2.5？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "V1",
+        "V2.5",
+        "NVSHMEM",
+        "版本迁移"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 V2.5 发布说明",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "V2.5 发布说明明确 V1 被完全移除，NVSHMEM 不再是依赖。",
+        "V2 使用 NCCL Gin 后端，配置项、通信对象和初始化路径不同。",
+        "迁移时按 V2.5 requirements/API 重建配置，不要将旧教程变量当成有效设置。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-042",
+      "question": "previous_event 在 V1 通信调用中表示什么依赖？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "V1",
+        "previous_event",
+        "stream"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 V1 API 文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/309785a94dedeb9ca3cb01091048584a31bfc799/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "用于表达通信输入在某个先前 GPU 工作完成后才可安全读取。",
+        "通信可等待该事件后开始，从而避免 CPU 同步并支持流间重叠。",
+        "必须记录真实生产者事件，错误依赖会造成竞态或无效重叠。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-043",
+      "question": "为什么 DeepEP 异步调用后不能立即复用输入或通信缓冲区？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "异步通信",
+        "lifetime"
+      ],
+      "source_title": "技术资料整理 · DeepEP 通用 · 官方 EPBuffer 生命周期说明",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "异步 kernel/网络仍可能读取输入、写入接收区或访问元数据。",
+        "过早覆写会产生数据竞态，释放 storage 可能导致非法访问。",
+        "等待对应 EventOverlap/handle 完成后再复用，并遵守 API 对外部 tensor 的生命周期约定。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-044",
+      "question": "怎样用独立计算与 EventOverlap 实现通信计算重叠？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "EventOverlap",
+        "overlap"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 EPBuffer API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "先启动异步 Dispatch 或 Combine 并取得 EventOverlap。",
+        "在事件等待前执行不依赖通信结果的计算。",
+        "在真正读取结果或运行专家 GEMM 前通过 wait/current_stream_wait 建立流依赖。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-045",
+      "question": "defer_epilogue=True 改变了什么执行时机？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "defer_epilogue",
+        "EPBuffer"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 EPBuffer API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "允许通信完成后将后处理延迟到调用方 wait 时在当前流执行。",
+        "异步模式返回 EventOverlap，Dispatch/Combine 的最终结果通过 wait 获取。",
+        "应保存首次 wait 返回的结果，并按文档处理 zero padding 与 bias 等尾处理。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-046",
+      "question": "previous_event 与 deferred epilogue 在 V2 异步数据流中如何协作？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "previous_event",
+        "defer_epilogue",
+        "stream"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 EPBuffer API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "previous_event 表示前序输入生产完成依赖，可让通信延后读取刚生成的数据。",
+        "deferred epilogue 在等待时运行，以便依赖当前流上的后续结果或 bias。",
+        "检查 allocate_on_comm_stream 等参数约束，复刻官方调用顺序。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-047",
+      "question": "V2 do_cpu_sync=False 适合什么场景？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "do_cpu_sync",
+        "Decode",
+        "异步"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 EPBuffer API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "可避免主机侧等待 GPU 接收计数的同步路径，适用于希望保持 GPU 侧执行的工作流。",
+        "调用方需接受容量/计数语义变化，并使用事件或 GPU 侧专家计数正确处理有效数据。",
+        "未被实际接收数据填充的预留空间不能当作有效 token。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-048",
+      "question": "为什么 do_zero_padding=True 不代表所有输出行都是有效 token？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "zero padding",
+        "有效长度"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 EPBuffer API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "Zero padding 清理专家对齐间隙，避免填充区残留未定义数据。",
+        "在不做 CPU 同步的路径中，输出容量可能大于真实接收 token 数。",
+        "下游仍必须用有效计数/mask 限定参与计算的行。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-049",
+      "question": "什么情况下 V2 EPBuffer dispatch 需要 do_expand？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "do_expand",
+        "layout",
+        "GEMM"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 EPBuffer API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "Expanded layout 将 token-expert 项展开成专家计算可消费的行布局。",
+        "若后续 grouped GEMM 需要按专家连续分组，expand 能简化下游输入组织。",
+        "关闭 expansion 时下游要按相应紧凑布局和元数据自行处理，不能假设相同 shape。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-050",
+      "question": "V2 expert_alignment 与 zero padding 如何配合？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "expert_alignment",
+        "zero padding"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 EPBuffer API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "Expert alignment 将每个专家分配到满足下游 tile/内存访问约束的行数边界。",
+        "Zero padding 可清理对齐产生的空隙行。",
+        "下游 GEMM 应匹配真实 token count 和对齐后范围，避免把填充行计入语义输出。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-051",
+      "question": "V2 为什么要求所有 rank 对 num_max_tokens_per_rank 达成一致？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "EPBuffer",
+        "capacity",
+        "rank一致性"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 EPBuffer API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "EPBuffer 的容量规划与通信布局建立在参与 rank 一致的上界参数上。",
+        "参数不一致可能造成各 rank 对缓冲区容量/协议的理解不一致。",
+        "初始化前统一配置并覆盖目标 workload 的每 rank 最大 token 数。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-052",
+      "question": "EPBuffer 为什么建议复用而不是每层反复重建？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "EPBuffer",
+        "性能",
+        "生命周期"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 EPBuffer API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "Buffer 创建涉及容量规划、通信资源和可能的运行时初始化。",
+        "在容量足够时复用可避免重复初始化与分配开销。",
+        "替换 buffer 前要完成 outstanding operations，且所有 rank 的配置保持一致。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-053",
+      "question": "EPBuffer.get_buffer_size_hint 的用途是什么？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "get_buffer_size_hint",
+        "显存"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 EPBuffer API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "估计给定通信组、容量、hidden/top-k 和精度配置所需 buffer 大小。",
+        "可用于判断现有 buffer 是否足以复用或规划内存预算。",
+        "size hint 依参数和实现版本变化，生产配置应使用同一版本 API 查询。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-054",
+      "question": "V2 的理论通信 SM 数估算应该如何使用？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "get_theoretical_num_sms",
+        "SM",
+        "性能"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 EPBuffer API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "get_theoretical_num_sms 根据专家数/top-k 等配置给出通信 SM 数估计。",
+        "调用可覆盖默认估计，但 SM 数仍受到实际 rank skew 和链路瓶颈影响。",
+        "将理论建议当作起点，再用端到端 profile 调节，而非视作普适最优值。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-055",
+      "question": "为什么 rank skew 会让理论 SM 数估计与实测最优值不一致？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "rank skew",
+        "SM",
+        "负载均衡"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 EPBuffer API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "路由偏斜使各 rank 数据量和链路负载不均。",
+        "部分 GPU/网络域可能先成为瓶颈，即使其他 rank 还有闲置 SM。",
+        "记录 per-rank token 数、通信时间和链路状态，按尾部最慢 rank 优化。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-056",
+      "question": "V2 EPBuffer 里的 EPHandle 与 EventHandle 分别承担什么职责？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "EPHandle",
+        "EventHandle",
+        "生命周期"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 EPBuffer API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "EPHandle 关联一次 EP 路由/Dispatch 布局上下文，供后续 Combine 等操作使用。",
+        "EventHandle/EventOverlap 表示异步执行依赖或完成状态。",
+        "一个管理通信语义映射，一个管理执行时序，均须与对应操作匹配并维持生命周期。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-057",
+      "question": "为什么 Combine 输入的 dtype/形状约束必须看 V2 API，而不能照抄旧代码？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "Combine",
+        "dtype",
+        "版本迁移"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 EPBuffer API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "V2 README 对示例 Combine 输入和 dispatch FP8/BF16 支持给出具体约束。",
+        "V1/V2 的 API 重构改变了参数、返回值和 epilogue 语义。",
+        "逐项检查目标版本的类型、shape、连续性及 handle 要求并运行测试。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-058",
+      "question": "V2.5 EPBuffer 将 V1 哪些接口变化收敛到统一抽象？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "V2.5",
+        "EPBuffer",
+        "API迁移"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 V2.5 发布说明",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "V2 将高吞吐与低延迟 EP 操作统一到 EPBuffer 接口。",
+        "提供 expanded layout、分析式 SM/QP 配置及更大 scale-up/scale-out 域支持。",
+        "旧 Buffer/low_latency_mode 示例需迁移，不能只改 import 路径。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-059",
+      "question": "V2 使用 NCCL Gin 后端的意义是什么？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "V2",
+        "NCCL Gin",
+        "device communication"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 V2.5 发布说明",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "Gin 提供轻量级 device-side 通信 API，并可复用现有 NCCL communicator。",
+        "DeepEP 用它构建新一代 EP 通信后端，而不是继续依赖 V1 NVSHMEM 路径。",
+        "实际部署仍需满足官方列出的 NCCL/GPU/互联版本要求。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-060",
+      "question": "为什么 DeepEP V2 仍然需要 GPU SM 执行 EP 通信？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "V2",
+        "SM",
+        "RDMA"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 V2.5 发布说明",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "官方当前说明 EP dispatch/combine 需要 GPU SM。",
+        "Zero-SM RDMA EP 并不受支持，不能假设网络可完全独立于 GPU kernel 资源。",
+        "通信 SM 配额需要与专家计算资源共同调优。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-061",
+      "question": "V2 的 hybrid mode 与 direct mode 应如何理解和比较？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "V2",
+        "hybrid",
+        "direct",
+        "topology"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 V2.5 发布说明",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "官方说明两种模式都保留，以适配不同 scale-up/scale-out 域。",
+        "它们代表不同通信路径/拓扑策略，选择取决于网络结构及工作负载。",
+        "需从目标版本文档和 benchmark 确认配置语义，不应推断 hybrid 必然更快。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-062",
+      "question": "V2 的 BucketBuffer 与 EPBuffer 分别针对什么通信任务？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "V2",
+        "BucketBuffer",
+        "EPBuffer",
+        "collective"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 V2.5 发布说明",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "EPBuffer 面向 MoE Expert Parallel dispatch/combine。",
+        "BucketBuffer 提供批量 all-gather、reduce-scatter、all-reduce 等 collectives。",
+        "BucketBuffer 标注为实验功能，通常需按其存储规划和 session 接口使用。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-063",
+      "question": "为什么 V2 BucketBuffer 常要求先用 BufferAllocator 规划张量？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "V2",
+        "BucketBuffer",
+        "BufferAllocator"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 V2.5 API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "Allocator 在构造 BucketBuffer 前规划对称/共享存储中的 tensor 空间。",
+        "规划产生的 meta tensors 会在 buffer 构造后映射成 buffer 内 CUDA views。",
+        "普通 tensor 不一定能直接替代 bucket 自有存储中的输入输出。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-064",
+      "question": "DeepJIT runtime compilation 对 DeepEP 部署有何影响？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "DeepJIT",
+        "JIT",
+        "部署"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 V2.5 安装文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "通信 kernel 通过 DeepJIT 在运行时编译，支持针对当前设备生成 kernel。",
+        "部署环境需保留兼容的 CUDA Toolkit、host compiler 和相关编译依赖。",
+        "首次运行可能有 JIT/cache 开销，性能测试应区分冷启动与缓存命中。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-065",
+      "question": "为什么 PyTorch 与 DeepEP 必须加载兼容的同一份 NCCL 动态库？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "NCCL",
+        "ABI",
+        "动态库"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 V2.5 安装文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "DeepEP 可能复用 PyTorch process group 的 NCCL communicator。",
+        "头文件、编译版本和运行时实际加载库不匹配会引发 ABI/设备 communicator 问题。",
+        "检查动态库路径、版本与官方兼容要求，而不只看 pip 包版本字符串。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-066",
+      "question": "怎样使用官方 DeepEP 测试验证 V2 安装与通信功能？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "测试",
+        "验证"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 V2.5 development tests",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "按目标能力运行官方 EP、bucket、buffer allocation 等测试。",
+        "多机测试需在所有节点配置一致的 MASTER_ADDR、MASTER_PORT、WORLD_SIZE 与节点 RANK。",
+        "测试应覆盖目标 GPU 数、网络拓扑和真实数据类型，而不只做单卡 import 验证。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-067",
+      "question": "V2 如何对动态冗余专家做权重预取与梯度归并？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "V2",
+        "redundant experts",
+        "load balancing"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 V2.5 expert load balancing",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "EPBuffer.lb_prefetch_weights 可在专家计算前通过 NVLink 预取冗余专家权重及 scale。",
+        "lb_reduce_grads 将冗余副本的 FP32 梯度累加回原专家。",
+        "mapping、tensor storage 在交换完成前需有效，复用缓冲前要保证梯度清零/覆盖。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-068",
+      "question": "V2 deferred EP epilogue 对跨层通信调度有什么帮助？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "V2",
+        "deferred epilogue",
+        "pipeline"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 V2.5 发布说明",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "允许将 EP 通信尾处理延后执行，并支持 expanded layouts 与缓存布局等新能力。",
+        "可把依赖结果的 epilogue 安排在当前流实际需要数据时执行。",
+        "优化前要确认 handle、padding 与下游 GEMM 的语义正确。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-069",
+      "question": "DeepEP 的 FP8 Dispatch 与 BF16 Combine 各自可能带来什么收益和代价？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "FP8",
+        "BF16",
+        "量化"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1/V2 · 官方 V1 与 V2 文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "FP8 dispatch 可降低传输字节量，BF16 combine 可在输出聚合阶段保持较高精度。",
+        "FP8 需要 scale/格式元数据并带来量化误差。",
+        "比较端到端吞吐和模型质量，确保量化粒度、scale 布局与专家 kernel 匹配。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-070",
+      "question": "FP8 Dispatch 的 scale factor 在数据通路中起什么作用？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "FP8",
+        "scale factor"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2 · 官方 EPBuffer API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "Scale factors 用于解释量化激活的数值范围并供接收端正确解码/计算。",
+        "scale 张量形状、排列与 data tensor 必须一致地传入和返回。",
+        "测量量化误差、scale 搬运和对齐开销，不能只计算低精度 payload 字节。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-071",
+      "question": "为什么 FP8 通信缓冲区大小要与精度模式一起估算？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "FP8",
+        "buffer sizing"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2 · 官方 EPBuffer API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "量化数据 payload 较 BF16 小，但还需 scale、布局和对齐元数据。",
+        "EPBuffer.get_buffer_size_hint 显式接收 use_fp8_dispatch 等配置。",
+        "创建和复用 buffer 时必须匹配 dtype/精度模式与目标容量。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-072",
+      "question": "TMA 在 DeepEP 机内 Normal kernel 优化中用来改善什么？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "TMA",
+        "NVLink",
+        "Normal"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 TMA 优化 PR",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/pull/191",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "PR #191 将部分机内 Normal kernel 数据搬运从 LD/ST 改为 TMA 路径。",
+        "TMA 可利用硬件异步 tensor 搬运能力，减少部分线程逐元素搬运负担。",
+        "PR 讨论和后续提交显示收益/适用角色需以具体 kernel 与版本测量，不能说所有 sender/receiver 都适用。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-073",
+      "question": "为什么 DeepEP TMA 优化不一定同时用于 sender 和 receiver？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "TMA",
+        "sender",
+        "receiver"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · 官方 TMA 优化 PR",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/pull/191",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "sender 与 receiver 的数据可用时机、布局和同步职责不同。",
+        "PR #191 的讨论记录了 sender 使用 TMA 的配置调整/回退，说明不能把单侧收益直接外推。",
+        "按实际 kernel 测吞吐、寄存器/共享内存占用和同步成本。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-074",
+      "question": "DeepEP 的性能测试为什么要区分有效载荷带宽和物理链路峰值？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "benchmark",
+        "带宽"
+      ],
+      "source_title": "技术资料整理 · DeepEP 通用 · 官方 V1/V2 benchmark 说明",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/309785a94dedeb9ca3cb01091048584a31bfc799/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "有效载荷带宽应按实际传输 bytes 除以测得时间计算。",
+        "链路峰值是硬件上限，不包含协议、同步、路由不均和未充分并发等损耗。",
+        "明确统计方向、聚合 rank 数、dispatch/combine 与计时边界。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-075",
+      "question": "如何测量异步 DeepEP Dispatch 的 GPU 执行时间？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "profiling",
+        "CUDA events"
+      ],
+      "source_title": "技术资料整理 · DeepEP 通用 · 官方 EPBuffer API 与性能测试实践",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "用 CUDA events 在正确 stream 上标记操作开始/结束并同步读数。",
+        "若操作包含通信等待或延迟 epilogue，计时范围要明确包括哪些阶段。",
+        "CPU perf_counter 单独测异步 launch 通常只得到提交耗时，不是 GPU 完成时间。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-076",
+      "question": "为什么 rank 间到达时间不一致会影响 DeepEP 的端到端延迟？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "rank skew",
+        "latency",
+        "同步"
+      ],
+      "source_title": "技术资料整理 · DeepEP 通用 · DeepEP 官方 Issue #220",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/issues/220",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "各 rank 的 token 数、路由与计算耗时不同，会造成不同的通信启动/完成时刻。",
+        "后续 Combine 需要相关源/目标 rank 的数据可用，因此慢 rank 或链路会影响关键路径。",
+        "使用 per-rank timeline 与尾延迟分析，避免只看单 rank 或平均 dispatch 时间。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-077",
+      "question": "调用 V1 Low-Latency dispatch/combine 前需要全组双向 barrier 吗？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "V1",
+        "barrier",
+        "同步"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · DeepEP 官方 Issue #220",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/issues/220",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "官方 Issue 回答该低延迟 kernel 等待数据到达，不依赖用户额外发起双向全组 barrier。",
+        "这不是说程序可以省略所有数据依赖、流同步或协议要求。",
+        "遵守 kernel 返回事件/hook 的完成语义，避免插入不必要的全组同步。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-078",
+      "question": "为什么一个额外的全组 barrier 可能恶化 DeepEP Decode 延迟？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "barrier",
+        "Decode",
+        "latency"
+      ],
+      "source_title": "技术资料整理 · DeepEP 通用 · DeepEP 官方 Issue #220",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/issues/220",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "全组 barrier 让快 rank 等待最慢 rank，增加同步关键路径。",
+        "低延迟 kernel 若已按数据到达条件等待，再加全局同步可能重复等待。",
+        "先确认 API 保证，再用 timeline 验证是否确有必要的依赖。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-079",
+      "question": "如何判断 Dispatch/Combine 是否真的与专家计算重叠？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "overlap",
+        "Nsight Systems"
+      ],
+      "source_title": "技术资料整理 · DeepEP 通用 · 官方 EPBuffer API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "在 Nsight Systems 检查通信 stream、计算 stream 的时间线是否并行。",
+        "核实 wait 点是否被推迟到结果首次消费前，且中间确有独立计算。",
+        "比较重叠前后关键路径，而不以 async 参数或 API 返回 event 推断已重叠。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-080",
+      "question": "为什么 return_recv_hook 或 async_with_compute_stream 不保证获得重叠收益？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "overlap",
+        "async",
+        "critical path"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1/V2 · 官方 API 文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "异步接口只提供建立并发执行的机会，不创造独立计算工作量。",
+        "过早等待、隐式 CPU 同步、stream 依赖错误或 GPU 资源竞争都可能消除收益。",
+        "用 profiler 证实时间线重叠，并确认端到端时延/吞吐实际改善。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-081",
+      "question": "如何用 Nsight Systems 定位 DeepEP 调用中的主机同步？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "Nsight Systems",
+        "CPU sync"
+      ],
+      "source_title": "技术资料整理 · DeepEP 通用 · 官方 API 与性能诊断方法",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/309785a94dedeb9ca3cb01091048584a31bfc799/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "检查 CPU thread 是否阻塞在 CUDA synchronize、event synchronize 或接收计数读取。",
+        "将 Python/C++ 调用、CUDA stream event 和通信 kernel 时间线关联起来。",
+        "逐项关闭/替换同步后验证 CUDA Graph 捕获、输出有效长度和正确性。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-082",
+      "question": "如何用 Nsight Compute 分析 DeepEP 的 GPU 通信 kernel？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "Nsight Compute",
+        "kernel profiling"
+      ],
+      "source_title": "技术资料整理 · DeepEP 通用 · 官方 kernel/性能优化讨论",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/pull/191",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "观察 SM 活跃度、occupancy、内存吞吐、stall 原因及 TMA/LDST 指令行为。",
+        "将 kernel 内指标与 NIC/NVLink 外部链路利用率结合，避免把网络瓶颈误诊成计算瓶颈。",
+        "使用端到端 trace 确认单 kernel 优化是否影响 MoE 关键路径。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-083",
+      "question": "DeepEP 通信延迟升高时如何区分带宽瓶颈与启动开销？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "latency",
+        "bandwidth",
+        "profiling"
+      ],
+      "source_title": "技术资料整理 · DeepEP 通用 · 官方 V1/V2 benchmark 方法",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "改变消息大小绘制延迟曲线，小消息固定截距可提示启动/同步开销。",
+        "大消息斜率及链路利用率可帮助判断有效带宽瓶颈。",
+        "同时检查 rank skew、NIC 错误、CPU 提交时间与 stream wait。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-084",
+      "question": "如何定位 DeepEP buffer capacity 不足或预留过大的问题？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "buffer capacity",
+        "memory"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 EPBuffer API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "结合 buffer size hint、每 rank 实际接收 token 峰值和 padding 统计检查预留。",
+        "不足时检查最大 token 上界及路由长尾，过大时检查静态容量与专家对齐冗余。",
+        "先调整单项再运行极端路由测试，确保无截断且内存收益可测。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-085",
+      "question": "V2 EPBuffer 报通信完成但数据使用错误时，优先检查什么？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "EventOverlap",
+        "correctness"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 EPBuffer API 与测试",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "确认 wait/current_stream_wait 在消费数据的 stream 上建立了依赖。",
+        "检查 handle 与同次 Dispatch 配对、topk/layout 输入生命周期及异步 buffer 是否被复用。",
+        "核实 do_cpu_sync=False 时有效 token 计数和 padding 行处理。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-086",
+      "question": "如何诊断多节点 DeepEP 初始化成功但通信 hang？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "hang",
+        "multi-node",
+        "RDMA"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1/V2 · 官方测试与工程部署文档",
+      "source_url": "https://techcommunity.microsoft.com/blog/azurehighperformancecomputingblog/achieving-optimal-performance-for-deepseek-expert-parallelism-deepep-on-azure/4414699",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "核查所有节点 rank/world size、端口、防火墙和进程组成员是否一致。",
+        "逐层检查 NCCL Gin 或旧版 NVSHMEM/RDMA 后端、HCA 绑定、QP 与链路状态。",
+        "用最小集合通信测试、分段 timeout 与完整 rank 日志缩小阻塞位置。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-087",
+      "question": "为什么 DeepEP benchmark 需要检查数据路由而不只检查总 token 数？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "router distribution",
+        "benchmark"
+      ],
+      "source_title": "技术资料整理 · DeepEP 通用 · 官方 EPBuffer API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "相同总 token 数可产生完全不同的专家偏斜与 rank 间流量。",
+        "偏斜影响最大专家 GEMM、接收 buffer、链路热点与最慢 rank。",
+        "保存并复现 top-k 分布或用多种负载模式覆盖均匀和长尾情况。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-088",
+      "question": "DeepEP 机内性能差时如何排查 CPU/GPU/NIC 的 NUMA 映射？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "NUMA",
+        "affinity",
+        "性能排查"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1 · Azure HPC 工程文章",
+      "source_url": "https://techcommunity.microsoft.com/blog/azurehighperformancecomputingblog/achieving-optimal-performance-for-deepseek-expert-parallelism-deepep-on-azure/4414699",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "读取 GPU/HCA PCI bus ID 并映射到 NUMA node 与 CPU 核。",
+        "检查进程 CPU affinity、内存策略、GPU local rank 和 NIC PE mapping。",
+        "在正确亲和设置前后对比 NVLink/RDMA 计数与通信时延。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-089",
+      "question": "如何从 DeepEP trace 判断瓶颈在 Dispatch、专家 GEMM 还是 Combine？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "MoE",
+        "trace",
+        "关键路径"
+      ],
+      "source_title": "技术资料整理 · DeepEP 通用 · 官方 EPBuffer 数据流",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "给 Dispatch、专家计算和 Combine 分别设置可辨识的时间区间/事件。",
+        "按 rank 对齐 trace，定位最长阶段及各阶段之间的空泡/等待。",
+        "优化最慢关键路径而非只看累计 kernel 时间或单个 rank 平均值。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-090",
+      "question": "为什么 DeepEP 的 kernel microbenchmark 结果不能直接代表 MoE 吞吐？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "microbenchmark",
+        "端到端"
+      ],
+      "source_title": "技术资料整理 · DeepEP 通用 · 官方 benchmark 说明",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "独立测试忽略路由、rank 不均、专家计算竞争与前后依赖。",
+        "真实层有 launch、布局变换、同步和 overlap 机会。",
+        "最终使用目标模型端到端 tokens/s、step time 与质量指标验证。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-091",
+      "question": "DeepEP 的异步通信怎样避免 CUDA stream 数据竞态？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "CUDA stream",
+        "event",
+        "correctness"
+      ],
+      "source_title": "技术资料整理 · DeepEP 通用 · 官方 EPBuffer API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "通过生产者 event 声明输入已写完，通过通信完成 event 声明输出可读。",
+        "跨 stream 消费前在正确 stream wait，保持 handle、张量和 buffer 存活。",
+        "使用 CUDA sanitizer/最小重复测试捕捉偶发错误，不能依赖隐式默认流行为。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-092",
+      "question": "DeepEP 输出包含专家对齐 padding 时，如何保证专家 GEMM 正确？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "padding",
+        "grouped GEMM"
+      ],
+      "source_title": "技术资料整理 · DeepEP V2.5 · 官方 EPBuffer API",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "读取每专家真实 token 数及对齐后的 row range。",
+        "padding 行应被清零或通过 mask 排除，不参与有效输出与归约。",
+        "确认 grouped GEMM 的 tile 边界与 EPBuffer alignment 参数一致。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-093",
+      "question": "对于 DeepEP Dispatch，何时选择 FP8、何时保留 BF16？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "FP8",
+        "BF16",
+        "精度选择"
+      ],
+      "source_title": "技术资料整理 · DeepEP 通用 · 官方 V1/V2 API 与模型数值验证",
+      "source_url": "https://github.com/deepseek-ai/DeepEP",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "若通信字节/带宽是瓶颈且量化误差可接受，可评估 FP8 dispatch。",
+        "若精度敏感或 scale/转换成本抵消收益，则保留 BF16。",
+        "通过任务质量、误差分布、通信时间和端到端吞吐联合决策。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-094",
+      "question": "V1 与 V2.5 的部署依赖和通信后端有哪些关键区别？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "V1",
+        "V2.5",
+        "NVSHMEM",
+        "NCCL Gin"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1/V2.5 · 官方 V1/V2.5 发布文档",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "V1 依赖 NVSHMEM 并使用旧 Buffer/Low-Latency API。",
+        "V2.5 完全移除 V1/NVSHMEM，采用 NCCL Gin 和统一 EPBuffer。",
+        "需要按版本重配依赖、接口、测试及性能基线，不能混合安装说明。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-095",
+      "question": "当前 DeepEP 文档中哪些结论应明确标注版本？",
+      "category": "framework",
+      "knowledge_points": [
+        "DeepEP",
+        "版本意识",
+        "V1",
+        "V2.5"
+      ],
+      "source_title": "技术资料整理 · DeepEP V1/V2.5 · 官方 V2.5 release notes",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "Normal/Low-Latency、NVSHMEM、recv_hook 等属于 V1 API 语境。",
+        "EPBuffer、NCCL Gin、deferred epilogue 与 BucketBuffer 属于 V2 系列。",
+        "引用性能数字、环境变量和硬件要求时注明 commit/date，避免教程过期造成误导。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-096",
+      "question": "V1 notify_dispatch 的 barrier_block 超时为何不一定是真正的死锁？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "V1",
+        "notify_dispatch",
+        "barrier",
+        "rank skew"
+      ],
+      "source_title": "技术资料整理 · GitHub Issue #423 技术问题整理",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/issues/423",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "Issue 后续说明案例是不同 rank 启动时间差超过 barrier_block timeout，并非已确认的算法死锁。",
+        "检查 per-rank 启动时间、调度延迟和 barrier timeout 语义，结合 trace 区分慢 rank 与信号传播异常。",
+        "不要只根据 timeout 文案断定内存屏障错误；应先构造最小复现并验证各 rank 的信号状态。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-097",
+      "question": "V1 Low-Latency DeepEP 与 NCCL collective 在不同 rank 上乱序执行，为什么可能 hang？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "V1",
+        "NCCL",
+        "collective ordering",
+        "cooperative launch"
+      ],
+      "source_title": "技术资料整理 · GitHub Issue #496 技术问题整理",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/issues/496",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "Issue 讨论指出 rank 间 collective 顺序不一致会造成进度依赖问题；Low-Latency kernel 的 cooperative launch 也可能与其他占用 SM 的工作竞争。",
+        "保证所有 rank 遵守兼容的 NCCL/DeepEP 调用顺序，并检查跨 stream 的真实依赖。",
+        "Issue 报告者也指出 SM 占用并非其特定复现的根因；将其作为排查假设而非普遍结论。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-098",
+      "question": "DeepEP V2 Dispatch prologue barrier 可能如何影响 P99 Decode 延迟？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "V2",
+        "barrier",
+        "P99",
+        "straggler"
+      ],
+      "source_title": "技术资料整理 · GitHub Issue #652 技术问题整理",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/issues/652",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "Issue 报告在 token 分布不均时，rank straggler 与 prologue barrier 可能相关联，并观察到首个 dispatch 的 P99 ITL 上升。",
+        "先在时间线上定位 barrier 等待、rank 到达时间与 send/compute overlap；Issue 中的因果关系属于待验证假设。",
+        "不能直接删 barrier：需确认 workspace 复用/数据依赖正确，并用正确性测试和尾延迟 A/B 验证。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-099",
+      "question": "DeepEP V1 Low-Latency 在 B200 上慢于 H100 时，应优先分析哪些路径？",
+      "category": "operator",
+      "knowledge_points": [
+        "DeepEP",
+        "V1",
+        "Low-Latency",
+        "B200",
+        "RDMA"
+      ],
+      "source_title": "技术资料整理 · GitHub Issue #576 性能问题整理",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/issues/576",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "Issue #576 的双节点测试报告其特定配置下 B200 Low-Latency Dispatch/Combine 慢于 H100，WR batching 对 B200 的改善更明显。",
+        "作者据此提出 GPU 到 NIC doorbell/MMIO、WQE 提交等可能原因；这些是诊断假设，不是硬件定论。",
+        "记录精确 DeepEP commit、拓扑和参数，采集 NIC/PCIe 计数及 hook/send 延迟，不能泛化成 B200 一定较慢。"
+      ]
+    },
+    {
+      "id": "deepep-20261004-100",
+      "question": "V1 Low-Latency dispatch 在严重专家负载不均时出现错误，如何检查 QP depth？",
+      "category": "communication",
+      "knowledge_points": [
+        "DeepEP",
+        "V1",
+        "Low-Latency",
+        "NVSHMEM_QP_DEPTH",
+        "expert skew"
+      ],
+      "source_title": "技术资料整理 · GitHub Issue #427 技术问题整理",
+      "source_url": "https://github.com/deepseek-ai/DeepEP/issues/427",
+      "first_seen": "2026-10-04",
+      "question_origin": "technical_derivative",
+      "answer_points": [
+        "Issue 复现显示大 token 数和严重负载偏斜可能触发错误接收计数、hang 或非法访问，讨论最终指向 QP depth 不足。",
+        "该讨论给出每轮请求数与双缓冲在途请求的推导，指出只容纳单轮请求仍可能不够；按目标版本实现/检查逻辑计算下界。",
+        "增大 QP depth 会增加资源占用甚至导致 QP 创建失败，必须在正确性、显存和队列资源之间验证；该结论属于 V1/NVSHMEM。"
       ]
     }
   ]

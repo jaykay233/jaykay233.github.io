@@ -3,3 +3,5 @@
 .source-title{font-size:11px;color:#8a948c;margin:-5px 0 10px}
 .answer-points{margin-top:13px;color:#68746b;font-size:12px}.answer-points summary{width:max-content;cursor:pointer;color:#58745d;font-weight:600}.answer-points ul{margin:9px 0 0;padding-left:18px}.answer-points li{margin:4px 0;line-height:1.65}.source-title{color:#8a948b;font-size:11px;margin:-4px 0 9px}
 .knowledge-points{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:9px}.knowledge-label{font-size:10px;color:#929b93;margin-right:2px}.knowledge-chip{border:1px solid #e5eae4;border-radius:20px;padding:3px 8px;background:#f7f9f6;color:#718075;font:10px 'DM Sans','Noto Sans SC',sans-serif;cursor:pointer;transition:.15s ease}.knowledge-chip:hover{border-color:#9eb29e;background:#edf3ec;color:#47684d}
+
+.topic-link{color:#59765e;text-decoration:none;border:1px solid #dbe5da;background:#eef3ed;border-radius:20px;padding:4px 10px;font-size:11px}.topic-link:hover{background:#e3ece2;border-color:#b7cbb8}

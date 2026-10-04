@@ -1,0 +1,73 @@
+{
+  "collected_at": "2026-10-04",
+  "topic": "DeepEP expert-parallel communication interview practice",
+  "question_count": 100,
+  "provenance_note": "These are technical interview-practice questions derived from public technical documents, APIs, code discussions and issue reports. They are not represented as 100 verbatim or independently verified interview questions.",
+  "official_version_context": [
+    {
+      "version": "V2.5",
+      "commit": "def865146e95aa9ea223e277c0a8a4c6b81e5ac7",
+      "url": "https://github.com/deepseek-ai/DeepEP/tree/def865146e95aa9ea223e277c0a8a4c6b81e5ac7",
+      "notes": "At collection time the current release was V2.5. Official notes say V1 and its NVSHMEM backend were removed; V2 uses NCCL Gin."
+    },
+    {
+      "version": "V1 legacy reference",
+      "commit": "309785a94dedeb9ca3cb01091048584a31bfc799",
+      "url": "https://github.com/deepseek-ai/DeepEP/tree/309785a94dedeb9ca3cb01091048584a31bfc799",
+      "notes": "Used only for legacy Buffer, Normal/Low-Latency, NVSHMEM, hook and CUDA Graph discussions. Do not apply those APIs to V2."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "official documentation and code",
+      "url": "https://github.com/deepseek-ai/DeepEP"
+    },
+    {
+      "kind": "official V1 README, pinned",
+      "url": "https://github.com/deepseek-ai/DeepEP/blob/309785a94dedeb9ca3cb01091048584a31bfc799/README.md"
+    },
+    {
+      "kind": "official V2.5 README, pinned",
+      "url": "https://github.com/deepseek-ai/DeepEP/blob/def865146e95aa9ea223e277c0a8a4c6b81e5ac7/README.md"
+    },
+    {
+      "kind": "official technical discussions",
+      "urls": [
+        "https://github.com/deepseek-ai/DeepEP/issues/72",
+        "https://github.com/deepseek-ai/DeepEP/issues/220",
+        "https://github.com/deepseek-ai/DeepEP/issues/179",
+        "https://github.com/deepseek-ai/DeepEP/issues/423",
+        "https://github.com/deepseek-ai/DeepEP/issues/427",
+        "https://github.com/deepseek-ai/DeepEP/issues/496",
+        "https://github.com/deepseek-ai/DeepEP/issues/576",
+        "https://github.com/deepseek-ai/DeepEP/issues/652",
+        "https://github.com/deepseek-ai/DeepEP/pull/130",
+        "https://github.com/deepseek-ai/DeepEP/pull/191"
+      ]
+    },
+    {
+      "kind": "engineering article",
+      "url": "https://techcommunity.microsoft.com/blog/azurehighperformancecomputingblog/achieving-optimal-performance-for-deepseek-expert-parallelism-deepep-on-azure/4414699"
+    },
+    {
+      "kind": "Chinese technical code walkthrough",
+      "url": "https://www.cnblogs.com/CQzhangyu/p/18741625"
+    },
+    {
+      "kind": "community search discovery only; not treated as transcript sources",
+      "platform": "Bilibili",
+      "note": "Agent Reach API search returned public video metadata/descriptions. Video transcripts were not fetched or represented as read."
+    }
+  ],
+  "channels_and_limits": {
+    "used": [
+      "Agent Reach Exa web search",
+      "public GitHub pages via Agent Reach/Jina Reader",
+      "Bilibili Agent Reach search API"
+    ],
+    "not_used_or_unavailable": [
+      "GitHub CLI was not authenticated; no login was attempted. Reddit, Twitter and Xiaohongshu backends were unavailable in the Agent Reach health check."
+    ],
+    "note": "Only publicly readable sources were used. Public first-person interview material explicitly mentioning DeepEP was sparse; no claim is made that every generated question was asked in an interview."
+  }
+}

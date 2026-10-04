@@ -4,7 +4,9 @@ const categoryMeta = [
   { id: 'communication', name: '通信', en: 'DISTRIBUTED COMMUNICATION', icon: '03' },
   { id: 'framework', name: '框架', en: 'TRAINING & INFERENCE', icon: '04' },
 ];
-const state = { category: 'all', query: '', items: [] };
+const params = new URLSearchParams(location.search);
+const state = { category: 'all', query: params.get('q') || '', items: [] };
+$('#search').value = state.query;
 const esc = (s = '') => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $ = s => document.querySelector(s);
 function render() {
@@ -28,9 +30,11 @@ function render() {
     render();
   }));
 }
-$('#search').addEventListener('input', event => { state.query = event.target.value; render(); });
+$('#search').addEventListener('input', event => { state.query = event.target.value; const url = new URL(location.href); state.query ? url.searchParams.set('q', state.query) : url.searchParams.delete('q'); history.replaceState(null, '', url); render(); });
 fetch('./data/questions.json', { cache: 'no-store' }).then(response => { if (!response.ok) throw new Error('data'); return response.json(); }).then(data => {
   state.items = Array.isArray(data.questions) ? data.questions : [];
+  const deepepCount = state.items.filter(item => (item.knowledge_points || []).includes('DeepEP')).length;
+  $('#deepep-link').textContent = `DeepEP 专题（${deepepCount}）`;
   if (data.updated_at) $('#updated').textContent = `更新于 ${data.updated_at}`;
   render();
 }).catch(() => { $('#questions').innerHTML = '<div class="empty"><strong>暂时无法读取题库</strong><p>请稍后刷新页面。</p></div>'; });
