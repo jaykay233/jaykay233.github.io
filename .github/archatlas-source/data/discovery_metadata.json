@@ -1,5 +1,5 @@
 {
-  "snapshot_date": "2026-10-07",
+  "snapshot_date": "2026-10-08",
   "snapshot_source": "Hugging Face Hub API, paginated by every configured first-party publisher namespace; trending/download/like rank signals sampled separately",
   "since": "2025-01-01",
   "scope": "All public text-generation repositories returned by the Hugging Face Hub API for the configured official publisher and research-lab namespaces, created on/after the start date, after explicit quantization/conversion/derivative name exclusions. This is not every Hub namespace, and each candidate still requires model/architecture review.",
@@ -74,10 +74,10 @@
     "yandex",
     "zai-org"
   ],
-  "scanned_public_repositories": 3399,
+  "scanned_public_repositories": 3405,
   "pages_fetched": 68,
-  "eligible_repositories_before_manual_dedup": 1310,
-  "pending_architecture_models": 1298,
+  "eligible_repositories_before_manual_dedup": 1316,
+  "pending_architecture_models": 1304,
   "config_detail_policy": "Preserves config summaries already collected; does not issue one detail request per new repo to avoid rate limits. New discovery records may have unknown config fields until individually reviewed.",
   "selection_note": "Repository coverage is exhaustive within the configured publisher namespaces and API filters at snapshot time, not all Hugging Face users, publishers, or community fine-tunes. The allowlist is curated and can be expanded. Some returned text-generation repos may be checkpoints, research artifacts, or non-base variants; candidates are not confirmed architecture records until reviewed."
 }
