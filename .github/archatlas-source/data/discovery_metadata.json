@@ -1,5 +1,5 @@
 {
-  "snapshot_date": "2026-10-09",
+  "snapshot_date": "2026-10-10",
   "snapshot_source": "Hugging Face Hub API, paginated by every configured first-party publisher namespace; trending/download/like rank signals sampled separately",
   "since": "2025-01-01",
   "scope": "All public text-generation repositories returned by the Hugging Face Hub API for the configured official publisher and research-lab namespaces, created on/after the start date, after explicit quantization/conversion/derivative name exclusions. This is not every Hub namespace, and each candidate still requires model/architecture review.",
