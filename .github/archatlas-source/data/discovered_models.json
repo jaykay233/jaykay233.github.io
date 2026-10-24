@@ -8,12 +8,12 @@
     "parameters": "未标注",
     "release": "2026-10",
     "hub_created": "2026-10-21",
-    "hub_updated": "2026-10-21",
+    "hub_updated": "2026-10-23",
     "downloads_snapshot": 101,
-    "likes_snapshot": 10,
+    "likes_snapshot": 11,
     "rankings": {
-      "trendingScore": 157,
-      "createdAt": 890
+      "trendingScore": 149,
+      "lastModified": 514
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
@@ -94,7 +94,7 @@
     "downloads_snapshot": 419,
     "likes_snapshot": 7,
     "rankings": {
-      "trendingScore": 224
+      "trendingScore": 225
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
@@ -194,10 +194,9 @@
     "hub_created": "2026-10-19",
     "hub_updated": "2026-10-22",
     "downloads_snapshot": 146,
-    "likes_snapshot": 33,
+    "likes_snapshot": 43,
     "rankings": {
-      "trendingScore": 40,
-      "lastModified": 878
+      "trendingScore": 34
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · bailing_hybrid",
@@ -304,9 +303,9 @@
     "hub_created": "2026-10-17",
     "hub_updated": "2026-10-20",
     "downloads_snapshot": 289,
-    "likes_snapshot": 20,
+    "likes_snapshot": 21,
     "rankings": {
-      "trendingScore": 78
+      "trendingScore": 72
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · mistral",
@@ -392,10 +391,10 @@
     "hub_created": "2026-10-16",
     "hub_updated": "2026-10-16",
     "downloads_snapshot": 3769,
-    "likes_snapshot": 168,
+    "likes_snapshot": 179,
     "rankings": {
       "trendingScore": 7,
-      "likes": 973
+      "likes": 906
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · dory",
@@ -481,10 +480,10 @@
     "hub_created": "2026-10-15",
     "hub_updated": "2026-10-16",
     "downloads_snapshot": 3270,
-    "likes_snapshot": 296,
+    "likes_snapshot": 304,
     "rankings": {
-      "trendingScore": 4,
-      "likes": 517
+      "trendingScore": 6,
+      "likes": 504
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · hy_v3",
@@ -677,9 +676,9 @@
     "hub_created": "2026-10-14",
     "hub_updated": "2026-10-15",
     "downloads_snapshot": 1805,
-    "likes_snapshot": 40,
+    "likes_snapshot": 42,
     "rankings": {
-      "trendingScore": 41
+      "trendingScore": 60
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · granite_switch",
@@ -765,9 +764,9 @@
     "hub_created": "2026-10-14",
     "hub_updated": "2026-10-14",
     "downloads_snapshot": 1413,
-    "likes_snapshot": 22,
+    "likes_snapshot": 23,
     "rankings": {
-      "trendingScore": 109
+      "trendingScore": 99
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3_5_text",
@@ -860,9 +859,9 @@
     "hub_created": "2026-10-14",
     "hub_updated": "2026-10-15",
     "downloads_snapshot": 1364,
-    "likes_snapshot": 28,
+    "likes_snapshot": 29,
     "rankings": {
-      "trendingScore": 77
+      "trendingScore": 161
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · granite_switch",
@@ -948,10 +947,10 @@
     "hub_created": "2026-10-14",
     "hub_updated": "2026-10-23",
     "downloads_snapshot": 72,
-    "likes_snapshot": 9,
+    "likes_snapshot": 10,
     "rankings": {
-      "trendingScore": 170,
-      "lastModified": 69
+      "trendingScore": 160,
+      "lastModified": 836
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
@@ -1030,9 +1029,9 @@
     "hub_created": "2026-10-13",
     "hub_updated": "2026-10-20",
     "downloads_snapshot": 3667,
-    "likes_snapshot": 147,
+    "likes_snapshot": 148,
     "rankings": {
-      "trendingScore": 32
+      "trendingScore": 43
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · bailing_hybrid",
@@ -1139,10 +1138,10 @@
     "hub_created": "2026-10-12",
     "hub_updated": "2026-10-21",
     "downloads_snapshot": 18100,
-    "likes_snapshot": 569,
+    "likes_snapshot": 575,
     "rankings": {
-      "trendingScore": 9,
-      "likes": 265
+      "trendingScore": 12,
+      "likes": 264
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · lfm2_moe",
@@ -1237,7 +1236,7 @@
     "downloads_snapshot": 2755,
     "likes_snapshot": 16,
     "rankings": {
-      "trendingScore": 217
+      "trendingScore": 313
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
@@ -1331,9 +1330,7 @@
     "hub_updated": "2026-10-13",
     "downloads_snapshot": 1273,
     "likes_snapshot": 38,
-    "rankings": {
-      "trendingScore": 605
-    },
+    "rankings": {},
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · lfm2_moe",
     "architecture_status": "pending",
@@ -1520,7 +1517,7 @@
     "downloads_snapshot": 24238,
     "likes_snapshot": 26,
     "rankings": {
-      "trendingScore": 252
+      "trendingScore": 308
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
@@ -1854,6 +1851,191 @@
     ]
   },
   {
+    "id": "hf-nvidia-nvidia-nemotron-3-5-bolt-e4b-bf16",
+    "hub_id": "nvidia/NVIDIA-Nemotron-3.5-Bolt-E4B-BF16",
+    "name": "NVIDIA-Nemotron-3.5-Bolt-E4B-BF16",
+    "organization": "nvidia",
+    "family": "NVIDIA-Nemotron-3.5-Bolt-E4B-BF16",
+    "parameters": "未标注",
+    "release": "2026-10",
+    "hub_created": "2026-10-05",
+    "hub_updated": "2026-10-23",
+    "downloads_snapshot": 249,
+    "likes_snapshot": 26,
+    "rankings": {
+      "trendingScore": 52,
+      "lastModified": 392
+    },
+    "added_in_snapshot": true,
+    "architecture_type": "配置证据待人工复核 · gemma4_text",
+    "architecture_status": "pending",
+    "license": "other",
+    "summary": "已读取 Hugging Face config.json，并标注配置可支持的架构线索；自定义模块内部细节仍需依据模型卡、论文与实现代码人工核验。",
+    "modules": [],
+    "architecture": null,
+    "config_summary": {
+      "model_type": "gemma4_text",
+      "architectures": [
+        "Gemma4ForConditionalGeneration"
+      ],
+      "num_hidden_layers": 42,
+      "context_length": 65536,
+      "num_experts": null,
+      "top_k_experts": null,
+      "num_attention_heads": 8,
+      "num_key_value_heads": 2,
+      "hidden_act": null,
+      "rms_norm_eps": 1e-06,
+      "rope_theta": null,
+      "sliding_window": 512
+    },
+    "sources": [
+      {
+        "label": "Hugging Face 官方模型仓库",
+        "url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Bolt-E4B-BF16"
+      },
+      {
+        "label": "配置文件",
+        "url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Bolt-E4B-BF16/blob/main/config.json"
+      }
+    ],
+    "evidence": "结构线索来自 https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Bolt-E4B-BF16/resolve/main/config.json 的 config.json；此证据仅覆盖配置显式字段/模型类，不据此推断未声明的模块顺序或实现细节。",
+    "confidence": "config-evidence-pending-manual-review",
+    "config_review": {
+      "status": "reviewed",
+      "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Bolt-E4B-BF16/resolve/main/config.json",
+      "evidence_scope": "config.json only; does not establish undocumented custom block internals",
+      "findings": [
+        {
+          "module_id": "gqa",
+          "statement": "num_attention_heads=8、num_key_value_heads=2，KV 头少于 Query 头。",
+          "basis": "num_attention_heads=8; num_key_value_heads=2",
+          "confidence": "direct-config"
+        },
+        {
+          "module_id": "rmsnorm",
+          "statement": "配置包含 RMSNorm 参数或对应模型类型。",
+          "basis": "rms_norm_eps=1e-06",
+          "confidence": "direct-config"
+        },
+        {
+          "module_id": "sliding-window",
+          "statement": "配置声明 sliding_window=512。",
+          "basis": "sliding_window=512",
+          "confidence": "direct-config"
+        },
+        {
+          "module_id": "hybrid-attention",
+          "statement": "配置声明混合层类型/层布局。",
+          "basis": "layer layout=['sliding_attention', 'sliding_attention', 'sliding_attention', 'sliding_attention', 'sliding_attention', 'full_attention', 'sliding_attention', 'sliding_attention', 'sliding_attention', 'sliding_attention', 'sliding_attention', 'full_attention']",
+          "confidence": "direct-config"
+        }
+      ]
+    },
+    "candidate_modules": [
+      "gqa",
+      "rmsnorm",
+      "sliding-window",
+      "hybrid-attention"
+    ]
+  },
+  {
+    "id": "hf-nvidia-nvidia-nemotron-3-5-bolt-e4b-4gb",
+    "hub_id": "nvidia/NVIDIA-Nemotron-3.5-Bolt-E4B-4GB",
+    "name": "NVIDIA-Nemotron-3.5-Bolt-E4B-4GB",
+    "organization": "nvidia",
+    "family": "NVIDIA-Nemotron-3.5-Bolt-E4B-4GB",
+    "parameters": "未标注",
+    "release": "2026-10",
+    "hub_created": "2026-10-05",
+    "hub_updated": "2026-10-23",
+    "downloads_snapshot": 213,
+    "likes_snapshot": 64,
+    "rankings": {
+      "trendingScore": 23,
+      "lastModified": 334
+    },
+    "added_in_snapshot": true,
+    "architecture_type": "待拆解",
+    "architecture_status": "pending",
+    "license": "other",
+    "summary": "从 Hugging Face 第一方发布者命名空间完整分页发现；目前只收录仓库元数据，架构模块尚待逐条核验。",
+    "modules": [],
+    "architecture": null,
+    "config_summary": {
+      "model_type": null,
+      "architectures": [],
+      "num_hidden_layers": null,
+      "context_length": null,
+      "num_experts": null,
+      "top_k_experts": null
+    },
+    "sources": [
+      {
+        "label": "Hugging Face 官方模型仓库",
+        "url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Bolt-E4B-4GB"
+      },
+      {
+        "label": "配置文件",
+        "url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Bolt-E4B-4GB/blob/main/config.json"
+      }
+    ],
+    "evidence": "仓库创建时间 2026-10-05；仓库元数据来自 Hugging Face Hub API。以上是发现记录，不代表已核实模型架构。",
+    "confidence": "discovered-only",
+    "config_review": {
+      "status": "not-found",
+      "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Bolt-E4B-4GB/resolve/main/config.json"
+    }
+  },
+  {
+    "id": "hf-nvidia-nvidia-nemotron-3-5-bolt-e4b-4gb-dflash",
+    "hub_id": "nvidia/NVIDIA-Nemotron-3.5-Bolt-E4B-4GB-DFlash",
+    "name": "NVIDIA-Nemotron-3.5-Bolt-E4B-4GB-DFlash",
+    "organization": "nvidia",
+    "family": "NVIDIA-Nemotron-3.5-Bolt-E4B-4GB-DFlash",
+    "parameters": "未标注",
+    "release": "2026-10",
+    "hub_created": "2026-10-05",
+    "hub_updated": "2026-10-23",
+    "downloads_snapshot": 30,
+    "likes_snapshot": 5,
+    "rankings": {
+      "trendingScore": 307,
+      "lastModified": 498
+    },
+    "added_in_snapshot": true,
+    "architecture_type": "待拆解",
+    "architecture_status": "pending",
+    "license": "other",
+    "summary": "从 Hugging Face 第一方发布者命名空间完整分页发现；目前只收录仓库元数据，架构模块尚待逐条核验。",
+    "modules": [],
+    "architecture": null,
+    "config_summary": {
+      "model_type": null,
+      "architectures": [],
+      "num_hidden_layers": null,
+      "context_length": null,
+      "num_experts": null,
+      "top_k_experts": null
+    },
+    "sources": [
+      {
+        "label": "Hugging Face 官方模型仓库",
+        "url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Bolt-E4B-4GB-DFlash"
+      },
+      {
+        "label": "配置文件",
+        "url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Bolt-E4B-4GB-DFlash/blob/main/config.json"
+      }
+    ],
+    "evidence": "仓库创建时间 2026-10-05；仓库元数据来自 Hugging Face Hub API。以上是发现记录，不代表已核实模型架构。",
+    "confidence": "discovered-only",
+    "config_review": {
+      "status": "not-found",
+      "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Bolt-E4B-4GB-DFlash/resolve/main/config.json"
+    }
+  },
+  {
     "id": "hf-amazon-alodlm-8b",
     "hub_id": "amazon/ALoDLM-8B",
     "name": "ALoDLM-8B",
@@ -1866,7 +2048,7 @@
     "downloads_snapshot": 1882,
     "likes_snapshot": 62,
     "rankings": {
-      "trendingScore": 142
+      "trendingScore": 197
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
@@ -2040,7 +2222,7 @@
     "downloads_snapshot": 11961,
     "likes_snapshot": 68,
     "rankings": {
-      "trendingScore": 589
+      "trendingScore": 600
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · mimo_v2",
@@ -2161,7 +2343,7 @@
     "downloads_snapshot": 8624,
     "likes_snapshot": 44,
     "rankings": {
-      "trendingScore": 191
+      "trendingScore": 215
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · mimo_v2",
@@ -2254,7 +2436,7 @@
     "hub_created": "2026-09-16",
     "hub_updated": "2026-09-28",
     "downloads_snapshot": 2206,
-    "likes_snapshot": 24,
+    "likes_snapshot": 25,
     "rankings": {},
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3_moe",
@@ -3198,9 +3380,9 @@
     "hub_created": "2026-09-06",
     "hub_updated": "2026-09-06",
     "downloads_snapshot": 1089706,
-    "likes_snapshot": 53,
+    "likes_snapshot": 54,
     "rankings": {
-      "trendingScore": 386,
+      "trendingScore": 297,
       "downloads": 63
     },
     "added_in_snapshot": true,
@@ -3289,7 +3471,7 @@
     "downloads_snapshot": 2421,
     "likes_snapshot": 37,
     "rankings": {
-      "trendingScore": 577
+      "trendingScore": 583
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · llada2_moe",
@@ -3858,9 +4040,9 @@
     "hub_created": "2026-08-27",
     "hub_updated": "2026-08-28",
     "downloads_snapshot": 18369,
-    "likes_snapshot": 513,
+    "likes_snapshot": 514,
     "rankings": {
-      "trendingScore": 293,
+      "trendingScore": 248,
       "likes": 294
     },
     "added_in_snapshot": true,
@@ -4326,7 +4508,7 @@
     "hub_created": "2026-08-27",
     "hub_updated": "2026-08-31",
     "downloads_snapshot": 758,
-    "likes_snapshot": 11,
+    "likes_snapshot": 12,
     "rankings": {},
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
@@ -4928,8 +5110,10 @@
     "hub_created": "2026-08-25",
     "hub_updated": "2026-10-15",
     "downloads_snapshot": 25234,
-    "likes_snapshot": 54,
-    "rankings": {},
+    "likes_snapshot": 55,
+    "rankings": {
+      "trendingScore": 573
+    },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · glm_moe_dsa",
     "architecture_status": "pending",
@@ -5265,7 +5449,7 @@
     "downloads_snapshot": 714,
     "likes_snapshot": 20,
     "rankings": {
-      "trendingScore": 565
+      "trendingScore": 564
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · nemotron_h",
@@ -6382,10 +6566,10 @@
     "hub_created": "2026-08-10",
     "hub_updated": "2026-09-24",
     "downloads_snapshot": 11426,
-    "likes_snapshot": 548,
+    "likes_snapshot": 550,
     "rankings": {
-      "trendingScore": 104,
-      "likes": 275
+      "trendingScore": 94,
+      "likes": 274
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · bailing_hybrid",
@@ -6785,7 +6969,7 @@
     "downloads_snapshot": 38858,
     "likes_snapshot": 116,
     "rankings": {
-      "trendingScore": 369,
+      "trendingScore": 387,
       "downloads": 878
     },
     "added_in_snapshot": true,
@@ -7018,7 +7202,7 @@
     "downloads_snapshot": 26263,
     "likes_snapshot": 28,
     "rankings": {
-      "trendingScore": 559
+      "trendingScore": 560
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · nemotron_h",
@@ -7118,10 +7302,10 @@
     "hub_created": "2026-08-02",
     "hub_updated": "2026-10-12",
     "downloads_snapshot": 9544,
-    "likes_snapshot": 434,
+    "likes_snapshot": 435,
     "rankings": {
-      "trendingScore": 557,
-      "likes": 348
+      "trendingScore": 385,
+      "likes": 346
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · bailing_hybrid",
@@ -7400,9 +7584,9 @@
     "hub_created": "2026-07-31",
     "hub_updated": "2026-08-01",
     "downloads_snapshot": 4348313,
-    "likes_snapshot": 4085,
+    "likes_snapshot": 4086,
     "rankings": {
-      "trendingScore": 367,
+      "trendingScore": 384,
       "downloads": 15,
       "likes": 14
     },
@@ -7723,13 +7907,14 @@
     "parameters": "2.6B",
     "release": "2026-07",
     "hub_created": "2026-07-28",
-    "hub_updated": "2026-08-24",
+    "hub_updated": "2026-10-23",
     "downloads_snapshot": 96613,
-    "likes_snapshot": 848,
+    "likes_snapshot": 852,
     "rankings": {
-      "trendingScore": 135,
+      "trendingScore": 108,
       "downloads": 482,
-      "likes": 150
+      "likes": 149,
+      "lastModified": 278
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · lfm2",
@@ -8291,8 +8476,10 @@
     "hub_created": "2026-07-16",
     "hub_updated": "2026-10-14",
     "downloads_snapshot": 737,
-    "likes_snapshot": 95,
-    "rankings": {},
+    "likes_snapshot": 96,
+    "rankings": {
+      "trendingScore": 555
+    },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · llada2_moe",
     "architecture_status": "pending",
@@ -8470,11 +8657,11 @@
     "hub_created": "2026-07-13",
     "hub_updated": "2026-08-19",
     "downloads_snapshot": 414462,
-    "likes_snapshot": 1062,
+    "likes_snapshot": 1063,
     "rankings": {
-      "trendingScore": 288,
+      "trendingScore": 245,
       "downloads": 175,
-      "likes": 111
+      "likes": 112
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · laguna",
@@ -8868,7 +9055,6 @@
     "downloads_snapshot": 837193,
     "likes_snapshot": 987,
     "rankings": {
-      "trendingScore": 552,
       "downloads": 91,
       "likes": 124
     },
@@ -9588,9 +9774,9 @@
     "downloads_snapshot": 149958,
     "likes_snapshot": 308,
     "rankings": {
-      "trendingScore": 362,
+      "trendingScore": 380,
       "downloads": 373,
-      "likes": 495
+      "likes": 496
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · deepseek_v4",
@@ -9699,7 +9885,7 @@
     "downloads_snapshot": 2116,
     "likes_snapshot": 559,
     "rankings": {
-      "trendingScore": 363,
+      "trendingScore": 381,
       "likes": 269
     },
     "added_in_snapshot": true,
@@ -10087,9 +10273,9 @@
     "hub_created": "2026-06-22",
     "hub_updated": "2026-06-25",
     "downloads_snapshot": 7913,
-    "likes_snapshot": 741,
+    "likes_snapshot": 740,
     "rankings": {
-      "likes": 188
+      "likes": 191
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3_5_moe_text",
@@ -10209,7 +10395,7 @@
     "likes_snapshot": 258,
     "rankings": {
       "downloads": 147,
-      "likes": 604
+      "likes": 605
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · laguna",
@@ -10309,9 +10495,9 @@
     "hub_created": "2026-06-16",
     "hub_updated": "2026-09-01",
     "downloads_snapshot": 333202,
-    "likes_snapshot": 5182,
+    "likes_snapshot": 5186,
     "rankings": {
-      "trendingScore": 240,
+      "trendingScore": 168,
       "downloads": 217,
       "likes": 8
     },
@@ -11379,7 +11565,7 @@
     "hub_created": "2026-06-05",
     "hub_updated": "2026-06-15",
     "downloads_snapshot": 7070,
-    "likes_snapshot": 582,
+    "likes_snapshot": 583,
     "rankings": {
       "likes": 257
     },
@@ -11599,7 +11785,7 @@
     "downloads_snapshot": 1067855,
     "likes_snapshot": 371,
     "rankings": {
-      "trendingScore": 357,
+      "trendingScore": 371,
       "downloads": 65,
       "likes": 404
     },
@@ -12715,7 +12901,7 @@
     "downloads_snapshot": 336263,
     "likes_snapshot": 1174,
     "rankings": {
-      "trendingScore": 205,
+      "trendingScore": 210,
       "downloads": 214,
       "likes": 93
     },
@@ -15447,7 +15633,6 @@
     "downloads_snapshot": 13381,
     "likes_snapshot": 767,
     "rankings": {
-      "trendingScore": 540,
       "likes": 174
     },
     "added_in_snapshot": true,
@@ -18905,9 +19090,7 @@
     "hub_updated": "2026-07-01",
     "downloads_snapshot": 634,
     "likes_snapshot": 148,
-    "rankings": {
-      "trendingScore": 538
-    },
+    "rankings": {},
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · nemotron_h",
     "architecture_status": "pending",
@@ -18999,8 +19182,9 @@
     "hub_created": "2026-04-09",
     "hub_updated": "2026-04-20",
     "downloads_snapshot": 438954,
-    "likes_snapshot": 1260,
+    "likes_snapshot": 1261,
     "rankings": {
+      "trendingScore": 538,
       "downloads": 168,
       "likes": 88
     },
@@ -19097,7 +19281,7 @@
     "downloads_snapshot": 607704,
     "likes_snapshot": 118,
     "rankings": {
-      "trendingScore": 355,
+      "trendingScore": 368,
       "downloads": 117
     },
     "added_in_snapshot": true,
@@ -19740,7 +19924,7 @@
     "downloads_snapshot": 626063,
     "likes_snapshot": 1850,
     "rankings": {
-      "trendingScore": 354,
+      "trendingScore": 367,
       "downloads": 114,
       "likes": 51
     },
@@ -20051,7 +20235,7 @@
     "downloads_snapshot": 437,
     "likes_snapshot": 9,
     "rankings": {
-      "trendingScore": 537
+      "trendingScore": 536
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · jamba",
@@ -23439,7 +23623,7 @@
     "downloads_snapshot": 2245,
     "likes_snapshot": 190,
     "rankings": {
-      "likes": 850
+      "likes": 851
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · afmoe",
@@ -23546,7 +23730,7 @@
     "hub_created": "2026-04-01",
     "hub_updated": "2026-05-08",
     "downloads_snapshot": 741,
-    "likes_snapshot": 36,
+    "likes_snapshot": 35,
     "rankings": {},
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · nemotron_h",
@@ -23828,7 +24012,7 @@
     "likes_snapshot": 437,
     "rankings": {
       "downloads": 601,
-      "likes": 343
+      "likes": 344
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · lfm2",
@@ -27503,7 +27687,6 @@
     "downloads_snapshot": 3075,
     "likes_snapshot": 357,
     "rankings": {
-      "trendingScore": 1000,
       "likes": 425
     },
     "added_in_snapshot": true,
@@ -27698,9 +27881,7 @@
     "hub_updated": "2026-02-24",
     "downloads_snapshot": 324,
     "likes_snapshot": 5,
-    "rankings": {
-      "trendingScore": 999
-    },
+    "rankings": {},
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · jamba",
     "architecture_status": "pending",
@@ -29354,7 +29535,7 @@
     "downloads_snapshot": 8506,
     "likes_snapshot": 179,
     "rankings": {
-      "likes": 904
+      "likes": 905
     },
     "added_in_snapshot": true,
     "architecture_type": "待拆解",
@@ -29576,9 +29757,7 @@
     "hub_updated": "2026-05-08",
     "downloads_snapshot": 940,
     "likes_snapshot": 82,
-    "rankings": {
-      "trendingScore": 994
-    },
+    "rankings": {},
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
     "architecture_status": "pending",
@@ -29948,9 +30127,9 @@
     "hub_created": "2026-02-12",
     "hub_updated": "2026-03-10",
     "downloads_snapshot": 893342,
-    "likes_snapshot": 1524,
+    "likes_snapshot": 1526,
     "rankings": {
-      "trendingScore": 993,
+      "trendingScore": 364,
       "downloads": 83,
       "likes": 70
     },
@@ -30154,7 +30333,6 @@
     "downloads_snapshot": 1020783,
     "likes_snapshot": 2139,
     "rankings": {
-      "trendingScore": 992,
       "downloads": 67,
       "likes": 41
     },
@@ -30265,7 +30443,7 @@
     "downloads_snapshot": 3790,
     "likes_snapshot": 685,
     "rankings": {
-      "likes": 211
+      "likes": 212
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · minicpm_sala",
@@ -30379,7 +30557,7 @@
     "downloads_snapshot": 2356,
     "likes_snapshot": 243,
     "rankings": {
-      "likes": 637
+      "likes": 639
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · bailing_hybrid",
@@ -30575,9 +30753,7 @@
     "hub_updated": "2026-10-03",
     "downloads_snapshot": 2273,
     "likes_snapshot": 68,
-    "rankings": {
-      "trendingScore": 991
-    },
+    "rankings": {},
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
     "architecture_status": "pending",
@@ -30757,7 +30933,7 @@
     "downloads_snapshot": 3350,
     "likes_snapshot": 146,
     "rankings": {
-      "trendingScore": 989
+      "trendingScore": 999
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · nemotron_h",
@@ -31230,9 +31406,7 @@
     "hub_updated": "2026-10-16",
     "downloads_snapshot": 2265,
     "likes_snapshot": 39,
-    "rankings": {
-      "trendingScore": 987
-    },
+    "rankings": {},
     "added_in_snapshot": true,
     "architecture_type": "待拆解",
     "architecture_status": "pending",
@@ -31278,7 +31452,7 @@
     "downloads_snapshot": 264309,
     "likes_snapshot": 844,
     "rankings": {
-      "trendingScore": 351,
+      "trendingScore": 362,
       "downloads": 250,
       "likes": 154
     },
@@ -31655,7 +31829,7 @@
     "downloads_snapshot": 714,
     "likes_snapshot": 181,
     "rankings": {
-      "likes": 895
+      "likes": 896
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · afmoe",
@@ -32078,7 +32252,7 @@
     "downloads_snapshot": 342,
     "likes_snapshot": 4,
     "rankings": {
-      "trendingScore": 984
+      "trendingScore": 996
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · jamba",
@@ -32480,7 +32654,7 @@
     "downloads_snapshot": 323,
     "likes_snapshot": 6,
     "rankings": {
-      "trendingScore": 985
+      "trendingScore": 997
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · jamba",
@@ -32682,7 +32856,7 @@
     "downloads_snapshot": 321,
     "likes_snapshot": 4,
     "rankings": {
-      "trendingScore": 983
+      "trendingScore": 995
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · jamba",
@@ -32784,7 +32958,7 @@
     "downloads_snapshot": 320,
     "likes_snapshot": 5,
     "rankings": {
-      "trendingScore": 986
+      "trendingScore": 998
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · jamba",
@@ -32986,7 +33160,7 @@
     "downloads_snapshot": 310,
     "likes_snapshot": 4,
     "rankings": {
-      "trendingScore": 982
+      "trendingScore": 994
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · jamba",
@@ -33374,7 +33548,7 @@
     "downloads_snapshot": 6938,
     "likes_snapshot": 406,
     "rankings": {
-      "likes": 370
+      "likes": 371
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · lfm2",
@@ -33569,7 +33743,7 @@
     "downloads_snapshot": 971658,
     "likes_snapshot": 1888,
     "rankings": {
-      "trendingScore": 202,
+      "trendingScore": 209,
       "downloads": 74,
       "likes": 45
     },
@@ -34584,7 +34758,7 @@
     "hub_created": "2026-01-12",
     "hub_updated": "2026-01-30",
     "downloads_snapshot": 680,
-    "likes_snapshot": 28,
+    "likes_snapshot": 29,
     "rankings": {},
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · falcon_h1",
@@ -35237,7 +35411,7 @@
     "downloads_snapshot": 682,
     "likes_snapshot": 418,
     "rankings": {
-      "likes": 359
+      "likes": 361
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
@@ -35676,9 +35850,9 @@
     "downloads_snapshot": 106937,
     "likes_snapshot": 684,
     "rankings": {
-      "trendingScore": 530,
+      "trendingScore": 532,
       "downloads": 460,
-      "likes": 213
+      "likes": 214
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · lfm2",
@@ -35858,9 +36032,7 @@
     "hub_updated": "2026-01-09",
     "downloads_snapshot": 225,
     "likes_snapshot": 15,
-    "rankings": {
-      "trendingScore": 979
-    },
+    "rankings": {},
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · lfm2",
     "architecture_status": "pending",
@@ -36040,8 +36212,7 @@
     "downloads_snapshot": 861,
     "likes_snapshot": 176,
     "rankings": {
-      "trendingScore": 978,
-      "likes": 921
+      "likes": 923
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · lfm2",
@@ -36136,7 +36307,7 @@
     "downloads_snapshot": 532,
     "likes_snapshot": 44,
     "rankings": {
-      "trendingScore": 977
+      "trendingScore": 989
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
@@ -36748,7 +36919,7 @@
     "likes_snapshot": 239,
     "rankings": {
       "trendingScore": 181,
-      "likes": 645
+      "likes": 646
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · youtu",
@@ -37638,7 +37809,7 @@
     "downloads_snapshot": 993,
     "likes_snapshot": 194,
     "rankings": {
-      "likes": 836
+      "likes": 838
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · llama",
@@ -37900,7 +38071,7 @@
     "downloads_snapshot": 80924,
     "likes_snapshot": 2072,
     "rankings": {
-      "trendingScore": 350,
+      "trendingScore": 530,
       "downloads": 547,
       "likes": 43
     },
@@ -38002,9 +38173,9 @@
     "hub_created": "2025-12-20",
     "hub_updated": "2026-02-13",
     "downloads_snapshot": 11542,
-    "likes_snapshot": 1373,
+    "likes_snapshot": 1374,
     "rankings": {
-      "trendingScore": 528,
+      "trendingScore": 361,
       "likes": 78
     },
     "added_in_snapshot": true,
@@ -38795,8 +38966,8 @@
     "downloads_snapshot": 1265,
     "likes_snapshot": 220,
     "rankings": {
-      "trendingScore": 527,
-      "likes": 718
+      "trendingScore": 529,
+      "likes": 719
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · circuitgpt",
@@ -40192,7 +40363,7 @@
     "downloads_snapshot": 1204,
     "likes_snapshot": 89,
     "rankings": {
-      "trendingScore": 975
+      "trendingScore": 986
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
@@ -40762,7 +40933,7 @@
     "downloads_snapshot": 5435964,
     "likes_snapshot": 1587,
     "rankings": {
-      "trendingScore": 525,
+      "trendingScore": 527,
       "downloads": 9,
       "likes": 65
     },
@@ -41436,8 +41607,8 @@
     "downloads_snapshot": 3533,
     "likes_snapshot": 743,
     "rankings": {
-      "trendingScore": 524,
-      "likes": 186
+      "trendingScore": 526,
+      "likes": 187
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · deepseek_v32",
@@ -41546,8 +41717,8 @@
     "downloads_snapshot": 819,
     "likes_snapshot": 719,
     "rankings": {
-      "trendingScore": 971,
-      "likes": 196
+      "trendingScore": 983,
+      "likes": 197
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · deepseek_v32",
@@ -41742,7 +41913,7 @@
     "downloads_snapshot": 5635,
     "likes_snapshot": 35,
     "rankings": {
-      "trendingScore": 970
+      "trendingScore": 982
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · gemma3_text",
@@ -42053,7 +42224,7 @@
     "downloads_snapshot": 2282,
     "likes_snapshot": 601,
     "rankings": {
-      "likes": 247
+      "likes": 249
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
@@ -42232,7 +42403,7 @@
     "hub_created": "2025-11-19",
     "hub_updated": "2026-06-25",
     "downloads_snapshot": 304432,
-    "likes_snapshot": 160,
+    "likes_snapshot": 159,
     "rankings": {
       "downloads": 233
     },
@@ -42422,7 +42593,7 @@
     "downloads_snapshot": 13486,
     "likes_snapshot": 177,
     "rankings": {
-      "likes": 914
+      "likes": 916
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · olmo3",
@@ -46221,9 +46392,9 @@
     "hub_created": "2025-11-17",
     "hub_updated": "2025-12-06",
     "downloads_snapshot": 1550,
-    "likes_snapshot": 307,
+    "likes_snapshot": 308,
     "rankings": {
-      "likes": 496
+      "likes": 494
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · seed_oss",
@@ -47919,7 +48090,7 @@
     "downloads_snapshot": 47623,
     "likes_snapshot": 1731,
     "rankings": {
-      "trendingScore": 349,
+      "trendingScore": 360,
       "downloads": 781,
       "likes": 56
     },
@@ -48117,7 +48288,7 @@
     "likes_snapshot": 610,
     "rankings": {
       "downloads": 375,
-      "likes": 241
+      "likes": 242
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · kimi_linear",
@@ -48503,7 +48674,7 @@
     "downloads_snapshot": 1708,
     "likes_snapshot": 222,
     "rankings": {
-      "likes": 705
+      "likes": 706
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · falcon_h1",
@@ -48852,8 +49023,11 @@
     "hub_created": "2025-10-28",
     "hub_updated": "2026-01-18",
     "downloads_snapshot": 22794,
-    "likes_snapshot": 164,
-    "rankings": {},
+    "likes_snapshot": 165,
+    "rankings": {
+      "trendingScore": 980,
+      "likes": 990
+    },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · ouro",
     "architecture_status": "pending",
@@ -49010,8 +49184,10 @@
     "hub_created": "2025-10-28",
     "hub_updated": "2026-01-18",
     "downloads_snapshot": 10546,
-    "likes_snapshot": 96,
-    "rankings": {},
+    "likes_snapshot": 97,
+    "rankings": {
+      "trendingScore": 981
+    },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · ouro",
     "architecture_status": "pending",
@@ -49333,9 +49509,9 @@
     "hub_created": "2025-10-22",
     "hub_updated": "2025-12-23",
     "downloads_snapshot": 121095,
-    "likes_snapshot": 1512,
+    "likes_snapshot": 1513,
     "rankings": {
-      "trendingScore": 969,
+      "trendingScore": 524,
       "downloads": 423,
       "likes": 71
     },
@@ -49590,7 +49766,7 @@
     "downloads_snapshot": 1162,
     "likes_snapshot": 21,
     "rankings": {
-      "trendingScore": 522
+      "trendingScore": 523
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
@@ -51812,7 +51988,7 @@
     "downloads_snapshot": 600,
     "likes_snapshot": 233,
     "rankings": {
-      "likes": 662
+      "likes": 663
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · bailing_moe",
@@ -53953,7 +54129,7 @@
     "downloads_snapshot": 2064,
     "likes_snapshot": 546,
     "rankings": {
-      "likes": 277
+      "likes": 278
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · bailing_moe",
@@ -54437,8 +54613,9 @@
     "hub_created": "2025-09-30",
     "hub_updated": "2026-06-09",
     "downloads_snapshot": 968,
-    "likes_snapshot": 397,
+    "likes_snapshot": 398,
     "rankings": {
+      "trendingScore": 979,
       "likes": 374
     },
     "added_in_snapshot": true,
@@ -54713,7 +54890,7 @@
     "downloads_snapshot": 40825,
     "likes_snapshot": 1024,
     "rankings": {
-      "trendingScore": 968,
+      "trendingScore": 978,
       "downloads": 854,
       "likes": 117
     },
@@ -54824,7 +55001,7 @@
     "downloads_snapshot": 21104,
     "likes_snapshot": 1245,
     "rankings": {
-      "trendingScore": 348,
+      "trendingScore": 359,
       "likes": 89
     },
     "added_in_snapshot": true,
@@ -56597,7 +56774,7 @@
     "downloads_snapshot": 214445,
     "likes_snapshot": 95,
     "rankings": {
-      "trendingScore": 521,
+      "trendingScore": 522,
       "downloads": 298
     },
     "added_in_snapshot": true,
@@ -56772,9 +56949,9 @@
     "hub_created": "2025-09-23",
     "hub_updated": "2025-11-07",
     "downloads_snapshot": 74698,
-    "likes_snapshot": 152,
+    "likes_snapshot": 153,
     "rankings": {
-      "trendingScore": 279,
+      "trendingScore": 241,
       "downloads": 579
     },
     "added_in_snapshot": true,
@@ -56863,7 +57040,7 @@
     "downloads_snapshot": 17736,
     "likes_snapshot": 65,
     "rankings": {
-      "trendingScore": 967
+      "trendingScore": 977
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
@@ -56951,8 +57128,8 @@
     "downloads_snapshot": 13067,
     "likes_snapshot": 385,
     "rankings": {
-      "trendingScore": 278,
-      "likes": 387
+      "trendingScore": 285,
+      "likes": 388
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · deepseek_v3",
@@ -57433,9 +57610,9 @@
     "hub_created": "2025-09-18",
     "hub_updated": "2026-01-14",
     "downloads_snapshot": 18787,
-    "likes_snapshot": 284,
+    "likes_snapshot": 285,
     "rankings": {
-      "likes": 541
+      "likes": 540
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · gpt_oss",
@@ -57544,7 +57721,7 @@
     "downloads_snapshot": 7470,
     "likes_snapshot": 120,
     "rankings": {
-      "trendingScore": 520
+      "trendingScore": 521
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · gpt_oss",
@@ -57653,7 +57830,7 @@
     "downloads_snapshot": 2657,
     "likes_snapshot": 222,
     "rankings": {
-      "likes": 704
+      "likes": 705
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · bailing_moe",
@@ -57846,10 +58023,11 @@
     "hub_created": "2025-09-16",
     "hub_updated": "2025-11-03",
     "downloads_snapshot": 33927,
-    "likes_snapshot": 211,
+    "likes_snapshot": 213,
     "rankings": {
+      "trendingScore": 974,
       "downloads": 946,
-      "likes": 746
+      "likes": 743
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · granitemoehybrid",
@@ -58748,7 +58926,7 @@
     "downloads_snapshot": 157094,
     "likes_snapshot": 1069,
     "rankings": {
-      "trendingScore": 519,
+      "trendingScore": 520,
       "downloads": 365,
       "likes": 109
     },
@@ -58878,7 +59056,7 @@
     "downloads_snapshot": 38286,
     "likes_snapshot": 502,
     "rankings": {
-      "trendingScore": 961,
+      "trendingScore": 970,
       "downloads": 882,
       "likes": 302
     },
@@ -59201,7 +59379,7 @@
     "downloads_snapshot": 9491,
     "likes_snapshot": 208,
     "rankings": {
-      "likes": 766
+      "likes": 767
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · bailing_moe",
@@ -59296,7 +59474,7 @@
     "downloads_snapshot": 622,
     "likes_snapshot": 188,
     "rankings": {
-      "likes": 858
+      "likes": 859
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · bailing_moe",
@@ -59535,7 +59713,7 @@
     "downloads_snapshot": 3593,
     "likes_snapshot": 411,
     "rankings": {
-      "likes": 363
+      "likes": 364
     },
     "added_in_snapshot": true,
     "architecture_type": "待拆解 · vaultgemma",
@@ -60001,7 +60179,7 @@
     "downloads_snapshot": 703,
     "likes_snapshot": 156,
     "rankings": {
-      "trendingScore": 960
+      "trendingScore": 969
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · lfm2",
@@ -60097,7 +60275,7 @@
     "likes_snapshot": 175,
     "rankings": {
       "downloads": 834,
-      "likes": 926
+      "likes": 929
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · apertus",
@@ -60185,7 +60363,7 @@
     "downloads_snapshot": 5608,
     "likes_snapshot": 391,
     "rankings": {
-      "likes": 381
+      "likes": 382
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · minicpm",
@@ -60550,7 +60728,7 @@
     "downloads_snapshot": 17809,
     "likes_snapshot": 194,
     "rankings": {
-      "likes": 835
+      "likes": 837
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · apertus",
@@ -60638,7 +60816,7 @@
     "downloads_snapshot": 4271,
     "likes_snapshot": 195,
     "rankings": {
-      "trendingScore": 347,
+      "trendingScore": 358,
       "likes": 831
     },
     "added_in_snapshot": true,
@@ -60858,7 +61036,7 @@
     "downloads_snapshot": 6202,
     "likes_snapshot": 408,
     "rankings": {
-      "likes": 366
+      "likes": 367
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · llava_qwen2",
@@ -60966,7 +61144,7 @@
     "downloads_snapshot": 2658,
     "likes_snapshot": 272,
     "rankings": {
-      "likes": 569
+      "likes": 570
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · llava_qwen2",
@@ -61303,7 +61481,7 @@
     "downloads_snapshot": 1020,
     "likes_snapshot": 137,
     "rankings": {
-      "trendingScore": 959
+      "trendingScore": 968
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · lfm2",
@@ -61501,7 +61679,7 @@
     "downloads_snapshot": 9202,
     "likes_snapshot": 166,
     "rankings": {
-      "likes": 984
+      "likes": 985
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · nemotron_h",
@@ -67526,7 +67704,7 @@
     "downloads_snapshot": 12318,
     "likes_snapshot": 1024,
     "rankings": {
-      "trendingScore": 958,
+      "trendingScore": 967,
       "likes": 116
     },
     "added_in_snapshot": true,
@@ -74230,9 +74408,9 @@
     "hub_created": "2025-08-13",
     "hub_updated": "2026-07-17",
     "downloads_snapshot": 415765,
-    "likes_snapshot": 498,
+    "likes_snapshot": 499,
     "rankings": {
-      "trendingScore": 956,
+      "trendingScore": 965,
       "downloads": 174,
       "likes": 304
     },
@@ -75001,9 +75179,9 @@
     "hub_created": "2025-08-05",
     "hub_updated": "2025-09-17",
     "downloads_snapshot": 2593779,
-    "likes_snapshot": 1019,
+    "likes_snapshot": 1021,
     "rankings": {
-      "trendingScore": 277,
+      "trendingScore": 208,
       "downloads": 26,
       "likes": 119
     },
@@ -75093,9 +75271,9 @@
     "downloads_snapshot": 620866,
     "likes_snapshot": 627,
     "rankings": {
-      "trendingScore": 514,
+      "trendingScore": 516,
       "downloads": 115,
-      "likes": 235
+      "likes": 236
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
@@ -75181,9 +75359,9 @@
     "hub_created": "2025-08-05",
     "hub_updated": "2025-08-14",
     "downloads_snapshot": 65124,
-    "likes_snapshot": 1127,
+    "likes_snapshot": 1128,
     "rankings": {
-      "trendingScore": 515,
+      "trendingScore": 357,
       "downloads": 654,
       "likes": 100
     },
@@ -75232,9 +75410,9 @@
     "hub_created": "2025-08-04",
     "hub_updated": "2025-08-26",
     "downloads_snapshot": 5656843,
-    "likes_snapshot": 5206,
+    "likes_snapshot": 5211,
     "rankings": {
-      "trendingScore": 63,
+      "trendingScore": 79,
       "downloads": 7,
       "likes": 7
     },
@@ -75343,9 +75521,9 @@
     "hub_created": "2025-08-04",
     "hub_updated": "2025-08-26",
     "downloads_snapshot": 2891100,
-    "likes_snapshot": 5435,
+    "likes_snapshot": 5438,
     "rankings": {
-      "trendingScore": 69,
+      "trendingScore": 78,
       "downloads": 24,
       "likes": 6
     },
@@ -75555,9 +75733,9 @@
     "hub_created": "2025-07-31",
     "hub_updated": "2025-12-03",
     "downloads_snapshot": 629386,
-    "likes_snapshot": 1304,
+    "likes_snapshot": 1306,
     "rankings": {
-      "trendingScore": 180,
+      "trendingScore": 154,
       "downloads": 113,
       "likes": 82
     },
@@ -75652,9 +75830,9 @@
     "hub_created": "2025-07-30",
     "hub_updated": "2025-08-14",
     "downloads_snapshot": 72599,
-    "likes_snapshot": 691,
+    "likes_snapshot": 692,
     "rankings": {
-      "trendingScore": 113,
+      "trendingScore": 129,
       "downloads": 589,
       "likes": 208
     },
@@ -75791,7 +75969,7 @@
     "downloads_snapshot": 3917,
     "likes_snapshot": 604,
     "rankings": {
-      "likes": 246
+      "likes": 247
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · hunyuan_v1_dense",
@@ -76070,9 +76248,9 @@
     "downloads_snapshot": 51265,
     "likes_snapshot": 388,
     "rankings": {
-      "trendingScore": 950,
+      "trendingScore": 959,
       "downloads": 742,
-      "likes": 384
+      "likes": 386
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3_moe",
@@ -76453,9 +76631,9 @@
     "downloads_snapshot": 1073700,
     "likes_snapshot": 850,
     "rankings": {
-      "trendingScore": 275,
+      "trendingScore": 356,
       "downloads": 64,
-      "likes": 149
+      "likes": 150
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3_moe",
@@ -76895,7 +77073,7 @@
     "likes_snapshot": 241,
     "rankings": {
       "downloads": 452,
-      "likes": 644
+      "likes": 645
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · nemotron-nas",
@@ -76976,8 +77154,8 @@
     "downloads_snapshot": 15922,
     "likes_snapshot": 418,
     "rankings": {
-      "trendingScore": 948,
-      "likes": 358
+      "trendingScore": 957,
+      "likes": 360
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3_moe",
@@ -77382,7 +77560,7 @@
     "downloads_snapshot": 54127,
     "likes_snapshot": 1384,
     "rankings": {
-      "trendingScore": 945,
+      "trendingScore": 954,
       "downloads": 725,
       "likes": 77
     },
@@ -77678,7 +77856,7 @@
     "likes_snapshot": 647,
     "rankings": {
       "downloads": 89,
-      "likes": 231
+      "likes": 232
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · glm4_moe",
@@ -77780,7 +77958,7 @@
     "downloads_snapshot": 113929,
     "likes_snapshot": 1419,
     "rankings": {
-      "trendingScore": 511,
+      "trendingScore": 513,
       "downloads": 442,
       "likes": 76
     },
@@ -78999,7 +79177,7 @@
     "downloads_snapshot": 14041,
     "likes_snapshot": 193,
     "rankings": {
-      "likes": 841
+      "likes": 842
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · exaone4",
@@ -79269,7 +79447,7 @@
     "downloads_snapshot": 20750,
     "likes_snapshot": 260,
     "rankings": {
-      "likes": 599
+      "likes": 601
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · lfm2",
@@ -79615,7 +79793,7 @@
     "downloads_snapshot": 718659,
     "likes_snapshot": 1070,
     "rankings": {
-      "trendingScore": 179,
+      "trendingScore": 207,
       "downloads": 103,
       "likes": 108
     },
@@ -80658,7 +80836,7 @@
     "downloads_snapshot": 859,
     "likes_snapshot": 11,
     "rankings": {
-      "trendingScore": 941
+      "trendingScore": 950
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · jamba",
@@ -80776,7 +80954,7 @@
     "downloads_snapshot": 428,
     "likes_snapshot": 8,
     "rankings": {
-      "trendingScore": 942
+      "trendingScore": 951
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · jamba",
@@ -80978,7 +81156,7 @@
     "downloads_snapshot": 340,
     "likes_snapshot": 9,
     "rankings": {
-      "trendingScore": 940
+      "trendingScore": 949
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · jamba",
@@ -81763,7 +81941,7 @@
     "downloads_snapshot": 588,
     "likes_snapshot": 175,
     "rankings": {
-      "likes": 925
+      "likes": 928
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen2",
@@ -82539,7 +82717,7 @@
     "downloads_snapshot": 15370,
     "likes_snapshot": 178,
     "rankings": {
-      "likes": 909
+      "likes": 911
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · ernie4_5_moe",
@@ -85620,9 +85798,9 @@
     "downloads_snapshot": 81409,
     "likes_snapshot": 178,
     "rankings": {
-      "trendingScore": 939,
+      "trendingScore": 948,
       "downloads": 542,
-      "likes": 908
+      "likes": 910
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · smollm3",
@@ -88031,7 +88209,7 @@
     "downloads_snapshot": 1773,
     "likes_snapshot": 392,
     "rankings": {
-      "likes": 380
+      "likes": 381
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen2",
@@ -88370,7 +88548,7 @@
     "downloads_snapshot": 1738,
     "likes_snapshot": 692,
     "rankings": {
-      "likes": 206
+      "likes": 207
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · minimax_m1",
@@ -90000,9 +90178,9 @@
     "hub_created": "2025-06-06",
     "hub_updated": "2025-12-08",
     "downloads_snapshot": 1960,
-    "likes_snapshot": 617,
+    "likes_snapshot": 619,
     "rankings": {
-      "trendingScore": 273,
+      "trendingScore": 282,
       "likes": 238
     },
     "added_in_snapshot": true,
@@ -90054,8 +90232,8 @@
     "downloads_snapshot": 1703,
     "likes_snapshot": 582,
     "rankings": {
-      "trendingScore": 928,
-      "likes": 256
+      "trendingScore": 937,
+      "likes": 258
     },
     "added_in_snapshot": true,
     "architecture_type": "待拆解",
@@ -90728,7 +90906,7 @@
     "downloads_snapshot": 6692,
     "likes_snapshot": 289,
     "rankings": {
-      "likes": 534
+      "likes": 535
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · minicpm",
@@ -92669,7 +92847,7 @@
     "downloads_snapshot": 481,
     "likes_snapshot": 16,
     "rankings": {
-      "trendingScore": 925
+      "trendingScore": 933
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · phi3",
@@ -92929,7 +93107,7 @@
     "downloads_snapshot": 254,
     "likes_snapshot": 10,
     "rankings": {
-      "trendingScore": 927
+      "trendingScore": 935
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · phi3",
@@ -93625,7 +93803,7 @@
     "downloads_snapshot": 1141,
     "likes_snapshot": 249,
     "rankings": {
-      "likes": 623
+      "likes": 624
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen2",
@@ -93792,7 +93970,7 @@
     "downloads_snapshot": 557,
     "likes_snapshot": 19,
     "rankings": {
-      "trendingScore": 923
+      "trendingScore": 930
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · phi3",
@@ -95142,8 +95320,8 @@
     "downloads_snapshot": 18813,
     "likes_snapshot": 498,
     "rankings": {
-      "trendingScore": 201,
-      "likes": 303
+      "trendingScore": 240,
+      "likes": 305
     },
     "added_in_snapshot": true,
     "architecture_type": "待拆解 · gemma3_text",
@@ -96066,7 +96244,7 @@
     "downloads_snapshot": 4966,
     "likes_snapshot": 122,
     "rankings": {
-      "trendingScore": 901
+      "trendingScore": 909
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · llama",
@@ -97528,7 +97706,7 @@
     "downloads_snapshot": 23239,
     "likes_snapshot": 184,
     "rankings": {
-      "likes": 883
+      "likes": 884
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · granitemoehybrid",
@@ -97630,7 +97808,7 @@
     "downloads_snapshot": 1153,
     "likes_snapshot": 847,
     "rankings": {
-      "trendingScore": 898,
+      "trendingScore": 904,
       "likes": 152
     },
     "added_in_snapshot": true,
@@ -97990,9 +98168,9 @@
     "downloads_snapshot": 38164,
     "likes_snapshot": 249,
     "rankings": {
-      "trendingScore": 501,
+      "trendingScore": 507,
       "downloads": 884,
-      "likes": 622
+      "likes": 623
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · phi3",
@@ -98087,7 +98265,7 @@
     "downloads_snapshot": 29973,
     "likes_snapshot": 280,
     "rankings": {
-      "likes": 549
+      "likes": 550
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · mimo",
@@ -98206,7 +98384,7 @@
     "downloads_snapshot": 14893,
     "likes_snapshot": 138,
     "rankings": {
-      "trendingScore": 897
+      "trendingScore": 902
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · mimo",
@@ -98587,7 +98765,7 @@
     "downloads_snapshot": 717739,
     "likes_snapshot": 146,
     "rankings": {
-      "trendingScore": 343,
+      "trendingScore": 503,
       "downloads": 104
     },
     "added_in_snapshot": true,
@@ -98674,11 +98852,11 @@
     "hub_created": "2025-04-28",
     "hub_updated": "2025-07-26",
     "downloads_snapshot": 634380,
-    "likes_snapshot": 216,
+    "likes_snapshot": 217,
     "rankings": {
-      "trendingScore": 344,
+      "trendingScore": 281,
       "downloads": 112,
-      "likes": 736
+      "likes": 735
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
@@ -98764,9 +98942,9 @@
     "hub_created": "2025-04-28",
     "hub_updated": "2025-07-26",
     "downloads_snapshot": 578148,
-    "likes_snapshot": 116,
+    "likes_snapshot": 117,
     "rankings": {
-      "trendingScore": 497,
+      "trendingScore": 352,
       "downloads": 124
     },
     "added_in_snapshot": true,
@@ -98855,7 +99033,7 @@
     "downloads_snapshot": 557298,
     "likes_snapshot": 95,
     "rankings": {
-      "trendingScore": 886,
+      "trendingScore": 892,
       "downloads": 128
     },
     "added_in_snapshot": true,
@@ -98942,9 +99120,9 @@
     "hub_created": "2025-04-28",
     "hub_updated": "2025-07-26",
     "downloads_snapshot": 90334,
-    "likes_snapshot": 67,
+    "likes_snapshot": 68,
     "rankings": {
-      "trendingScore": 887,
+      "trendingScore": 504,
       "downloads": 507
     },
     "added_in_snapshot": true,
@@ -99291,9 +99469,9 @@
     "hub_created": "2025-04-27",
     "hub_updated": "2025-07-26",
     "downloads_snapshot": 25158033,
-    "likes_snapshot": 1846,
+    "likes_snapshot": 1847,
     "rankings": {
-      "trendingScore": 68,
+      "trendingScore": 83,
       "downloads": 1,
       "likes": 52
     },
@@ -99398,7 +99576,7 @@
     "downloads_snapshot": 11396683,
     "likes_snapshot": 770,
     "rankings": {
-      "trendingScore": 341,
+      "trendingScore": 502,
       "downloads": 3,
       "likes": 172
     },
@@ -99486,11 +99664,11 @@
     "hub_created": "2025-04-27",
     "hub_updated": "2025-07-26",
     "downloads_snapshot": 9401416,
-    "likes_snapshot": 516,
+    "likes_snapshot": 518,
     "rankings": {
-      "trendingScore": 199,
+      "trendingScore": 179,
       "downloads": 4,
-      "likes": 293
+      "likes": 291
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen3",
@@ -99576,9 +99754,9 @@
     "hub_created": "2025-04-27",
     "hub_updated": "2025-07-26",
     "downloads_snapshot": 8080572,
-    "likes_snapshot": 2140,
+    "likes_snapshot": 2142,
     "rankings": {
-      "trendingScore": 103,
+      "trendingScore": 107,
       "downloads": 5,
       "likes": 40
     },
@@ -99668,7 +99846,7 @@
     "downloads_snapshot": 4136449,
     "likes_snapshot": 592,
     "rankings": {
-      "trendingScore": 198,
+      "trendingScore": 237,
       "downloads": 16,
       "likes": 250
     },
@@ -99758,7 +99936,7 @@
     "downloads_snapshot": 2750187,
     "likes_snapshot": 772,
     "rankings": {
-      "trendingScore": 885,
+      "trendingScore": 891,
       "downloads": 25,
       "likes": 171
     },
@@ -99848,7 +100026,7 @@
     "downloads_snapshot": 1010878,
     "likes_snapshot": 973,
     "rankings": {
-      "trendingScore": 342,
+      "trendingScore": 351,
       "downloads": 69,
       "likes": 128
     },
@@ -99945,7 +100123,7 @@
     "downloads_snapshot": 406348,
     "likes_snapshot": 1125,
     "rankings": {
-      "trendingScore": 236,
+      "trendingScore": 238,
       "downloads": 178,
       "likes": 102
     },
@@ -100953,7 +101131,7 @@
     "downloads_snapshot": 577,
     "likes_snapshot": 35,
     "rankings": {
-      "trendingScore": 883
+      "trendingScore": 889
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen2",
@@ -101315,7 +101493,7 @@
     "downloads_snapshot": 4691,
     "likes_snapshot": 352,
     "rankings": {
-      "trendingScore": 882,
+      "trendingScore": 888,
       "likes": 430
     },
     "added_in_snapshot": true,
@@ -101764,7 +101942,7 @@
     "downloads_snapshot": 15608,
     "likes_snapshot": 1509,
     "rankings": {
-      "trendingScore": 340,
+      "trendingScore": 350,
       "likes": 72
     },
     "added_in_snapshot": true,
@@ -102649,7 +102827,7 @@
     "downloads_snapshot": 26378,
     "likes_snapshot": 232,
     "rankings": {
-      "likes": 667
+      "likes": 668
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · phi3",
@@ -103627,7 +103805,7 @@
     "downloads_snapshot": 1686,
     "likes_snapshot": 359,
     "rankings": {
-      "likes": 418
+      "likes": 419
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · nemotron-nas",
@@ -103992,7 +104170,7 @@
     "downloads_snapshot": 93748,
     "likes_snapshot": 66,
     "rankings": {
-      "trendingScore": 878,
+      "trendingScore": 884,
       "downloads": 496
     },
     "added_in_snapshot": true,
@@ -106043,7 +106221,7 @@
     "downloads_snapshot": 780,
     "likes_snapshot": 302,
     "rankings": {
-      "likes": 508
+      "likes": 509
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · exaone",
@@ -106574,7 +106752,7 @@
     "downloads_snapshot": 1494,
     "likes_snapshot": 398,
     "rankings": {
-      "likes": 372
+      "likes": 373
     },
     "added_in_snapshot": true,
     "architecture_type": "待拆解",
@@ -106623,9 +106801,9 @@
     "hub_created": "2025-03-10",
     "hub_updated": "2025-04-04",
     "downloads_snapshot": 1015440,
-    "likes_snapshot": 1260,
+    "likes_snapshot": 1262,
     "rankings": {
-      "trendingScore": 120,
+      "trendingScore": 106,
       "downloads": 68,
       "likes": 87
     },
@@ -108456,7 +108634,7 @@
     "likes_snapshot": 209,
     "rankings": {
       "downloads": 944,
-      "likes": 757
+      "likes": 758
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · deepseek_v3",
@@ -108960,7 +109138,6 @@
     "downloads_snapshot": 37335,
     "likes_snapshot": 218,
     "rankings": {
-      "trendingScore": 871,
       "downloads": 892,
       "likes": 730
     },
@@ -109009,9 +109186,9 @@
     "hub_created": "2025-02-19",
     "hub_updated": "2025-12-10",
     "downloads_snapshot": 346874,
-    "likes_snapshot": 867,
+    "likes_snapshot": 868,
     "rankings": {
-      "trendingScore": 270,
+      "trendingScore": 236,
       "downloads": 203,
       "likes": 145
     },
@@ -112818,9 +112995,9 @@
     "downloads_snapshot": 81412,
     "likes_snapshot": 386,
     "rankings": {
-      "trendingScore": 866,
+      "trendingScore": 871,
       "downloads": 541,
-      "likes": 386
+      "likes": 387
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen2",
@@ -112915,7 +113092,7 @@
     "downloads_snapshot": 9539,
     "likes_snapshot": 347,
     "rankings": {
-      "trendingScore": 865,
+      "trendingScore": 870,
       "likes": 431
     },
     "added_in_snapshot": true,
@@ -113181,9 +113358,9 @@
     "hub_created": "2025-01-20",
     "hub_updated": "2025-03-27",
     "downloads_snapshot": 1391551,
-    "likes_snapshot": 14405,
+    "likes_snapshot": 14408,
     "rankings": {
-      "trendingScore": 112,
+      "trendingScore": 128,
       "downloads": 43,
       "likes": 1
     },
@@ -113296,9 +113473,9 @@
     "hub_created": "2025-01-20",
     "hub_updated": "2025-02-24",
     "downloads_snapshot": 1293555,
-    "likes_snapshot": 1642,
+    "likes_snapshot": 1644,
     "rankings": {
-      "trendingScore": 234,
+      "trendingScore": 205,
       "downloads": 52,
       "likes": 63
     },
@@ -113500,10 +113677,10 @@
     "hub_created": "2025-01-20",
     "hub_updated": "2025-02-24",
     "downloads_snapshot": 305865,
-    "likes_snapshot": 723,
+    "likes_snapshot": 724,
     "rankings": {
       "downloads": 231,
-      "likes": 195
+      "likes": 194
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · qwen2",
@@ -113784,7 +113961,7 @@
     "downloads_snapshot": 37688,
     "likes_snapshot": 822,
     "rankings": {
-      "trendingScore": 490,
+      "trendingScore": 498,
       "downloads": 889,
       "likes": 162
     },
@@ -113874,7 +114051,7 @@
     "downloads_snapshot": 4861,
     "likes_snapshot": 982,
     "rankings": {
-      "trendingScore": 489,
+      "trendingScore": 497,
       "likes": 126
     },
     "added_in_snapshot": true,
@@ -114765,7 +114942,7 @@
     "likes_snapshot": 236,
     "rankings": {
       "downloads": 756,
-      "likes": 651
+      "likes": 653
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · internlm3",
@@ -115053,7 +115230,7 @@
     "downloads_snapshot": 2675,
     "likes_snapshot": 657,
     "rankings": {
-      "likes": 229
+      "likes": 230
     },
     "added_in_snapshot": true,
     "architecture_type": "配置证据待人工复核 · minimax_text_01",
