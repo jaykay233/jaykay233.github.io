@@ -1,18 +1,18 @@
 {
-  "models": 1333,
+  "models": 1336,
   "config_status": {
-    "ok": 1250,
+    "ok": 1253,
     "not-found": 20,
     "http-401": 63
   },
-  "analyzed": 1250,
-  "with_structural_findings": 1244,
+  "analyzed": 1253,
+  "with_structural_findings": 1247,
   "without_config": 83,
   "module_findings": {
-    "decoder-only": 1220,
-    "rope": 1112,
-    "rmsnorm": 1040,
-    "gqa": 771,
+    "decoder-only": 1223,
+    "rope": 1113,
+    "rmsnorm": 1041,
+    "gqa": 772,
     "moe-ffn": 490,
     "hybrid-attention": 304,
     "sliding-window": 162,
@@ -25,7 +25,7 @@
     "kda": 2
   },
   "finding_confidence": {
-    "direct-config": 5063,
+    "direct-config": 5069,
     "family-config-inference": 331
   }
 }
