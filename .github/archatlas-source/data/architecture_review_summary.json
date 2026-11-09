@@ -1,13 +1,13 @@
 {
-  "models": 1341,
+  "models": 1342,
   "config_status": {
     "ok": 1258,
-    "not-found": 20,
+    "not-found": 21,
     "http-401": 63
   },
   "analyzed": 1258,
   "with_structural_findings": 1252,
-  "without_config": 83,
+  "without_config": 84,
   "module_findings": {
     "decoder-only": 1226,
     "rope": 1118,
