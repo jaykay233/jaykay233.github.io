@@ -1,31 +1,31 @@
 {
-  "models": 1361,
+  "models": 1364,
   "config_status": {
-    "ok": 1277,
+    "ok": 1280,
     "not-found": 21,
     "http-401": 63
   },
-  "analyzed": 1277,
-  "with_structural_findings": 1271,
+  "analyzed": 1280,
+  "with_structural_findings": 1274,
   "without_config": 84,
   "module_findings": {
-    "decoder-only": 1230,
-    "rope": 1136,
-    "rmsnorm": 1064,
+    "decoder-only": 1233,
+    "rope": 1139,
+    "rmsnorm": 1067,
     "gqa": 793,
-    "moe-ffn": 492,
-    "hybrid-attention": 308,
-    "sliding-window": 167,
-    "mtp": 95,
+    "moe-ffn": 495,
+    "hybrid-attention": 309,
+    "sliding-window": 169,
+    "mtp": 96,
     "mamba2": 69,
-    "mla": 62,
+    "mla": 65,
     "gated-conv": 46,
     "gated-deltanet": 18,
     "deepseek-sparse-attention": 9,
     "kda": 2
   },
   "finding_confidence": {
-    "direct-config": 5157,
-    "family-config-inference": 334
+    "direct-config": 5175,
+    "family-config-inference": 335
   }
 }
